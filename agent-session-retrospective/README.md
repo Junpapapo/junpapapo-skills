@@ -138,38 +138,38 @@ python scripts/manage_rules.py \
 
 ### 1. Daily Retrospective Document (`01.Docs/00_Retrospectives/2026-08-17-retrospective.md`)
 ```markdown
-# 📅 [2026-08-17] 세션 복기 및 오답노트
+# 📅 [2026-08-17] Session Retrospective & Lesson Notes
 
-- **세션 주제**: 대시보드 Buddy Notes 통일 및 다국어 스토어 리스팅 확장
-- **작업 통계**: 수정 파일 12개, 빌드 검증 2회 (Pass)
-- **대상 에이전트**: Gemini Antigravity
+- **Session Topic**: Dashboard Notes Unification & i18n Store Listing Parity
+- **Session Stats**: 12 modified files, 2 build checks (Pass)
+- **Target Agent**: Gemini Antigravity
 
 ---
 
-### 🎯 복기 매트릭스 (KPT)
-| 구분 | 내용 | 분석 및 근본 원인 |
+### 🎯 Retrospective Matrix (KPT)
+| Category | Details | Analysis & Root Cause |
 | :--- | :--- | :--- |
-| **Keep (성공)** | 9개 언어 i18n 번역 및 UI 컴포넌트 1:1 완벽 동기화 | 컴포넌트-언어팩 간 1:1 대조 수정으로 빌드 에러 0건 달성 |
-| **Problem (실수)** | 스토어 리스팅 문서 4개 언어 누락 인지 지연 | 프로젝트 지원 언어(9개)와 문서 폴더(5개)의 불일치를 선제 점검하지 않음 |
-| **Try (실행 수칙)** | 다국어/문서 작업 시 `_locales` 디렉토리와 100% 전수 대조 필수 | 단편 수정 금지, 로케일 목록 기반 체크리스트 작성 후 일괄 실행 |
+| **Keep (Success)** | Full 9-locale i18n translation & UI component 1:1 parity | Zero build errors achieved by 1:1 component-to-language pack verification |
+| **Problem (Friction)** | Delayed detection of 4 missing locales in store listing docs | Failed to pre-verify discrepancy between supported locales (9) and doc folders (5) |
+| **Try (Action Rule)** | Mandatory 100% cross-check against `_locales` directory for i18n tasks | Avoid piecemeal edits; build checklist from full locale list and execute in batch |
 
 ---
 
-### 🚫 추출된 행동 룰 (Rule Extraction)
-- **룰 코드**: `RULE-I18N-SYNC`
-- **상태**: 🔥 **승격 (`GEMINI.md` 동기화)**
-- **행동 수칙**: 다국어(i18n) 및 리소스/문서 수정 시 프로젝트에 정의된 전체 로케일(Locale) 목록을 먼저 파싱하고 1:1 전수 일괄 동기화한다.
+### 🚫 Extracted Action Rule
+- **Rule Code**: `RULE-I18N-SYNC`
+- **Status**: 🔥 **Promoted (Synced to `GEMINI.md`)**
+- **Action Rule**: Always parse the complete list of project-defined locales before editing i18n/docs to ensure 100% 1:1 parity.
 ```
 
 ### 2. Active Golden Rules Table (`GEMINI.md`)
 ```markdown
-### 🚫 REFINED AGENT GOLDEN RULES (오답노트 누적 승격 룰 Top 7)
-> 💡 세션 복기를 통해 2회 이상 반복 지적된 실수만 엄선하여 빈도순으로 자동 정렬된 최우선 준수 규칙입니다.
+### 🚫 REFINED AGENT GOLDEN RULES (Cumulative Retrospective Top 7)
+> 💡 Priority-ranked rules automatically sorted by frequency, curated from mistakes occurring 2+ times across retrospectives.
 
-| 우선순위 | 룰 코드 | 발생 빈도 | 범용 행동 수칙 (Golden Rule) |
+| Priority | Rule Code | Occurrences | Universal Golden Rule |
 | :---: | :--- | :---: | :--- |
-| **P0** | `RULE-SURGICAL-EDIT` | 🔥 **3회** | 코드 수정 시 최소 변경 대상 라인만 외과수술식으로 수정하며 인접 코드 임의 변경을 금지한다. |
-| **P1** | `RULE-I18N-SYNC` | ⚠️ **2회** | 다국어(i18n) 및 리소스/문서 수정 시 프로젝트에 정의된 전체 로케일(Locale) 목록을 먼저 파싱하고 1:1 전수 일괄 동기화한다. |
+| **P0** | `RULE-SURGICAL-EDIT` | 🔥 **3 Hits** | Apply surgical edits strictly to minimal target lines and avoid arbitrary adjacent code modifications. |
+| **P1** | `RULE-I18N-SYNC` | ⚠️ **2 Hits** | Always parse the complete list of project-defined locales before editing i18n/docs to ensure 100% 1:1 parity. |
 ```
 
 ---
