@@ -33,17 +33,20 @@ This skill executes a standardized **5-Step Deep Audit Protocol** via its automa
 
 ## 🛠️ Automated QA Runner CLI Reference
 
+> [!NOTE]
+> Replace `<skill_dir>` with the relative or absolute path of this skill folder (e.g. `.agents/skills/chrome-extension-project-final-checker` or full path).
+
 Run the entire 5-step deep verification suite in **one command**:
 
 ```bash
 # Terminal colored summary
-python scripts/final_check.py --workspace .
+python <skill_dir>/scripts/final_check.py --workspace .
 
 # Generate Markdown QA Report
-python scripts/final_check.py --workspace . --format markdown --output FINAL_QA_REPORT.md
+python <skill_dir>/scripts/final_check.py --workspace . --format markdown --output FINAL_QA_REPORT.md
 
 # Quick static scan without running full build
-python scripts/final_check.py --workspace . --skip-build
+python <skill_dir>/scripts/final_check.py --workspace . --skip-build
 ```
 
 ---

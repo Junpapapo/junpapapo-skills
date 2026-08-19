@@ -134,17 +134,20 @@ Before publishing to the Chrome Web Store, verify the distribution archive (`dis
 
 ## 5. Automation Tooling Reference (`final_check.py`)
 
+> [!IMPORTANT]
+> **Script Execution Path**: When running scripts, always execute them using the path relative to this skill directory (`<skill_dir>/scripts/...`) or its absolute path as registered in your active skills list (e.g. `python <skill_dir>/scripts/final_check.py ...`). Do not assume `scripts/` exists in your current working directory (`CWD`).
+
 Run the entire 5-step deep verification suite in a single terminal command:
 
 ```bash
 # Full 5-Step Deep Audit
-python scripts/final_check.py --workspace .
+python <skill_dir>/scripts/final_check.py --workspace .
 
 # Generate Markdown QA Report
-python scripts/final_check.py --workspace . --format markdown --output FINAL_QA_REPORT.md
+python <skill_dir>/scripts/final_check.py --workspace . --format markdown --output FINAL_QA_REPORT.md
 
 # Quick static scan without running full bundler build
-python scripts/final_check.py --workspace . --skip-build
+python <skill_dir>/scripts/final_check.py --workspace . --skip-build
 ```
 
 ---
@@ -153,7 +156,7 @@ python scripts/final_check.py --workspace . --skip-build
 
 ```mermaid
 flowchart TD
-    A[Start QA Final Audit] --> B[Run scripts/final_check.py]
+    A[Start QA Final Audit] --> B[Run <skill_dir>/scripts/final_check.py]
     B --> C{Exit Code 0?}
     C -->|No| D[Inspect Failed Step in Report]
     D --> E[Fix Missing Icons / 404s / TS Errors]

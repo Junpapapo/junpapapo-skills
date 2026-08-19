@@ -74,18 +74,21 @@ For legacy files already exceeding 400 lines:
 
 ## 🛠️ Automated CLI Tool Reference
 
+> [!NOTE]
+> Replace `<skill_dir>` with the relative or absolute path of this skill folder (e.g. `.agents/skills/proactive-code-architect` or full path).
+
 ### 1. Codebase Architecture Auditor (`audit_architecture.py`)
 Scans entire codebase for 400-line violations, SRP mixing, and circular dependencies in **<0.1s**:
 
 ```bash
 # Terminal colored summary
-python scripts/audit_architecture.py --workspace .
+python <skill_dir>/scripts/audit_architecture.py --workspace .
 
 # Generate Markdown Architecture Report
-python scripts/audit_architecture.py --workspace . --format markdown --output ARCH_REPORT.md
+python <skill_dir>/scripts/audit_architecture.py --workspace . --format markdown --output ARCH_REPORT.md
 
 # Output JSON for CI pipeline gates
-python scripts/audit_architecture.py --workspace . --format json
+python <skill_dir>/scripts/audit_architecture.py --workspace . --format json
 ```
 
 ### 2. Feature Module Scaffolder (`scaffold_module.py`)
@@ -93,10 +96,10 @@ Generates decoupled, vertical-slice module skeletons instantly:
 
 ```bash
 # Scaffold React + TypeScript feature module
-python scripts/scaffold_module.py --name chat-widget --stack react-ts --target-dir ./src/features
+python <skill_dir>/scripts/scaffold_module.py --name chat-widget --stack react-ts --target-dir ./src/features
 
 # Scaffold Python FastAPI feature module
-python scripts/scaffold_module.py --name auth-service --stack python --target-dir ./app/features
+python <skill_dir>/scripts/scaffold_module.py --name auth-service --stack python --target-dir ./app/features
 ```
 
 ---

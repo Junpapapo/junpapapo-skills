@@ -17,13 +17,16 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
 
 ## 📋 Skills Master Index
 
-| Skill Directory | Category | Core Purpose & Mission | Primary CLI Tool |
+| Skill Directory | Category | Core Purpose & Mission | Primary CLI Tool (`<skill_dir>`) |
 | :--- | :--- | :--- | :--- |
-| [**`agent-friendly-rules`**](./agent-friendly-rules/) | **Agent Governance** | Rulebook health scoring (0-100), attention-weight engineering, and stack-tailored rule generation (`GEMINI.md` / `CLAUDE.md`). | `python scripts/lint_rules.py`<br/>`python scripts/init_rules.py` |
-| [**`agent-session-retrospective`**](./agent-session-retrospective/) | **Continuous Learning** | Autonomous post-mortem, friction-point extraction from logs, and frequency-weighted Golden Rule sync with a 10-rule quota cap. | `python scripts/parse_session.py`<br/>`python scripts/generate_retro_doc.py` |
-| [**`chrome-extension-project-final-checker`**](./chrome-extension-project-final-checker/) | **QA & Release** | Automated 5-Step Deep QA Protocol: Build validation, MV3 compliance, Shadow DOM isolation, 404 asset audit, and memory leak detection. | `python scripts/final_check.py` |
-| [**`chrome-web-store-policy-checker`**](./chrome-web-store-policy-checker/) | **Store Compliance** | Zero-tolerance policy audit (RCE ban, `<all_urls>`, unused permissions), permission justification generation, and appeal letter drafting. | `python scripts/audit_policy.py`<br/>`python scripts/generate_justifications.py` |
-| [**`proactive-code-architect`**](./proactive-code-architect/) | **Architecture** | 400-line hard limits, Single Responsibility enforcement, complexity gates, and instant vertical-slice module scaffolding. | `python scripts/audit_architecture.py`<br/>`python scripts/scaffold_module.py` |
+| [**`agent-friendly-rules`**](./agent-friendly-rules/) | **Agent Governance** | Rulebook health scoring (0-100), attention-weight engineering, and stack-tailored rule generation (`GEMINI.md` / `CLAUDE.md`). | `python <skill_dir>/scripts/lint_rules.py`<br/>`python <skill_dir>/scripts/init_rules.py` |
+| [**`agent-session-retrospective`**](./agent-session-retrospective/) | **Continuous Learning** | Autonomous post-mortem, friction-point extraction from logs, and frequency-weighted Golden Rule sync with a 10-rule quota cap. | `python <skill_dir>/scripts/parse_session.py`<br/>`python <skill_dir>/scripts/generate_retro_doc.py` |
+| [**`chrome-extension-project-final-checker`**](./chrome-extension-project-final-checker/) | **QA & Release** | Automated 5-Step Deep QA Protocol: Build validation, MV3 compliance, Shadow DOM isolation, 404 asset audit, and memory leak detection. | `python <skill_dir>/scripts/final_check.py` |
+| [**`chrome-web-store-policy-checker`**](./chrome-web-store-policy-checker/) | **Store Compliance** | Zero-tolerance policy audit (RCE ban, `<all_urls>`, unused permissions), permission justification generation, and appeal letter drafting. | `python <skill_dir>/scripts/audit_policy.py`<br/>`python <skill_dir>/scripts/generate_justifications.py` |
+| [**`proactive-code-architect`**](./proactive-code-architect/) | **Architecture** | 400-line hard limits, Single Responsibility enforcement, complexity gates, and instant vertical-slice module scaffolding. | `python <skill_dir>/scripts/audit_architecture.py`<br/>`python <skill_dir>/scripts/scaffold_module.py` |
+
+> [!IMPORTANT]
+> **Script Execution Standard (`<skill_dir>`)**: AI agents and developers should replace `<skill_dir>` with the actual relative or absolute directory path of the skill (e.g. `.agents/skills/agent-friendly-rules`, `~/.gemini/config/skills/agent-friendly-rules`, or full absolute path). This prevents `FileNotFoundError` regardless of your current working directory (`CWD`).
 
 ---
 

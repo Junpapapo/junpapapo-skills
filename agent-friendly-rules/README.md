@@ -68,18 +68,21 @@ When conflicting instructions occur, agents follow this strict hierarchy:
 
 ## 🛠️ Automated CLI Tool Reference
 
+> [!NOTE]
+> Replace `<skill_dir>` with the relative or absolute path of this skill folder (e.g. `.agents/skills/agent-friendly-rules` or full path).
+
 ### 1. Lint and Score Existing Rules (`lint_rules.py`)
 Audit your project's rule file (`GEMINI.md` or `CLAUDE.md`) in **<0.05 seconds**:
 
 ```bash
 # Terminal colored table audit
-python scripts/lint_rules.py --path .
+python <skill_dir>/scripts/lint_rules.py --path .
 
 # Output detailed Markdown report
-python scripts/lint_rules.py --path ./GEMINI.md --format markdown --output RULE_HEALTH.md
+python <skill_dir>/scripts/lint_rules.py --path ./GEMINI.md --format markdown --output RULE_HEALTH.md
 
 # Output JSON for CI/CD pipeline gates
-python scripts/lint_rules.py --path ./GEMINI.md --format json
+python <skill_dir>/scripts/lint_rules.py --path ./GEMINI.md --format json
 ```
 
 ### 2. Generate Optimized Rulebooks (`init_rules.py`)
@@ -87,13 +90,13 @@ Quickly bootstrap attention-optimized rulebooks for any tech stack:
 
 ```bash
 # React + TypeScript in Korean
-python scripts/init_rules.py --stack react-ts --lang ko --target GEMINI.md --name "My Web App"
+python <skill_dir>/scripts/init_rules.py --stack react-ts --lang ko --target GEMINI.md --name "My Web App"
 
 # Next.js App Router in English
-python scripts/init_rules.py --stack nextjs --lang en --target CLAUDE.md --name "Portal App"
+python <skill_dir>/scripts/init_rules.py --stack nextjs --lang en --target CLAUDE.md --name "Portal App"
 
 # Chrome Extension (Manifest V3)
-python scripts/init_rules.py --stack chrome-extension --lang ko --target GEMINI.md --name "My Extension"
+python <skill_dir>/scripts/init_rules.py --stack chrome-extension --lang ko --target GEMINI.md --name "My Extension"
 ```
 
 ---

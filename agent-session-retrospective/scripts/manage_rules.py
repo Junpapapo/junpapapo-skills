@@ -339,6 +339,26 @@ def upsert_golden_rule(rule_file_path, rule_code, rule_text, hits_to_add=1, cap=
         "retired_rules": retired
     }
 
+def resolve_rulebook_path(file_arg, workspace_dir):
+    """Resolves rulebook path, auto-detecting GEMINI.md / CLAUDE.md in workspace if omitted."""
+    if file_arg:
+        p = Path(file_arg)
+        if p.exists() or not workspace_dir:
+            return str(p)
+        ws_p = Path(workspace_dir) / file_arg
+        if ws_p.exists():
+            return str(ws_p)
+        return str(p)
+
+    ws = Path(workspace_dir)
+    if (ws / "GEMINI.md").exists():
+        return str(ws / "GEMINI.md")
+    if (ws / "CLAUDE.md").exists():
+        return str(ws / "CLAUDE.md")
+    if (ws / ".agents" / "GEMINI.md").exists():
+        return str(ws / ".agents" / "GEMINI.md")
+    return str(ws / "GEMINI.md")
+
 def main():
     parser = argparse.ArgumentParser(description="Manage agent golden rules table.")
     parser.add_argument("--file", help="Path to rulebook file (e.g. GEMINI.md)", default=None)
@@ -352,10 +372,10 @@ def main():
     parser.add_argument("--audit", action="store_true", help="Print pre-flight audit checklist")
     args = parser.parse_args()
 
+    target_file = resolve_rulebook_path(args.file, args.workspace)
+
     if args.audit:
-        if not args.file:
-            parser.error("--file is required for audit")
-        print_audit_checklist(args.file)
+        print_audit_checklist(target_file)
         return
 
     if not args.code or not args.text:
@@ -363,14 +383,11 @@ def main():
 
     if args.candidate:
         # Incubate candidate rule
-        result = upsert_candidate_incubator(args.workspace, args.code, args.text, args.date, args.file)
+        result = upsert_candidate_incubator(args.workspace, args.code, args.text, args.date, target_file)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return
 
-    if not args.file:
-        parser.error("--file is required when promoting a golden rule")
-
-    result = upsert_golden_rule(args.file, args.code, args.text, args.hits, args.cap, args.workspace)
+    result = upsert_golden_rule(target_file, args.code, args.text, args.hits, args.cap, args.workspace)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":

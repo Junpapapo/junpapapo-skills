@@ -194,18 +194,21 @@ Sincerely,
 
 ## 5. Automation Tooling (`audit_policy.py` & `generate_justifications.py`)
 
+> [!IMPORTANT]
+> **Script Execution Path**: When running scripts, always execute them using the path relative to this skill directory (`<skill_dir>/scripts/...`) or its absolute path as registered in your active skills list (e.g. `python <skill_dir>/scripts/audit_policy.py ...`). Do not assume `scripts/` exists in your current working directory (`CWD`).
+
 ### 1) Automated Policy Audit (`audit_policy.py`)
 Scans `manifest.json` and all source code for RCE vulnerabilities, unencrypted endpoints, and unused permissions:
 
 ```bash
 # Terminal colored audit summary
-python scripts/audit_policy.py --workspace .
+python <skill_dir>/scripts/audit_policy.py --workspace .
 
 # Generate Markdown Audit Report
-python scripts/audit_policy.py --workspace . --format markdown --output STORE_AUDIT.md
+python <skill_dir>/scripts/audit_policy.py --workspace . --format markdown --output STORE_AUDIT.md
 
 # Output JSON for CI/CD pipeline gates
-python scripts/audit_policy.py --workspace . --format json
+python <skill_dir>/scripts/audit_policy.py --workspace . --format json
 ```
 
 ### 2) Generate Store Permission Justifications (`generate_justifications.py`)
@@ -213,7 +216,7 @@ Generates high-compliance justification statements formatted for the Chrome Web 
 
 ```bash
 # Generate dashboard-ready justification document
-python scripts/generate_justifications.py --manifest ./manifest.json --name "My Extension" --output JUSTIFICATIONS.md
+python <skill_dir>/scripts/generate_justifications.py --manifest ./manifest.json --name "My Extension" --output JUSTIFICATIONS.md
 ```
 
 ---

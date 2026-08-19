@@ -30,18 +30,21 @@ Guidelines      Permissions         No Remote Code      Protection      & Modern
 
 ## 🛠️ Automated CLI Tool Reference
 
+> [!NOTE]
+> Replace `<skill_dir>` with the relative or absolute path of this skill folder (e.g. `.agents/skills/chrome-web-store-policy-checker` or full path).
+
 ### 1. Run Automated Policy Audit (`audit_policy.py`)
 Scans source files, manifests, and network calls in **<0.1s**:
 
 ```bash
 # Terminal colored summary
-python scripts/audit_policy.py --workspace .
+python <skill_dir>/scripts/audit_policy.py --workspace .
 
 # Generate Markdown audit report
-python scripts/audit_policy.py --workspace . --format markdown --output STORE_AUDIT.md
+python <skill_dir>/scripts/audit_policy.py --workspace . --format markdown --output STORE_AUDIT.md
 
 # Generate JSON report for CI/CD checks
-python scripts/audit_policy.py --workspace . --format json
+python <skill_dir>/scripts/audit_policy.py --workspace . --format json
 ```
 
 ### 2. Generate Store Justifications (`generate_justifications.py`)
@@ -49,7 +52,7 @@ Generates high-compliance justification statements for all requested permissions
 
 ```bash
 # Generate dashboard-ready justification document
-python scripts/generate_justifications.py --manifest ./manifest.json --name "My Extension" --output JUSTIFICATIONS.md
+python <skill_dir>/scripts/generate_justifications.py --manifest ./manifest.json --name "My Extension" --output JUSTIFICATIONS.md
 ```
 
 ---

@@ -231,18 +231,21 @@ This document governs the build processes, testing standards, architecture patte
 
 ## 8. Automation Tooling (`lint_rules.py` & `init_rules.py`)
 
+> [!IMPORTANT]
+> **Script Execution Path**: When running scripts, always execute them using the path relative to this skill directory (`<skill_dir>/scripts/...`) or its absolute path as registered in your active skills list (e.g. `python <skill_dir>/scripts/lint_rules.py ...`). Do not assume `scripts/` exists in your current working directory (`CWD`).
+
 ### 1) Rulebook Health Linter (`lint_rules.py`)
 Scans existing rulebooks, computes a Health Score (0-100), detects weak words, and flags missing core directives in **<0.05s**:
 
 ```bash
 # Scan current directory rulebook
-python scripts/lint_rules.py --path .
+python <skill_dir>/scripts/lint_rules.py --path .
 
 # Output full Markdown report
-python scripts/lint_rules.py --path ./GEMINI.md --format markdown --output RULE_AUDIT.md
+python <skill_dir>/scripts/lint_rules.py --path ./GEMINI.md --format markdown --output RULE_AUDIT.md
 
 # Output JSON for CI/CD gates
-python scripts/lint_rules.py --path ./GEMINI.md --format json
+python <skill_dir>/scripts/lint_rules.py --path ./GEMINI.md --format json
 ```
 
 ### 2) Rapid Rulebook Initializer (`init_rules.py`)
@@ -250,10 +253,10 @@ Generates tailored, high-compliance rulebooks for specific frameworks:
 
 ```bash
 # Initialize Next.js rulebook in Korean
-python scripts/init_rules.py --stack nextjs --lang ko --target GEMINI.md --name "My App"
+python <skill_dir>/scripts/init_rules.py --stack nextjs --lang ko --target GEMINI.md --name "My App"
 
 # Initialize Chrome Extension rulebook in English
-python scripts/init_rules.py --stack chrome-extension --lang en --target CLAUDE.md --name "My Extension"
+python <skill_dir>/scripts/init_rules.py --stack chrome-extension --lang en --target CLAUDE.md --name "My Extension"
 ```
 
 ---

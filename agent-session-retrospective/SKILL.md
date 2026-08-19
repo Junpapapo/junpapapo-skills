@@ -50,20 +50,20 @@ flowchart LR
 ```
 
 ### Step 1. Ingest Session Signals (Ultra-Fast Python Parse)
-Run the log parser script to obtain a clean JSON summary of user corrections, friction points, errors, and auto-suggested KPT templates:
+Run the log parser script from the project's skill directory using relative paths:
 
 ```bash
 # Option A: Parse specific date (default: today / latest)
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/parse_session.py" --date <YYYY-MM-DD> --format json
+python .agents/skills/session-retrospective/scripts/parse_session.py --date <YYYY-MM-DD> --format json
 
 # Option B: Parse past N days (e.g. past week = --days 7)
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/parse_session.py" --days 7 --format json
+python .agents/skills/session-retrospective/scripts/parse_session.py --days 7 --format json
 
 # Option C: Parse since specific date (e.g. --since 2026-08-10) with workspace filter
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/parse_session.py" --since <YYYY-MM-DD> --workspace "<Project Root Path>" --filter-workspace --format json
+python .agents/skills/session-retrospective/scripts/parse_session.py --since <YYYY-MM-DD> --filter-workspace --format json
 ```
 
-*Note: If no arguments are provided, it parses all sessions from today. If Gemini brain is not available, it automatically falls back to Git history.*
+*Note: If the skill is located in `.gemini/skills/session-retrospective` or another custom path, simply prefix with that relative skill path (e.g. `python <skill_dir>/scripts/parse_session.py`). If no arguments are provided, it parses all sessions from today.*
 
 ### Step 2. KPT & Root-Cause Synthesis
 From the parsed output or `suggested_kpt` block, formulate/refine the KPT matrix:
@@ -75,26 +75,23 @@ From the parsed output or `suggested_kpt` block, formulate/refine the KPT matrix
 
 ```bash
 # 🔥 Method 1: One-Stop Seamless Auto Generation (Recommended)
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/generate_retro_doc.py" \
+python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
   --auto \
-  --days 7 \
-  --workspace "<Project Root Path>"
+  --days 7
 
 # 🚀 Method 2: Pipeline with Custom Parameter Overrides
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/generate_retro_doc.py" \
+python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
   --auto \
   --topic "<Session Topic>" \
   --keep "<Keep text>" \
   --problem "<Problem text>" \
   --try-rule "<Try action text>" \
-  --rule-code "<RULE-CODE>" \
-  --workspace "<Project Root Path>"
+  --rule-code "<RULE-CODE>"
 
 # 🛠️ Method 3: Direct Explicit Rendering
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/generate_retro_doc.py" \
+python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
   --date "<YYYY-MM-DD>" \
   --topic "<Session Topic>" \
-  --workspace "<Project Root Path>" \
   --keep "<Keep text>" \
   --problem "<Problem text>" \
   --try-rule "<Try action text>" \
@@ -113,33 +110,31 @@ python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scri
 ### Step 4. Candidate Incubation OR Golden Rule Promotion
 - **Case A: Hits == 1 (Candidate Rule)** ➡️ Register into `rule-incubator.md`:
   ```bash
-  python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/manage_rules.py" \
-    --workspace "<Project Root Path>" \
+  python .agents/skills/session-retrospective/scripts/manage_rules.py \
     --code "<RULE-CODE>" \
     --text "<Universal rule description>" \
     --date "<YYYY-MM-DD>" \
     --candidate \
-    --file "<Project Root>/GEMINI.md"
+    --file "GEMINI.md"
   ```
   *(Note: If the script detects that this candidate already exists in `rule-incubator.md`, it will automatically promote it to `GEMINI.md`!)*
 
 - **Case B: Hits >= 2 (Promoted Golden Rule)** ➡️ Sync into `GEMINI.md`:
   ```bash
-  python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/manage_rules.py" \
-    --file "<Project Root>/GEMINI.md" \
+  python .agents/skills/session-retrospective/scripts/manage_rules.py \
+    --file "GEMINI.md" \
     --code "<RULE-CODE>" \
     --text "<Universal rule description>" \
     --hits 1 \
-    --cap 10 \
-    --workspace "<Project Root Path>"
+    --cap 10
   ```
 
 ### Step 5. Pre-Flight Self-Audit Mode (Optional Check)
 Before delivering final code to the user, run a self-audit against active golden rules:
 
 ```bash
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/manage_rules.py" \
-  --file "<Project Root>/GEMINI.md" \
+python .agents/skills/session-retrospective/scripts/manage_rules.py \
+  --file "GEMINI.md" \
   --audit
 ```
 
@@ -147,8 +142,7 @@ python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scri
 To generate a 1-page periodic rollup summary:
 
 ```bash
-python "C:/00_Workspace/00_Module_Dev/00_스킬개발/session-retrospective/scripts/generate_retro_doc.py" \
-  --workspace "<Project Root Path>" \
+python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
   --rollup weekly
 ```
 

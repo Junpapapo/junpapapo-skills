@@ -172,14 +172,17 @@ export const useUserProfileStore = create<UserProfileState & UserProfileActions>
 
 ## 5. Module Scaffolding Engine (`scripts/scaffold_module.py`)
 
+> [!IMPORTANT]
+> **Script Execution Path**: When running scripts, always execute them using the path relative to this skill directory (`<skill_dir>/scripts/...`) or its absolute path as registered in your active skills list (e.g. `python <skill_dir>/scripts/scaffold_module.py ...`). Do not assume `scripts/` exists in your current working directory (`CWD`).
+
 Generate canonical decoupled feature module directories in **0.1s**:
 
 ```bash
 # Scaffold React + TypeScript Feature Module
-python scripts/scaffold_module.py --name user-profile --stack react-ts --target-dir ./src/features
+python <skill_dir>/scripts/scaffold_module.py --name user-profile --stack react-ts --target-dir ./src/features
 
 # Scaffold Python FastAPI Feature Module
-python scripts/scaffold_module.py --name auth-service --stack python --target-dir ./app/features
+python <skill_dir>/scripts/scaffold_module.py --name auth-service --stack python --target-dir ./app/features
 ```
 
 ---
@@ -190,13 +193,13 @@ Run the automated architecture auditor to scan the entire workspace:
 
 ```bash
 # Terminal colored audit summary
-python scripts/audit_architecture.py --workspace .
+python <skill_dir>/scripts/audit_architecture.py --workspace .
 
 # Generate Markdown Architecture Report
-python scripts/audit_architecture.py --workspace . --format markdown --output ARCHITECTURE_AUDIT.md
+python <skill_dir>/scripts/audit_architecture.py --workspace . --format markdown --output ARCHITECTURE_AUDIT.md
 
 # Output JSON for CI pipeline gates
-python scripts/audit_architecture.py --workspace . --format json
+python <skill_dir>/scripts/audit_architecture.py --workspace . --format json
 ```
 
 ---
@@ -221,12 +224,12 @@ Detailed implementation guides are located in the `references/` directory:
 
 | Tech Stack / Topic | Reference Document |
 | :--- | :--- |
-| **React + TypeScript** | [`references/react-typescript.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/react-typescript.md) |
-| **Python Backend (FastAPI / Django)** | [`references/python-backend.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/python-backend.md) |
-| **Go Backend (Golang)** | [`references/golang-backend.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/golang-backend.md) |
-| **Modular CSS / SCSS** | [`references/styling-css.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/styling-css.md) |
-| **Architecture Patterns & ADRs** | [`references/architecture-patterns.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/architecture-patterns.md) |
-| **CI Automation & Linting** | [`references/ci-automation.md`](file:///c:/00_Workspace/00_Module_Dev/00_스킬개발/00.완성본(junpapapo-skills)/proactive-code-architect/references/ci-automation.md) |
+| **React + TypeScript** | [`references/react-typescript.md`](./references/react-typescript.md) |
+| **Python Backend (FastAPI / Django)** | [`references/python-backend.md`](./references/python-backend.md) |
+| **Go Backend (Golang)** | [`references/golang-backend.md`](./references/golang-backend.md) |
+| **Modular CSS / SCSS** | [`references/styling-css.md`](./references/styling-css.md) |
+| **Architecture Patterns & ADRs** | [`references/architecture-patterns.md`](./references/architecture-patterns.md) |
+| **CI Automation & Linting** | [`references/ci-automation.md`](./references/ci-automation.md) |
 
 ---
 
