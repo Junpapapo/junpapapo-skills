@@ -14,14 +14,16 @@ import argparse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-# Force UTF-8 output on Windows consoles
-if sys.platform == "win32":
-    try:
+# Force UTF-8 output across all platforms (Windows, Linux, macOS)
+try:
+    if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stdin, "reconfigure"):
         sys.stdin.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
+except Exception:
+    pass
 
 def detect_primary_language(text_samples):
     """Detects the primary language of user inputs (ko, ja, zh, or en)."""
@@ -285,10 +287,24 @@ def generate_suggested_kpt(data, lang="ko"):
 
 def find_gemini_brain_dirs(target_date_str=None, days=None, since_date_str=None):
     home = Path.home()
-    gemini_brain_root = home / ".gemini" / "antigravity" / "brain"
-    if not gemini_brain_root.exists(): return []
+    candidate_roots = [
+        home / ".gemini" / "antigravity" / "brain",
+        home / ".gemini" / "antigravity-ide" / "brain",
+        home / ".gemini" / "brain"
+    ]
+    
+    dirs = []
+    seen_names = set()
+    for root in candidate_roots:
+        if root.exists():
+            for d in root.iterdir():
+                if d.is_dir() and d.name not in ["scratch", "tempmediaStorage"] and d.name not in seen_names:
+                    dirs.append(d)
+                    seen_names.add(d.name)
+    
+    if not dirs:
+        return []
 
-    dirs = [d for d in gemini_brain_root.iterdir() if d.is_dir() and d.name not in ["scratch", "tempmediaStorage"]]
     dirs.sort(key=lambda d: d.stat().st_mtime, reverse=True)
     now = datetime.now(timezone.utc)
 

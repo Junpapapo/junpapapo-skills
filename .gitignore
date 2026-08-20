@@ -16,3 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 scratch/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+

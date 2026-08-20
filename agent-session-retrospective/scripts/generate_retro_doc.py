@@ -13,14 +13,16 @@ import argparse
 from pathlib import Path
 from datetime import datetime
 
-# Force UTF-8 output on Windows consoles
-if sys.platform == "win32":
-    try:
+# Force UTF-8 output across all platforms (Windows, Linux, macOS)
+try:
+    if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stdin, "reconfigure"):
         sys.stdin.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
+except Exception:
+    pass
 
 import subprocess
 
@@ -223,11 +225,11 @@ def main():
                 digest_data = json.load(f)
         except Exception as e:
             sys.stderr.write(f"Warning: Failed to load digest file: {e}\n")
-    elif args.auto:
+    elif args.auto or (not args.topic or not args.keep or not args.problem or not args.try_rule):
         script_dir = Path(__file__).resolve().parent
         parse_script = script_dir / "parse_session.py"
         if parse_script.exists():
-            cmd = ["python", str(parse_script), "--workspace", str(args.workspace), "--format", "json"]
+            cmd = [sys.executable, str(parse_script), "--workspace", str(args.workspace), "--format", "json"]
             if args.date:
                 cmd.extend(["--date", args.date])
             if args.days:
@@ -309,7 +311,10 @@ def main():
 
     # Fallback checks
     if not args.date:
-        args.date = datetime.now().strftime("%Y-%m-%d")
+        if digest_data and digest_data.get("date"):
+            args.date = digest_data.get("date")
+        else:
+            args.date = datetime.now().strftime("%Y-%m-%d")
     if not args.rule_status:
         args.rule_status = "candidate" if args.rule_code and args.rule_code.upper() not in ["NONE", "N/A"] else "none"
 

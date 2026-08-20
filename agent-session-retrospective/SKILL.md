@@ -1,10 +1,10 @@
 ---
-name: session-retrospective
+name: agent-session-retrospective
 description: Automated session retrospective, root-cause error analysis, and weighted golden rule synchronization. Use when the user asks to review, reflect on, or create a retrospective/post-mortem of recent sessions ("오늘 작업 복기해줘", "세션 회고해줘", "review today's session", etc.).
 license: MIT
 ---
 
-# Session Retrospective Skill (`session-retrospective`)
+# Agent Session Retrospective Skill (`agent-session-retrospective`)
 
 An autonomous post-mortem and continuous learning engine for AI pairing sessions. It extracts friction points, build failures, and best practices from session logs, produces a date-isolated retrospective document, and synchronizes generalized Golden Rules into the project rulebook (`GEMINI.md` / `CLAUDE.md`).
 
@@ -54,16 +54,16 @@ Run the log parser script from the project's skill directory using relative path
 
 ```bash
 # Option A: Parse specific date (default: today / latest)
-python .agents/skills/session-retrospective/scripts/parse_session.py --date <YYYY-MM-DD> --format json
+python .agents/skills/agent-session-retrospective/scripts/parse_session.py --date <YYYY-MM-DD> --format json
 
 # Option B: Parse past N days (e.g. past week = --days 7)
-python .agents/skills/session-retrospective/scripts/parse_session.py --days 7 --format json
+python .agents/skills/agent-session-retrospective/scripts/parse_session.py --days 7 --format json
 
 # Option C: Parse since specific date (e.g. --since 2026-08-10) with workspace filter
-python .agents/skills/session-retrospective/scripts/parse_session.py --since <YYYY-MM-DD> --filter-workspace --format json
+python .agents/skills/agent-session-retrospective/scripts/parse_session.py --since <YYYY-MM-DD> --filter-workspace --format json
 ```
 
-*Note: If the skill is located in `.gemini/skills/session-retrospective` or another custom path, simply prefix with that relative skill path (e.g. `python <skill_dir>/scripts/parse_session.py`). If no arguments are provided, it parses all sessions from today.*
+*Note: If no arguments are provided, it parses all sessions from today.*
 
 ### Step 2. KPT & Root-Cause Synthesis
 From the parsed output or `suggested_kpt` block, formulate/refine the KPT matrix:
@@ -74,76 +74,40 @@ From the parsed output or `suggested_kpt` block, formulate/refine the KPT matrix
 ### Step 3. Generate Daily Retrospective Document (One-Stop Auto or Explicit)
 
 ```bash
-# 🔥 Method 1: One-Stop Seamless Auto Generation (Recommended)
-python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
-  --auto \
-  --days 7
+# 🔥 Method 1: One-Stop Seamless Auto Generation (Recommended - Auto parses & renders)
+python .agents/skills/agent-session-retrospective/scripts/generate_retro_doc.py --auto --date "<YYYY-MM-DD>"
 
-# 🚀 Method 2: Pipeline with Custom Parameter Overrides
-python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
-  --auto \
-  --topic "<Session Topic>" \
-  --keep "<Keep text>" \
-  --problem "<Problem text>" \
-  --try-rule "<Try action text>" \
-  --rule-code "<RULE-CODE>"
+# 🚀 Method 2: Pipeline with Custom Parameter Overrides (Single-line safe for Windows & Linux)
+python .agents/skills/agent-session-retrospective/scripts/generate_retro_doc.py --date "<YYYY-MM-DD>" --topic "<Session Topic>" --keep "<Keep text>" --problem "<Problem text>" --try-rule "<Try action text>" --rule-code "<RULE-CODE>"
 
-# 🛠️ Method 3: Direct Explicit Rendering
-python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
-  --date "<YYYY-MM-DD>" \
-  --topic "<Session Topic>" \
-  --keep "<Keep text>" \
-  --problem "<Problem text>" \
-  --try-rule "<Try action text>" \
-  --rule-code "<RULE-CODE>" \
-  --rule-text "<Universal rule description>" \
-  --rule-status "<promoted|candidate>" \
-  --files-count <N> \
-  --build-count <N> \
-  --build-status "Pass" \
-  --agent-name "AI Agent" \
-  --token-info "Raw <Size> (~<Tokens> tokens) ➡️ Digest <Size> (~<Tokens> tokens, <Pct>% saved)" \
-  --health-score <0-100> \
-  --health-grade "<Grade Label>"
+# 🛠️ Method 3: Direct Explicit Rendering with Full Stats
+python .agents/skills/agent-session-retrospective/scripts/generate_retro_doc.py --date "<YYYY-MM-DD>" --topic "<Session Topic>" --keep "<Keep text>" --problem "<Problem text>" --try-rule "<Try action text>" --rule-code "<RULE-CODE>" --rule-text "<Universal rule description>" --rule-status "<promoted|candidate|none>" --files-count <N> --build-count <N> --build-status "Pass" --agent-name "AI Agent"
 ```
 
 ### Step 4. Candidate Incubation OR Golden Rule Promotion
 - **Case A: Hits == 1 (Candidate Rule)** ➡️ Register into `rule-incubator.md`:
   ```bash
-  python .agents/skills/session-retrospective/scripts/manage_rules.py \
-    --code "<RULE-CODE>" \
-    --text "<Universal rule description>" \
-    --date "<YYYY-MM-DD>" \
-    --candidate \
-    --file "GEMINI.md"
+  python .agents/skills/agent-session-retrospective/scripts/manage_rules.py --code "<RULE-CODE>" --text "<Universal rule description>" --date "<YYYY-MM-DD>" --candidate --file "GEMINI.md"
   ```
   *(Note: If the script detects that this candidate already exists in `rule-incubator.md`, it will automatically promote it to `GEMINI.md`!)*
 
 - **Case B: Hits >= 2 (Promoted Golden Rule)** ➡️ Sync into `GEMINI.md`:
   ```bash
-  python .agents/skills/session-retrospective/scripts/manage_rules.py \
-    --file "GEMINI.md" \
-    --code "<RULE-CODE>" \
-    --text "<Universal rule description>" \
-    --hits 1 \
-    --cap 10
+  python .agents/skills/agent-session-retrospective/scripts/manage_rules.py --file "GEMINI.md" --code "<RULE-CODE>" --text "<Universal rule description>" --hits 1 --cap 10
   ```
 
 ### Step 5. Pre-Flight Self-Audit Mode (Optional Check)
 Before delivering final code to the user, run a self-audit against active golden rules:
 
 ```bash
-python .agents/skills/session-retrospective/scripts/manage_rules.py \
-  --file "GEMINI.md" \
-  --audit
+python .agents/skills/agent-session-retrospective/scripts/manage_rules.py --file "GEMINI.md" --audit
 ```
 
 ### Step 6. Weekly/Monthly Rollup Briefing (Optional Aggregate)
 To generate a 1-page periodic rollup summary:
 
 ```bash
-python .agents/skills/session-retrospective/scripts/generate_retro_doc.py \
-  --rollup weekly
+python .agents/skills/agent-session-retrospective/scripts/generate_retro_doc.py --rollup weekly
 ```
 
 ---

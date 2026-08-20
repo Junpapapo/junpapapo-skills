@@ -10,16 +10,19 @@ import sys
 import re
 import argparse
 import json
+from datetime import datetime
 from pathlib import Path
 
-# Force UTF-8 output on Windows consoles
-if sys.platform == "win32":
-    try:
+# Force UTF-8 output across all platforms (Windows, Linux, macOS)
+try:
+    if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stdin, "reconfigure"):
         sys.stdin.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
+except Exception:
+    pass
 
 SECTION_HEADER = "### 🚫 REFINED AGENT GOLDEN RULES (오답노트 누적 승격 룰 Top 10)"
 SECTION_DESC = "> 💡 세션 복기를 통해 2회 이상 반복 지적된 실수만 엄선하여 빈도순으로 자동 정렬된 최우선 준수 규칙입니다."
