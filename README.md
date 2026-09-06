@@ -24,6 +24,7 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
 | [**`chrome-extension-project-final-checker`**](./chrome-extension-project-final-checker/) | **QA & Release** | Automated 5-Step Deep QA Protocol: Build validation, MV3 compliance, Shadow DOM isolation, 404 asset audit, and memory leak detection. | `python <skill_dir>/scripts/final_check.py` |
 | [**`chrome-web-store-policy-checker`**](./chrome-web-store-policy-checker/) | **Store Compliance** | Zero-tolerance policy audit (RCE ban, `<all_urls>`, unused permissions), permission justification generation, and appeal letter drafting. | `python <skill_dir>/scripts/audit_policy.py`<br/>`python <skill_dir>/scripts/generate_justifications.py` |
 | [**`proactive-code-architect`**](./proactive-code-architect/) | **Architecture** | 400-line hard limits, Single Responsibility enforcement, complexity gates, and instant vertical-slice module scaffolding. | `python <skill_dir>/scripts/audit_architecture.py`<br/>`python <skill_dir>/scripts/scaffold_module.py` |
+| [**`universal-qa-tracker`**](./universal-qa-tracker/) | **QA & Release Tracking** | Zero-server browser execution (`file:///`) spreadsheet & analytics dashboard, atomic CLI issue management, and multilingual reports (EN/KO/JA). | `python <skill_dir>/scripts/init_tracker.py`<br/>`python <skill_dir>/scripts/add_issue.py`<br/>`python <skill_dir>/scripts/audit_qa.py` |
 
 > [!IMPORTANT]
 > **Script Execution Standard (`<skill_dir>`)**: AI agents and developers should replace `<skill_dir>` with the actual relative or absolute directory path of the skill (e.g. `.agents/skills/agent-friendly-rules`, `~/.gemini/config/skills/agent-friendly-rules`, or full absolute path). This prevents `FileNotFoundError` regardless of your current working directory (`CWD`).
@@ -37,10 +38,10 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
                                │       junpapapo-skills Ecosystem        │
                                └────────────────────┬────────────────────┘
                                                     │
-         ┌───────────────────┬──────────────────────┼──────────────────────┬───────────────────┐
-         ▼                   ▼                      ▼                      ▼                   ▼
- 1. agent-friendly   2. session-retro       3. final-checker       4. store-policy     5. code-architect
-  (Rulebook Linter)   (Learning Engine)      (5-Step Deep QA)       (Policy Auditor)    (Modularity Guard)
+     ┌─────────────────┬───────────────────┬────────┴──────────┬───────────────────┬─────────────────┐
+     ▼                 ▼                   ▼                   ▼                   ▼                 ▼
+1. agent-friendly 2. session-retro 3. final-checker 4. store-policy 5. code-architect 6. universal-qa
+ (Rule Linter)     (Learning)        (Deep QA)       (Store Policy)    (Modularity)     (QA Tracker Hub)
 ```
 
 ---
@@ -92,6 +93,20 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
   - `audit_architecture.py`: Codebase modularity, file line count, and circular dependency auditor.
   - `scaffold_module.py`: Instant 0.1s feature module generator (`types` → `utils` → `atoms` → `model` → `view` → `index.ts`).
 * **Natural Triggers**: *"Scaffold a new feature using proactive code architect rules"*, *"선제적 아키텍처 원칙에 따라 새 모듈을 설계해줘"*.
+
+---
+
+### 6. 📋 [`universal-qa-tracker`](./universal-qa-tracker/)
+* **Category**: Quality Assurance & Release Tracking
+* **Description**: Enterprise-grade, zero-dependency QA management suite supporting 100% offline browser execution (`file:///` protocol). Features high-density interactive spreadsheets, visual analytics dashboards with SVG charts, multi-track milestone management, and bilingual issue recording.
+* **Key Tools**:
+  - `init_tracker.py`: Greenfield scaffolding & brownfield adoption of existing QA trackers.
+  - `add_issue.py`: Atomic issue injection with auto-increment ID and transaction rollback.
+  - `update_issue.py`: Atomic updater for issue status, applied fixes, and modified files.
+  - `add_phase.py`: Milestone track rollover generator with HTML script tag injection.
+  - `audit_qa.py`: Data integrity linter verifying unique IDs, required fields, and file paths.
+  - `export_report.py`: Exports datasets to Markdown, CSV, or JSON for release notes & store appeals.
+* **Natural Triggers**: *"Set up a QA issue tracker"*, *"Log a QA bug fix"*, *"Export QA resolution report"*, *"QA 트래커 생성해줘"*.
 
 ---
 

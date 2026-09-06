@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="appTitle">Universal QA Master Spreadsheet</title>
+  <style>
+    :root {
+      --bg-primary: #F8F9FA;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F3F5;
+      --bg-hover: #E9ECEF;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --text-muted: #868E96;
+      --border: #DEE2E6;
+      --border-subtle: #E9ECEF;
+      --accent: #E0533C;
+      --accent-blue: #228BE6;
+      --accent-green: #2B8A3E;
+      --accent-purple: #7950F2;
+      --status-resolved-bg: #E6FCF5;
+      --status-resolved-text: #0CA678;
+      --status-resolved-border: #96F2D7;
+      --status-pending-bg: #FFF9DB;
+      --status-pending-text: #F08C00;
+      --status-pending-border: #FFEC99;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #121214;
+      --bg-surface: #1A1A1E;
+      --bg-subtle: #242429;
+      --bg-hover: #2C2C33;
+      --text-primary: #ECECF1;
+      --text-secondary: #A6A7AB;
+      --text-muted: #6C6D71;
+      --border: #2E2E35;
+      --border-subtle: #252528;
+      --accent: #FF684D;
+      --accent-blue: #339AF0;
+      --accent-green: #51CF66;
+      --accent-purple: #9775FA;
+      --status-resolved-bg: rgba(12, 166, 120, 0.15);
+      --status-resolved-text: #38D9A9;
+      --status-resolved-border: rgba(12, 166, 120, 0.3);
+      --status-pending-bg: rgba(240, 140, 0, 0.15);
+      --status-pending-text: #FFD43B;
+      --status-pending-border: rgba(240, 140, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.4;
+      padding-bottom: 60px;
+    }
+
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .app-title { font-size: 15px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .stats-badge-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+    .stat-badge { background: var(--bg-subtle); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .btn-header {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-header:hover { background: var(--bg-hover); }
+
+    .track-tabs-bar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .track-tab-btn {
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .track-tab-btn.active {
+      color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue);
+      font-weight: 700;
+    }
+    .track-tab-count {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+    }
+
+    .toolbar-container {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toolbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+    .filter-tag {
+      padding: 3px 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+    .filter-tag:hover { background: var(--bg-hover); }
+    .filter-tag.active {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
+    .search-input {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 12.5px;
+      min-width: 240px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--accent-blue); }
+
+    .select-dropdown {
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .sheet-wrapper {
+      padding: 16px 20px;
+      overflow-x: auto;
+    }
+    .sheet-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .sheet-table th {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border-subtle);
+      text-align: left;
+      user-select: none;
+      cursor: pointer;
+    }
+    .sheet-table th:last-child { border-right: none; }
+    .sheet-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      vertical-align: top;
+      font-size: 12.5px;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .sheet-table td:last-child { border-right: none; }
+    .qa-row {
+      cursor: pointer;
+      content-visibility: auto;
+      contain-intrinsic-size: 44px;
+    }
+    .qa-row:hover { background: var(--bg-hover); }
+    .qa-row.expanded { background: var(--bg-hover); }
+    .row-bookmarked { background: rgba(255, 212, 59, 0.08) !important; }
+
+    /* Expandable Detail Row */
+    .detail-row { display: none; content-visibility: auto; }
+    .detail-row.open { display: table-row; }
+    .detail-row td {
+      background: var(--bg-subtle);
+      padding: 14px 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .detail-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 4px 0;
+    }
+    .detail-section-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-text {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .detail-gallery {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .detail-thumbnail {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .detail-thumbnail:hover { transform: scale(1.05); }
+
+    .bookmark-star {
+      cursor: pointer;
+      color: var(--text-muted);
+      margin-right: 4px;
+      font-size: 14px;
+      user-select: none;
+    }
+    .bookmark-star.active { color: #FCC419; }
+
+    .col-id { font-family: var(--font-mono); font-weight: 700; width: 80px; }
+    .col-date { font-family: var(--font-mono); font-size: 11.5px; width: 90px; color: var(--text-muted); }
+    .badge-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .status-resolved {
+      background: var(--status-resolved-bg);
+      color: var(--status-resolved-text);
+      border: 1px solid var(--status-resolved-border);
+    }
+    .status-pending {
+      background: var(--status-pending-bg);
+      color: var(--status-pending-text);
+      border: 1px solid var(--status-pending-border);
+    }
+
+    .sub-problem { font-size: 12px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4; }
+    .solution-summary { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.4; }
+    .action-list { margin-left: 16px; font-size: 11.5px; color: var(--text-muted); line-height: 1.5; }
+    .col-files code { font-family: var(--font-mono); font-size: 11px; color: var(--accent-purple); }
+    .no-match { display: none; text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+
+    /* Phase & Screenshot Pills */
+    .phase-pill {
+      display: inline-block;
+      font-size: 9.5px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: var(--bg-hover);
+      color: var(--text-muted);
+      margin-right: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+    .screenshot-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(121, 80, 242, 0.12);
+      color: var(--accent-purple);
+      border: 1px solid rgba(121, 80, 242, 0.25);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .screenshot-pill:hover {
+      background: rgba(121, 80, 242, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-new-issue {
+      background: var(--accent-blue) !important;
+      color: #FFFFFF !important;
+      border-color: var(--accent-blue) !important;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-new-issue:hover { opacity: 0.9; }
+
+    /* Lightbox Modal */
+    .qa-lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .qa-lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .qa-lightbox-content img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      object-fit: contain;
+    }
+    .qa-lightbox-caption {
+      margin-top: 10px;
+      color: #ECECF1;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .qa-lightbox-close {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* New Issue Modal */
+    .qa-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .qa-modal-dialog {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      width: 720px;
+      max-width: 94vw;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .qa-modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-subtle);
+    }
+    .qa-modal-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .qa-modal-close {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .qa-modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .form-field label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .input-text, .input-textarea {
+      padding: 7px 10px;
+      font-size: 12.5px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      outline: none;
+      font-family: inherit;
+    }
+    .input-text:focus, .input-textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(34, 139, 230, 0.15);
+    }
+    .output-preview-container {
+      margin-top: 6px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      overflow: hidden;
+    }
+    .output-header {
+      padding: 6px 12px;
+      background: var(--bg-hover);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .btn-copy-code {
+      padding: 3px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .btn-copy-code:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .cli-preview-code {
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--accent-purple);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .qa-modal-footer {
+      padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-subtle);
+    }
+    .modal-toast {
+      font-size: 11.5px;
+      color: var(--status-resolved-text);
+      font-weight: 600;
+      display: none;
+    }
+    .btn-secondary {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+  </style>
+
+  <!-- Load Data and Modules -->
+  <script src="data/phase1_issues.js"></script>
+  <script src="data/qa_manifest.js"></script>
+  <script src="js/qa_i18n.js"></script>
+  <script src="js/qa_engine.js"></script>
+</head>
+<body>
+
+  <!-- Top Slim Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <span class="app-title" data-i18n="appTitle">📋 Universal QA Master Spreadsheet</span>
+      <div class="stats-badge-row">
+        <span class="stat-badge"><span data-i18n="statTotal">Total: </span><b id="statTotal">0</b></span>
+        <span class="stat-badge" style="color: var(--status-resolved-text);"><span data-i18n="statResolved">Resolved: </span><b id="statResolved">0</b></span>
+        <span class="stat-badge" style="color: var(--status-pending-text);"><span data-i18n="statPending">Pending: </span><b id="statPending">0</b></span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn-header btn-new-issue" onclick="window.UNIVERSAL_QA.ENGINE.openNewIssueModal()">➕ <span data-i18n="btnNewIssue">New Issue</span></button>
+      <a href="index.html" class="btn-header">🏠 Hub</a>
+      <a href="qa_dashboard.html" class="btn-header" style="color: var(--accent-purple);" data-i18n="dashboardView">📊 Visual Dashboard</a>
+      <button class="btn-header" id="langToggleBtn">🌐 EN</button>
+      <button class="btn-header" id="themeToggleBtn" data-i18n="themeToggle">🌓 Theme</button>
+    </div>
+  </header>
+
+  <!-- Track Switching Tabs Bar -->
+  <div class="track-tabs-bar" id="trackTabsContainer"></div>
+
+  <!-- Multi-Dimensional Toolbar -->
+  <div class="toolbar-container">
+    <div class="toolbar-row">
+      <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+        <!-- Date Selector -->
+        <div class="filter-group">
+          <span class="filter-label" data-i18n="filterDateLabel">📅 Date:</span>
+          <select class="select-dropdown" id="dateFilterSelect">
+            <option value="all">All Dates</option>
+          </select>
+        </div>
+
+        <!-- Status Filter Tags -->
+        <div class="filter-group" id="statusFilters">
+          <span class="filter-label" data-i18n="filterStatusLabel">Status:</span>
+          <span class="filter-tag active" data-status="all" data-i18n="statusAll">All Status</span>
+          <span class="filter-tag" data-status="resolved" data-i18n="statusResolved">✅ Resolved</span>
+          <span class="filter-tag" data-status="pending" data-i18n="statusPending">⏳ Pending</span>
+          <span class="filter-tag" data-status="highlighted" data-i18n="statusHighlighted">★ Bookmarked</span>
+        </div>
+      </div>
+
+      <div>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search (issue, root cause, file, #ID)..." data-i18n-placeholder="searchPlaceholder" />
+      </div>
+    </div>
+
+    <!-- Platform & Category Filter Row -->
+    <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 6px;">
+      <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+        <div class="filter-group" id="platformFilters">
+          <span class="filter-label" data-i18n="filterPlatformLabel">📱 Platform:</span>
+          <span class="filter-tag active" data-platform="all" data-i18n="platformAll">All Platforms</span>
+          <span class="filter-tag" data-platform="ios">🍎 iOS</span>
+          <span class="filter-tag" data-platform="android">🤖 Android</span>
+          <span class="filter-tag" data-platform="web">🌐 Web</span>
+          <span class="filter-tag" data-platform="backend">⚙️ Backend</span>
+        </div>
+
+        <div class="filter-group" id="categoryFilters">
+          <span class="filter-label" data-i18n="filterCategoryLabel">🏷️ Category:</span>
+          <span class="filter-tag active" data-category="all" data-i18n="catAll">All</span>
+          <span class="filter-tag" data-category="reliability" data-i18n="catReliability">🛡️ Reliability</span>
+          <span class="filter-tag" data-category="core" data-i18n="catCore">⚡ Core</span>
+          <span class="filter-tag" data-category="ui" data-i18n="catUi">🎨 UI/UX</span>
+          <span class="filter-tag" data-category="perf" data-i18n="catPerf">🚀 Perf</span>
+          <span class="filter-tag" data-category="media" data-i18n="catMedia">🎙️ Media</span>
+          <span class="filter-tag" data-category="monetization" data-i18n="catMonetization">💰 Monetization</span>
+          <span class="filter-tag" data-category="auth" data-i18n="catAuth">🔒 Auth</span>
+          <span class="filter-tag" data-category="db" data-i18n="catDb">💾 DB</span>
+        </div>
+      </div>
+
+      <div style="font-size: 11.5px; color: var(--text-muted);" id="tableCountLabel">
+        Showing: 0 / 0 items
+      </div>
+    </div>
+  </div>
+
+  <!-- Spreadsheet Table -->
+  <main class="sheet-wrapper">
+    <table class="sheet-table" id="qaTable">
+      <thead>
+        <tr>
+          <th style="width: 75px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('id')" data-i18n="thId">ID ↕</th>
+          <th style="width: 85px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('date')" data-i18n="thDate">Date ↕</th>
+          <th style="width: 90px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('platform')" data-i18n="thPlatform">Platform ↕</th>
+          <th style="width: 100px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('category')" data-i18n="thCategory">Category ↕</th>
+          <th style="width: 22%;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('title')" data-i18n="thTitle">Issue Summary ↕</th>
+          <th style="width: 24%;" data-i18n="thCause">Root Cause Analysis</th>
+          <th style="width: 26%;" data-i18n="thSolution">Resolution & Action Items</th>
+          <th style="width: 130px;" data-i18n="thFiles">Target Files</th>
+          <th style="width: 80px; text-align: center;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('status')" data-i18n="thStatus">Status ↕</th>
+        </tr>
+      </thead>
+      <tbody id="qaTableBody"></tbody>
+    </table>
+    <div class="no-match" id="noMatchBox" data-i18n="noMatch">🔍 No issues found matching the search and filter criteria.</div>
+  </main>
+
+  <!-- In-Browser Quick Issue Generator Modal -->
+  <div id="newIssueModal" class="qa-modal-overlay" style="display: none;">
+    <div class="qa-modal-dialog">
+      <div class="qa-modal-header">
+        <h3 id="modalTitleText" data-i18n="modalNewIssueTitle">📝 Record New QA Issue</h3>
+        <button class="qa-modal-close" onclick="window.UNIVERSAL_QA.ENGINE.closeNewIssueModal()">&times;</button>
+      </div>
+      <div class="qa-modal-body">
+        <div class="modal-form-grid">
+          <div class="form-field">
+            <label data-i18n="labelPhase">Phase / Track:</label>
+            <select id="modalIssuePhase" class="select-dropdown"></select>
+          </div>
+          <div class="form-field">
+            <label data-i18n="labelCategory">Category:</label>
+            <select id="modalIssueCategory" class="select-dropdown">
+              <option value="reliability">🛡️ Reliability (Crash, Freeze, Data Loss)</option>
+              <option value="core">⚡ Core (Business Logic & State)</option>
+              <option value="ui">🎨 UI / UX Usability & Layout</option>
+              <option value="perf">🚀 Performance & Resource</option>
+              <option value="media">🎙️ Media & Audio Sessions</option>
+              <option value="monetization">💰 Monetization & Store Review</option>
+              <option value="auth">🔒 Security & Permissions</option>
+              <option value="db">💾 Database & Storage</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label data-i18n="labelPlatform">Platform:</label>
+            <select id="modalIssuePlatform" class="select-dropdown">
+              <option value="all">🌐 Universal / All</option>
+              <option value="mobile">📱 Mobile (iOS & Android)</option>
+              <option value="ios">🍎 iOS</option>
+              <option value="android">🤖 Android</option>
+              <option value="web">💻 Web</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label data-i18n="labelStatus">Status:</label>
+            <select id="modalIssueStatus" class="select-dropdown">
+              <option value="resolved">✅ Resolved</option>
+              <option value="pending">⏳ Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label data-i18n="labelTitle">Issue Title / Summary (*):</label>
+          <input type="text" id="modalIssueTitle" class="input-text" placeholder="e.g. Fix dark mode contrast in navigation bar">
+        </div>
+
+        <div class="form-field">
+          <label data-i18n="labelProblem">Problem Description:</label>
+          <textarea id="modalIssueProblem" class="input-textarea" rows="2" placeholder="Root cause or observable issue"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label data-i18n="labelSolution">Applied Solution / Fix:</label>
+          <textarea id="modalIssueSolution" class="input-textarea" rows="2" placeholder="Solution implemented to resolve the issue"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label data-i18n="labelFiles">Modified Files (space-separated):</label>
+          <input type="text" id="modalIssueFiles" class="input-text" placeholder="e.g. components/Navbar.tsx hooks/useTheme.ts">
+        </div>
+
+        <div class="form-field">
+          <label data-i18n="labelScreenshots">Screenshot Paths (optional):</label>
+          <input type="text" id="modalIssueScreenshots" class="input-text" placeholder="e.g. screenshots/issue_42.png">
+        </div>
+
+        <!-- Generated Output Box -->
+        <div class="output-preview-container">
+          <div class="output-header">
+            <span class="preview-label">Generated CLI Command:</span>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn-copy-code" onclick="window.UNIVERSAL_QA.ENGINE.copyCliCommand()" data-i18n="btnCopyCli">📋 Copy CLI Command</button>
+              <button class="btn-copy-code" onclick="window.UNIVERSAL_QA.ENGINE.copyJsSnippet()" data-i18n="btnCopyJs">📄 Copy JS Snippet</button>
+            </div>
+          </div>
+          <pre id="modalCliPreview" class="cli-preview-code"></pre>
+        </div>
+      </div>
+      <div class="qa-modal-footer">
+        <span id="modalCopyToast" class="modal-toast"></span>
+        <button class="btn-secondary" onclick="window.UNIVERSAL_QA.ENGINE.closeNewIssueModal()" data-i18n="btnClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

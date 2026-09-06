@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="portalTitle">Universal QA Intelligence & Tracker Portal</title>
+  <style>
+    :root {
+      --bg-primary: #F8F9FA;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F3F5;
+      --bg-hover: #E9ECEF;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --text-muted: #868E96;
+      --border: #DEE2E6;
+      --accent: #E0533C;
+      --accent-blue: #228BE6;
+      --accent-green: #2B8A3E;
+      --accent-purple: #7950F2;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --radius-md: 12px;
+    }
+    [data-theme="dark"] {
+      --bg-primary: #121214;
+      --bg-surface: #1A1A1E;
+      --bg-subtle: #242429;
+      --bg-hover: #2C2C33;
+      --text-primary: #ECECF1;
+      --text-secondary: #A6A7AB;
+      --text-muted: #6C6D71;
+      --border: #2E2E35;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .portal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      max-width: 760px;
+      width: 100%;
+      padding: 36px 32px;
+      text-align: center;
+    }
+    .portal-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(121, 80, 242, 0.12);
+      color: var(--accent-purple);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .portal-h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .portal-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .grid-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      text-align: left;
+    }
+    .hub-link-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hub-link-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-blue);
+      box-shadow: var(--shadow-sm);
+    }
+    .hub-link-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .hub-link-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .top-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+    .ctrl-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+  <script src="js/qa_i18n.js"></script>
+</head>
+<body>
+
+  <div style="max-width: 760px; width: 100%;">
+    <div class="top-controls">
+      <button class="ctrl-btn" id="langToggleBtn">🌐 EN</button>
+      <button class="ctrl-btn" id="themeToggleBtn">🌓 Theme</button>
+    </div>
+
+    <div class="portal-card">
+      <span class="portal-badge">UNIVERSAL QA SYSTEM</span>
+      <h1 class="portal-h1" data-i18n="portalTitle">QA Intelligence & Tracker Portal</h1>
+      <p class="portal-desc" data-i18n="portalSubtitle">Verified Issue Tracking Dataset & Phase Analytics System</p>
+
+      <div class="grid-links">
+        <a href="qa_spreadsheet.html" class="hub-link-item">
+          <div>
+            <div class="hub-link-title" style="color: var(--accent-blue);">
+              <span>📋</span> <span data-i18n="portalSheetTitle">Master Spreadsheet</span>
+            </div>
+            <div class="hub-link-desc" data-i18n="portalSheetDesc">
+              Full issue inspection table, multi-dimensional filters, bookmarks, and real-time search.
+            </div>
+          </div>
+          <div style="margin-top: 16px; font-weight: 700; color: var(--accent-blue); font-size: 12.5px;">Open Spreadsheet ➔</div>
+        </a>
+
+        <a href="qa_dashboard.html" class="hub-link-item">
+          <div>
+            <div class="hub-link-title" style="color: var(--accent-purple);">
+              <span>📊</span> <span data-i18n="portalVisualTitle">Visual Analytics Dashboard</span>
+            </div>
+            <div class="hub-link-desc" data-i18n="portalVisualDesc">
+              Time-series resolution stack, quality radar, category breakdowns, and file hotspots.
+            </div>
+          </div>
+          <div style="margin-top: 16px; font-weight: 700; color: var(--accent-purple); font-size: 12.5px;">Open Analytics ➔</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('universal_qa_theme', next);
+    });
+    const savedTheme = localStorage.getItem('universal_qa_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="analyticsTitle">Universal QA Analytics Studio</title>
+  <style>
+    :root {
+      --bg-primary: #F8F9FA;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F3F5;
+      --bg-hover: #E9ECEF;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --text-muted: #868E96;
+      --border: #DEE2E6;
+      --accent: #E0533C;
+      --accent-blue: #228BE6;
+      --accent-green: #2B8A3E;
+      --accent-purple: #7950F2;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-md: 12px;
+    }
+    [data-theme="dark"] {
+      --bg-primary: #121214;
+      --bg-surface: #1A1A1E;
+      --bg-subtle: #242429;
+      --bg-hover: #2C2C33;
+      --text-primary: #ECECF1;
+      --text-secondary: #A6A7AB;
+      --text-muted: #6C6D71;
+      --border: #2E2E35;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      padding-bottom: 60px;
+    }
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+    .stats-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+    }
+    .stat-card-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .stat-card-val { font-size: 28px; font-weight: 800; color: var(--text-primary); }
+
+    /* Release Gate Verdict Banner */
+    .release-gate-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .gate-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .gate-status-pill.pass {
+      background: rgba(40, 167, 69, 0.15);
+      color: #2b8a3e;
+      border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+    .gate-status-pill.blocked {
+      background: rgba(224, 49, 49, 0.15);
+      color: #e03131;
+      border: 1px solid rgba(224, 49, 49, 0.3);
+    }
+    .gate-desc { font-size: 12.5px; color: var(--text-secondary); }
+
+    .charts-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .chart-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .chart-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .chart-box-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      user-select: none;
+    }
+    .bar-row:hover {
+      background: var(--bg-hover);
+      transform: translateX(2px);
+    }
+    .bar-label {
+      width: 135px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bar-track {
+      flex: 1;
+      height: 18px;
+      background: var(--bg-subtle);
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+    }
+    .bar-fill-resolved {
+      height: 100%;
+      transition: width 0.4s ease;
+      background: var(--accent-blue);
+    }
+    .bar-fill-pending {
+      height: 100%;
+      transition: width 0.4s ease;
+      background: #fd7e14;
+    }
+    .bar-stat-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      min-width: 75px;
+      text-align: center;
+    }
+    .badge-clear {
+      background: rgba(40, 167, 69, 0.15);
+      color: #2b8a3e;
+    }
+    .badge-pending {
+      background: rgba(253, 126, 20, 0.15);
+      color: #e8590c;
+    }
+    .badge-blocker {
+      background: rgba(224, 49, 49, 0.15);
+      color: #e03131;
+    }
+
+    .hotspot-list {
+      list-style: none;
+      font-size: 12.5px;
+    }
+    .hotspot-item {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hotspot-item:last-child { border-bottom: none; }
+    .hotspot-file { font-family: monospace; color: var(--accent-purple); }
+  </style>
+
+  <script src="data/phase1_issues.js"></script>
+  <script src="data/qa_manifest.js"></script>
+  <script src="js/qa_i18n.js"></script>
+</head>
+<body>
+
+  <header class="top-header">
+    <div style="font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+      <span>📊</span> <span data-i18n="analyticsTitle">Universal QA Analytics Studio</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="index.html" class="header-btn">🏠 Hub</a>
+      <a href="qa_spreadsheet.html" class="header-btn" style="color: var(--accent-blue);" data-i18n="spreadsheetView">📋 Spreadsheet</a>
+      <button class="header-btn" id="langToggleBtn">🌐 EN</button>
+      <button class="header-btn" id="themeToggleBtn">🌓 Theme</button>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- Top 4 Metric Cards -->
+    <div class="stats-grid-4">
+      <div class="stat-card">
+        <div class="stat-card-label" data-i18n="statTotal">Total Issues</div>
+        <div class="stat-card-val" id="valTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label" style="color: var(--accent-green);" data-i18n="statResolved">Resolved Count</div>
+        <div class="stat-card-val" style="color: var(--accent-green);" id="valResolved">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label" style="color: var(--accent);" data-i18n="statPending">Pending Issues</div>
+        <div class="stat-card-val" style="color: var(--accent);" id="valPending">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Resolution Rate</div>
+        <div class="stat-card-val" style="color: var(--accent-blue);" id="valRate">0%</div>
+      </div>
+    </div>
+
+    <!-- Release Quality Gate Verdict -->
+    <div class="release-gate-card" id="releaseGateCard">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+          <span style="font-size: 14px; font-weight: 800;">🚀 QA Release Quality Gate</span>
+          <span id="gateStatusPill" class="gate-status-pill pass">Evaluating...</span>
+        </div>
+        <div class="gate-desc" id="gateDescText">Analyzing category defect density and blocker risk...</div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: right;">
+        <span>Zero-tolerance domains: <b>Reliability, Monetization, Core, Auth</b></span>
+      </div>
+    </div>
+
+    <!-- Charts 2-Column Grid -->
+    <div class="charts-grid-2">
+      <div class="chart-box">
+        <div class="chart-box-header">
+          <div class="chart-box-title"><span>🏷️</span> Category Quality Breakdown</div>
+          <div class="chart-legend">
+            <span><span class="legend-dot" style="background: var(--accent-blue);"></span> Resolved</span>
+            <span><span class="legend-dot" style="background: #fd7e14;"></span> Pending</span>
+          </div>
+        </div>
+        <div id="categoryBars"></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-box-header">
+          <div class="chart-box-title"><span>📱</span> Platform Distribution</div>
+          <div class="chart-legend">
+            <span><span class="legend-dot" style="background: var(--accent-purple);"></span> Total</span>
+          </div>
+        </div>
+        <div id="platformBars"></div>
+      </div>
+    </div>
+
+    <!-- Code Hotspots Box -->
+    <div class="chart-box">
+      <div class="chart-box-title"><span>🔥</span> Top Modified Files (Code Hotspots)</div>
+      <ul class="hotspot-list" id="hotspotsList"></ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Theme init
+      const savedTheme = localStorage.getItem('universal_qa_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeToggleBtn').addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('universal_qa_theme', next);
+      });
+
+      // Gather issues
+      const manifest = window.UNIVERSAL_QA_MANIFEST || window.MODO_QA_MANIFEST;
+      let issues = [];
+      if (manifest && manifest.tracks && manifest.tracks[0]) {
+        issues = manifest.tracks[0].getData() || [];
+      } else if (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA) {
+        issues = window.UNIVERSAL_QA.DATA['phase1'] || [];
+      } else if (window.MODO_QA_PHASE1) {
+        issues = window.MODO_QA_PHASE1;
+      }
+
+      // Render metrics
+      const total = issues.length;
+      const resolved = issues.filter(i => (i.status || '').toLowerCase() === 'resolved').length;
+      const pending = total - resolved;
+      const rate = total > 0 ? Math.round((resolved / total) * 100) : 0;
+
+      document.getElementById('valTotal').textContent = total;
+      document.getElementById('valResolved').textContent = resolved;
+      document.getElementById('valPending').textContent = pending;
+      document.getElementById('valRate').textContent = rate + '%';
+
+      // Category Palette & Taxonomy Map
+      const DOMAIN_PALETTE = {
+        reliability: { color: '#E03131', icon: '🛡️', label: 'Reliability' },
+        core: { color: '#1971C2', icon: '⚡', label: 'Functional Core' },
+        ui: { color: '#845EF7', icon: '🎨', label: 'UI / UX Usability' },
+        perf: { color: '#0CA678', icon: '🚀', label: 'Performance' },
+        media: { color: '#F76707', icon: '🎙️', label: 'Media & Hardware' },
+        monetization: { color: '#F59F00', icon: '💰', label: 'Monetization' },
+        auth: { color: '#3B5BDB', icon: '🔒', label: 'Auth & Security' },
+        db: { color: '#2B8A3E', icon: '💾', label: 'Database' },
+        logic: { color: '#1971C2', icon: '⚙️', label: 'Business Logic' }
+      };
+
+      // Category breakdown with Resolved vs Pending
+      const catStats = {};
+      issues.forEach(i => {
+        const c = (i.category || 'general').toLowerCase();
+        if (!catStats[c]) {
+          catStats[c] = { total: 0, resolved: 0, pending: 0, rawLabel: i.categoryLabel };
+        }
+        catStats[c].total += 1;
+        if ((i.status || '').toLowerCase() === 'resolved') {
+          catStats[c].resolved += 1;
+        } else {
+          catStats[c].pending += 1;
+        }
+      });
+
+      // Release Quality Gate Evaluation
+      const criticalDomains = ['reliability', 'monetization', 'core', 'auth'];
+      let criticalPendingCount = 0;
+      const criticalPendingDetails = [];
+
+      criticalDomains.forEach(dom => {
+        if (catStats[dom] && catStats[dom].pending > 0) {
+          criticalPendingCount += catStats[dom].pending;
+          criticalPendingDetails.push(`${DOMAIN_PALETTE[dom]?.icon || '⚠️'} ${dom}: ${catStats[dom].pending}`);
+        }
+      });
+
+      const gatePill = document.getElementById('gateStatusPill');
+      const gateDesc = document.getElementById('gateDescText');
+      if (criticalPendingCount === 0 && pending === 0) {
+        gatePill.className = 'gate-status-pill pass';
+        gatePill.textContent = '🟢 RELEASE CANDIDATE READY';
+        gateDesc.textContent = 'All QA issues across all quality domains are 100% resolved. Ready for production release!';
+      } else if (criticalPendingCount === 0) {
+        gatePill.className = 'gate-status-pill pass';
+        gatePill.textContent = '🟡 CONDITIONAL GO (Non-Critical)';
+        gateDesc.textContent = `Zero blockers in critical domains. ${pending} non-critical issue(s) remaining in UI/General.`;
+      } else {
+        gatePill.className = 'gate-status-pill blocked';
+        gatePill.textContent = `🔴 RELEASE BLOCKED (${criticalPendingCount} Blocker${criticalPendingCount > 1 ? 's' : ''})`;
+        gateDesc.textContent = `Pending defects detected in critical domains: ${criticalPendingDetails.join(', ')}. Action required!`;
+      }
+
+      const catContainer = document.getElementById('categoryBars');
+      Object.keys(catStats).sort((a,b) => catStats[b].total - catStats[a].total).forEach(c => {
+        const stat = catStats[c];
+        const domInfo = DOMAIN_PALETTE[c] || { color: 'var(--accent-blue)', icon: '🏷️', label: c.toUpperCase() };
+        const resolvedPct = Math.round((stat.resolved / stat.total) * 100);
+        const pendingPct = 100 - resolvedPct;
+
+        let badgeHtml = '';
+        if (stat.pending === 0) {
+          badgeHtml = `<span class="bar-stat-badge badge-clear">✓ ${stat.resolved}/${stat.total} Clear</span>`;
+        } else if (['reliability', 'monetization'].includes(c)) {
+          badgeHtml = `<span class="bar-stat-badge badge-blocker">⚠️ ${stat.pending} Blocker</span>`;
+        } else {
+          badgeHtml = `<span class="bar-stat-badge badge-pending">⏳ ${stat.pending} Pending</span>`;
+        }
+
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        row.title = `Click to view ${domInfo.label} issues in spreadsheet`;
+        row.onclick = () => {
+          window.location.href = `qa_spreadsheet.html?category=${encodeURIComponent(c)}`;
+        };
+
+        row.innerHTML = `
+          <div class="bar-label">
+            <span>${domInfo.icon}</span>
+            <span>${domInfo.label}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill-resolved" style="width: ${resolvedPct}%; background: ${domInfo.color};" title="Resolved: ${stat.resolved} (${resolvedPct}%)"></div>
+            <div class="bar-fill-pending" style="width: ${pendingPct}%;" title="Pending: ${stat.pending} (${pendingPct}%)"></div>
+          </div>
+          ${badgeHtml}
+        `;
+        catContainer.appendChild(row);
+      });
+
+      // Platform breakdown
+      const platCounts = {};
+      issues.forEach(i => {
+        const p = (i.platform || 'universal').toLowerCase();
+        platCounts[p] = (platCounts[p] || 0) + 1;
+      });
+
+      const platContainer = document.getElementById('platformBars');
+      Object.keys(platCounts).sort((a,b) => platCounts[b] - platCounts[a]).forEach(p => {
+        const count = platCounts[p];
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        row.title = `Click to view ${p.toUpperCase()} issues in spreadsheet`;
+        row.onclick = () => {
+          window.location.href = `qa_spreadsheet.html?platform=${encodeURIComponent(p)}`;
+        };
+        row.innerHTML = `
+          <div class="bar-label">${p.toUpperCase()}</div>
+          <div class="bar-track"><div class="bar-fill-resolved" style="width: ${pct}%; background: var(--accent-purple);"></div></div>
+          <div class="bar-count" style="width: auto; padding-left: 8px;"><b>${count}</b> (${pct}%)</div>
+        `;
+        platContainer.appendChild(row);
+      });
+
+      // Hotspots
+      const fileCounts = {};
+      issues.forEach(i => {
+        (i.files || []).forEach(f => {
+          fileCounts[f] = (fileCounts[f] || 0) + 1;
+        });
+      });
+
+      const hotspotList = document.getElementById('hotspotsList');
+      const sortedFiles = Object.keys(fileCounts).sort((a,b) => fileCounts[b] - fileCounts[a]).slice(0, 10);
+      if (sortedFiles.length === 0) {
+        hotspotList.innerHTML = '<li style="padding: 10px; color: var(--text-muted);">No file hotspots recorded yet.</li>';
+      } else {
+        sortedFiles.forEach(f => {
+          const li = document.createElement('li');
+          li.className = 'hotspot-item';
+          li.innerHTML = `
+            <span class="hotspot-file">${f}</span>
+            <span style="font-weight: 700; color: var(--accent-blue);">${fileCounts[f]} times</span>
+          `;
+          hotspotList.appendChild(li);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
