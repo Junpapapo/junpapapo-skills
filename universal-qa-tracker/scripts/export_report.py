@@ -52,7 +52,7 @@ def extract_all_issues(filepath):
         content = f.read()
 
     issues = []
-    id_pattern = re.compile(r'["\']id["\']\s*:\s*(\d+)\b')
+    id_pattern = re.compile(r'["\']id["\']\s*:\s*["\']?([A-Za-z0-9_-]+)["\']?')
     for match in id_pattern.finditer(content):
         id_pos = match.start()
         start = -1
@@ -152,8 +152,17 @@ def main():
             continue
         filtered.append(item)
 
-    # Sort by ID ascending
-    filtered.sort(key=lambda x: x.get("id", 0))
+    # Sort by ID ascending safely supporting mixed numeric and string IDs
+    def sort_key(x):
+        val = x.get("id", 0)
+        if isinstance(val, int):
+            return (0, val, "")
+        val_str = str(val)
+        if val_str.isdigit():
+            return (0, int(val_str), "")
+        return (1, 0, val_str)
+
+    filtered.sort(key=sort_key)
 
     if args.limit and args.limit > 0:
         filtered = filtered[-args.limit:]

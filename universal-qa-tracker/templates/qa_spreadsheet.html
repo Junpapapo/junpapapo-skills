@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="appTitle">Universal QA Master Spreadsheet</title>
+  <title data-i18n="appTitle">Modo QA Master Spreadsheet</title>
   <style>
     :root {
       --bg-primary: #F8F9FA;
@@ -61,125 +61,443 @@
       padding-bottom: 60px;
     }
 
-    .top-header {
+    /* Apple Global Navigation Bar */
+    .apple-global-nav {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: var(--bg-surface);
+      z-index: 1000;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      padding: 8px 20px;
+      padding: 0 16px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      justify-content: space-between;
+      gap: 12px;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .app-title { font-size: 15px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-    .stats-badge-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-    .stat-badge { background: var(--bg-subtle); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); }
-    .header-right { display: flex; align-items: center; gap: 8px; }
-    .btn-header {
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      color: var(--text-primary);
+    [data-theme="dark"] .apple-global-nav {
+      background: rgba(26, 26, 30, 0.82);
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .nav-brand-link {
+      display: flex;
+      align-items: center;
+      gap: 7px;
       text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #FF684D, #E0533C);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      box-shadow: 0 2px 5px rgba(224, 83, 60, 0.3);
+    }
+    .nav-brand-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+    .nav-hub-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 3px;
     }
-    .btn-header:hover { background: var(--bg-hover); }
-
-    .track-tabs-bar {
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-      display: flex;
-      gap: 4px;
-      overflow-x: auto;
+    .nav-hub-badge:hover {
+      background: var(--bg-hover);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
     }
-    .track-tab-btn {
-      padding: 10px 14px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      border: none;
-      background: none;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
+    .stats-badge-row {
       display: flex;
       align-items: center;
       gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin-left: 4px;
+    }
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-view-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .nav-view-tab {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
       white-space: nowrap;
     }
-    .track-tab-btn.active {
-      color: var(--accent-blue);
-      border-bottom-color: var(--accent-blue);
+    .nav-view-tab:hover {
+      color: var(--text-primary);
+    }
+    .nav-view-tab.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
       font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .nav-btn-action {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-action:hover {
+      background: var(--bg-hover);
+    }
+    .nav-btn-sync {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+    .nav-btn-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-icon:hover {
+      background: var(--bg-hover);
+    }
+    .settings-menu-container {
+      position: relative;
+    }
+    .settings-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 2000;
+      animation: popoverFade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .settings-popover.open {
+      display: flex;
+    }
+    @keyframes popoverFade {
+      from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .popover-section-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 4px;
+    }
+    .popover-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .popover-btn {
+      padding: 3px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .popover-btn:hover {
+      background: var(--bg-hover);
+    }
+    .popover-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 2px 0;
+    }
+    .popover-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 5px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .popover-link-row:hover {
+      background: var(--bg-hover);
+    }
+    .popover-arrow {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    /* Main Container */
+    .main-wrap {
+      max-width: 100%;
+      padding: 8px 16px;
+    }
+
+    /* Track Scope Tabs Bar (Apple Native Integrated Segmented Control) */
+    .track-tabs-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 16px 16px 12px 16px;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 12px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      max-width: calc(100% - 32px);
+      box-sizing: border-box;
+    }
+    .track-tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+    [data-theme="dark"] .track-tabs-bar {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .track-tab-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      user-select: none;
+      box-shadow: none;
+      font-family: inherit;
+    }
+    .track-tab-btn:hover:not(.active) {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-primary);
+    }
+    [data-theme="dark"] .track-tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+    }
+    .track-tab-btn.active {
+      background: var(--bg-surface, #ffffff);
+      color: var(--text-primary);
+      font-weight: 700;
+      border-color: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="dark"] .track-tab-btn.active {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
     .track-tab-count {
       font-size: 11px;
-      padding: 1px 6px;
-      border-radius: 10px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
+      font-weight: 700;
+      padding: 1.5px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    [data-theme="dark"] .track-tab-count {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+    .track-tab-btn.active .track-tab-count {
+      background: var(--active-track-color, var(--ios-blue));
+      color: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      font-weight: 800;
     }
 
+    /* 2-Row Dense Apple Filter Card */
     .toolbar-container {
       background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .toolbar-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       flex-wrap: wrap;
-      gap: 12px;
     }
     .filter-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-wrap: wrap;
     }
-    .filter-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+    .filter-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-right: 2px;
+    }
     .filter-tag {
-      padding: 3px 8px;
-      font-size: 11.5px;
-      font-weight: 600;
-      border-radius: 4px;
       background: var(--bg-subtle);
       border: 1px solid var(--border);
       color: var(--text-secondary);
+      padding: 2.5px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
       user-select: none;
+      transition: all 0.12s ease;
+      white-space: nowrap;
     }
-    .filter-tag:hover { background: var(--bg-hover); }
-    .filter-tag.active {
-      background: var(--accent-blue);
-      color: #fff;
-      border-color: var(--accent-blue);
-    }
-
-    .search-input {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg-primary);
+    .filter-tag:hover {
+      background: var(--bg-hover);
       color: var(--text-primary);
-      font-size: 12.5px;
+    }
+    .filter-tag.active {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+      border-color: var(--text-primary);
+      font-weight: 700;
+    }
+    .select-dropdown {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    .search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-icon {
+      position: absolute;
+      left: 9px;
+      font-size: 11px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .search-input {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 4px 10px 4px 26px;
+      border-radius: 6px;
+      font-size: 11.5px;
       min-width: 240px;
       outline: none;
+      transition: border-color 0.15s ease;
     }
-    .search-input:focus { border-color: var(--accent-blue); }
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      background: var(--bg-surface);
+    }
+    .filter-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
 
     .select-dropdown {
       padding: 4px 8px;
@@ -194,16 +512,19 @@
     .sheet-wrapper {
       padding: 16px 20px;
       overflow-x: auto;
+      overflow-anchor: none;
     }
     .sheet-table {
       width: 100%;
       table-layout: fixed;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      overflow-anchor: none;
     }
     .sheet-table th {
       background: var(--bg-subtle);
@@ -219,69 +540,74 @@
     }
     .sheet-table th:last-child { border-right: none; }
     .sheet-table td {
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
       border-right: 1px solid var(--border-subtle);
-      vertical-align: top;
+      vertical-align: middle;
       font-size: 12.5px;
       overflow-wrap: break-word;
       word-break: break-word;
     }
     .sheet-table td:last-child { border-right: none; }
+    .sheet-table tbody tr:nth-child(even) td {
+      background-color: var(--bg-primary);
+    }
+    .sheet-table tbody tr:hover td {
+      background-color: var(--bg-hover) !important;
+    }
     .qa-row {
       cursor: pointer;
-      content-visibility: auto;
-      contain-intrinsic-size: 44px;
     }
     .qa-row:hover { background: var(--bg-hover); }
     .qa-row.expanded { background: var(--bg-hover); }
     .row-bookmarked { background: rgba(255, 212, 59, 0.08) !important; }
 
-    /* Expandable Detail Row */
-    .detail-row { display: none; content-visibility: auto; }
-    .detail-row.open { display: table-row; }
-    .detail-row td {
-      background: var(--bg-subtle);
-      padding: 14px 20px;
-      border-bottom: 2px solid var(--border);
-    }
-    .detail-box {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      padding: 4px 0;
-    }
-    .detail-section-title {
+    .id-tag {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--accent);
       font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .detail-text {
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-    .detail-gallery {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .detail-thumbnail {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
+      background: rgba(224, 83, 60, 0.08);
+      border: 1px solid rgba(224, 83, 60, 0.2);
+      padding: 3px 8px;
       border-radius: 4px;
-      border: 1px solid var(--border);
       cursor: pointer;
-      transition: transform 0.15s;
+      user-select: none;
+      display: inline-block;
+      white-space: nowrap;
+      transition: all 0.15s ease;
     }
-    .detail-thumbnail:hover { transform: scale(1.05); }
+    .id-tag:hover {
+      background: #F59E0B;
+      color: #FFF;
+      border-color: #D97706;
+      transform: scale(1.08);
+      box-shadow: 0 2px 5px rgba(245, 158, 11, 0.35);
+    }
+
+    .voc-ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 1px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      border-radius: 4px;
+      background: rgba(12, 166, 120, 0.12);
+      color: #0CA678;
+      border: 1px solid rgba(12, 166, 120, 0.28);
+      text-decoration: none;
+      margin-left: 6px;
+      vertical-align: middle;
+      transition: all 0.15s ease;
+    }
+    .voc-ref-badge:hover {
+      background: #0CA678;
+      color: #FFFFFF;
+      border-color: #0CA678;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(12, 166, 120, 0.35);
+    }
 
     .bookmark-star {
       cursor: pointer;
@@ -292,7 +618,119 @@
     }
     .bookmark-star.active { color: #FCC419; }
 
+    /* Modern Apple-style iOS Toggle Switch for Deployment */
+    .qa-deploy-switch {
+      position: relative;
+      display: inline-block;
+      width: 32px;
+      height: 18px;
+      vertical-align: middle;
+      cursor: pointer;
+      user-select: none;
+    }
+    .qa-deploy-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .qa-deploy-slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--border);
+      border-radius: 999px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .qa-deploy-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .qa-deploy-switch input:checked + .qa-deploy-slider {
+      background-color: #2B8A3E;
+    }
+    [data-theme="dark"] .qa-deploy-switch input:checked + .qa-deploy-slider {
+      background-color: #51CF66;
+    }
+    .qa-deploy-switch input:checked + .qa-deploy-slider:before {
+      transform: translateX(14px);
+    }
+    .qa-deploy-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .qa-deploy-tag.deployed {
+      background: rgba(43, 138, 62, 0.12);
+      color: #2B8A3E;
+      border: 1px solid rgba(43, 138, 62, 0.25);
+    }
+    .qa-deploy-tag.pending {
+      background: rgba(134, 142, 150, 0.12);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .qa-deploy-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 2px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .qa-deploy-ver-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #2B8A3E;
+      background: rgba(43, 138, 62, 0.12);
+      border: 1px solid rgba(43, 138, 62, 0.28);
+      border-radius: 4px;
+      padding: 1px 5px;
+      line-height: 1.25;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      max-width: 86px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+    }
+    .qa-deploy-ver-tag:hover {
+      background: rgba(43, 138, 62, 0.22);
+      border-color: #2B8A3E;
+      transform: translateY(-1px);
+    }
+    [data-theme="dark"] .qa-deploy-ver-tag {
+      color: #51CF66;
+      background: rgba(81, 207, 102, 0.15);
+      border-color: rgba(81, 207, 102, 0.35);
+    }
+    [data-theme="dark"] .qa-deploy-ver-tag:hover {
+      background: rgba(81, 207, 102, 0.28);
+      border-color: #51CF66;
+    }
+
     .col-id { font-family: var(--font-mono); font-weight: 700; width: 80px; }
+
     .col-date { font-family: var(--font-mono); font-size: 11.5px; width: 90px; color: var(--text-muted); }
     .badge-tag {
       display: inline-block;
@@ -542,52 +980,652 @@
       font-weight: 600;
       display: none;
     }
-    .btn-secondary {
-      padding: 6px 14px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
+    /* High-Performance Fixed Bottom Inspection Panel (Zero-Reflow) */
+    body.inspector-active {
+      padding-bottom: 330px;
+    }
+    .main-row.selected-row td {
+      background: rgba(34, 139, 230, 0.14) !important;
+      border-bottom-color: var(--accent-blue) !important;
+    }
+    .qa-inspector-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 250;
       background: var(--bg-surface);
-      font-size: 12px;
+      border-top: 2px solid var(--accent-blue);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+      display: none;
+      flex-direction: column;
+      height: 310px;
+      max-height: 85vh;
+      animation: slideUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .qa-inspector-drawer.open {
+      display: flex;
+    }
+    .inspector-resizer {
+      width: 100%;
+      height: 10px;
+      cursor: ns-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      user-select: none;
+      touch-action: none;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+    .inspector-resizer:hover, .inspector-resizer.is-dragging {
+      background: rgba(34, 139, 230, 0.18);
+    }
+    .inspector-resizer-bar {
+      width: 42px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--border);
+      transition: background 0.15s ease, width 0.15s ease;
+    }
+    .inspector-resizer:hover .inspector-resizer-bar, .inspector-resizer.is-dragging .inspector-resizer-bar {
+      background: var(--accent-blue);
+      width: 56px;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 16px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .inspector-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      flex: 1;
+    }
+    .inspector-badge-id {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(224, 83, 60, 0.25);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      flex-shrink: 0;
+    }
+    .inspector-date {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .inspector-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .inspector-header-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .btn-inspector-nav, .btn-inspector-close {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 26px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
       cursor: pointer;
       color: var(--text-secondary);
+      transition: all 0.1s;
+    }
+    .btn-inspector-nav:hover, .btn-inspector-close:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .btn-inspector-close {
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+    .btn-inspector-close:hover {
+      background: rgba(224, 83, 60, 0.15);
+      color: #E0533C;
+      border-color: #E0533C;
+    }
+    .inspector-body {
+      padding: 12px 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .inspector-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .inspector-body::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .inspector-sec-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+    .inspector-sec-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .inspector-sec-text div {
+      margin-bottom: 3px;
+    }
+    .inspector-files-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+    .file-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      display: inline-block;
+      white-space: nowrap;
+      word-break: keep-all;
+    }
+
+    /* Target Files Compact Badge & Floating Popover */
+    .qa-files-badge-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: rgba(121, 80, 242, 0.09);
+      color: var(--accent-purple);
+      border: 1px solid rgba(121, 80, 242, 0.25);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .qa-files-badge-btn:hover {
+      background: var(--accent-purple);
+      color: #FFFFFF;
+      border-color: var(--accent-purple);
+      transform: scale(1.08);
+      box-shadow: 0 2px 6px rgba(121, 80, 242, 0.35);
+    }
+    .qa-files-badge-btn .files-icon {
+      font-size: 10.5px;
+    }
+    .qa-files-popover {
+      position: absolute;
+      z-index: 1500;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+      width: 310px;
+      max-width: 90vw;
+      animation: popoverFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes popoverFadeIn {
+      from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .qa-popover-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+    }
+    .qa-popover-title {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .qa-popover-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .qa-popover-btn-copy-all {
+      padding: 2px 7px;
+      font-size: 10.5px;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .qa-popover-btn-copy-all:hover {
+      background: var(--bg-hover);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    .qa-popover-btn-close {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0 3px;
+      line-height: 1;
+    }
+    .qa-popover-btn-close:hover {
+      color: var(--accent);
+    }
+    .qa-popover-list {
+      padding: 8px 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .qa-popover-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .qa-popover-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .qa-popover-file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .qa-popover-file-row:hover {
+      background: var(--bg-hover);
+      border-color: var(--border);
+      transform: translateX(2px);
+    }
+    .qa-popover-file-path {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+    .qa-popover-copy-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: opacity 0.12s;
+      flex-shrink: 0;
+    }
+    .qa-popover-file-row:hover .qa-popover-copy-hint {
+      opacity: 1;
+      color: var(--accent-blue);
+    }
+    .qa-popover-footer {
+      padding: 6px 10px;
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .qa-popover-btn-inspect {
+      width: 100%;
+      padding: 4px 0;
+      border: none;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.12s;
+    }
+    .qa-popover-btn-inspect:hover {
+      background: rgba(34, 139, 230, 0.1);
+    }
+
+    /* Severity Guide Modal (IEEE 1044 / ISTQB) */
+    .guide-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      padding: 16px;
+    }
+    .guide-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .guide-modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      transform: scale(0.96) translateY(8px);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .guide-modal-overlay.active .guide-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .guide-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+    }
+    .guide-modal-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .guide-modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .guide-modal-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+    .guide-modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .guide-modal-close-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .guide-modal-body {
+      padding: 14px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+    }
+    .guide-modal-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .guide-modal-body::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .guide-modal-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .guide-modal-row:hover {
+      border-color: var(--border);
+      background: var(--bg-subtle);
+    }
+    .guide-badge-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 105px;
+      flex-shrink: 0;
+    }
+    .guide-badge-col .sev-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      font-weight: 700;
+      text-align: center;
+      display: inline-block;
+      width: fit-content;
+    }
+    .guide-sla-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.2px;
+    }
+    .guide-text-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .guide-text-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .guide-text-desc {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+    .guide-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-subtle);
+      gap: 12px;
+    }
+    .guide-footer-tip {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      flex: 1;
+    }
+    .guide-btn-gotit {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s ease;
+    }
+    .guide-btn-gotit:hover {
+      opacity: 0.9;
     }
   </style>
 
   <!-- Load Data and Modules -->
-  <script src="data/phase1_issues.js"></script>
-  <script src="data/qa_manifest.js"></script>
-  <script src="js/qa_i18n.js"></script>
-  <script src="js/qa_engine.js"></script>
+  <script src="data/qa_config.js?v=2.5"></script>
+  <script src="data/phase1_closed_testing.js?v=2.4"></script>
+  <script src="data/phase2_open_beta.js?v=2.4"></script>
+  <script src="data/phase3_v1_1_backlog.js?v=2.4"></script>
+  <script src="data/feedback_manifest.js?v=2.4"></script>
+  <script src="data/qa_manifest.js?v=2.4"></script>
+  <script src="js/qa_i18n.js?v=2.4"></script>
+  <script src="js/qa_engine.js?v=2.5"></script>
+  <script src="js/qa_memo.js?v=1.0"></script>
 </head>
 <body>
 
-  <!-- Top Slim Header -->
-  <header class="top-header">
-    <div class="header-left">
-      <span class="app-title" data-i18n="appTitle">📋 Universal QA Master Spreadsheet</span>
+  <!-- Apple Global Navigation Header -->
+  <header class="apple-global-nav">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand-link" title="Modo QA Hub">
+        <div class="nav-brand-icon">M</div>
+        <span class="nav-brand-title">Modo QA Studio</span>
+      </a>
+      <a href="index.html" class="nav-hub-badge">🏠 Hub</a>
+      <button type="button" class="nav-memo-btn" onclick="window.QA_MEMO ? window.QA_MEMO.toggle() : null" title="임시 메모장 / Scratchpad"><span data-i18n="navMemo">📝 메모</span></button>
       <div class="stats-badge-row">
-        <span class="stat-badge"><span data-i18n="statTotal">Total: </span><b id="statTotal">0</b></span>
-        <span class="stat-badge" style="color: var(--status-resolved-text);"><span data-i18n="statResolved">Resolved: </span><b id="statResolved">0</b></span>
-        <span class="stat-badge" style="color: var(--status-pending-text);"><span data-i18n="statPending">Pending: </span><b id="statPending">0</b></span>
+        <span class="stat-badge"><span data-i18n="statTotal">Total: </span><b id="statTotal">-</b></span>
+        <span class="stat-badge" style="color: var(--status-resolved-text);"><span data-i18n="statResolved">Resolved: </span><b id="statResolved">-</b></span>
+        <span class="stat-badge" style="color: var(--status-pending-text);"><span data-i18n="statPending">Pending: </span><b id="statPending">-</b></span>
+        <span class="stat-badge" id="badgeStatDeployed" style="color: #2B8A3E;" title="배포 완료 / 배포 대상"><span data-i18n="statDeployed">🚀 Deployed: </span><b id="statDeployed">0/0</b></span>
       </div>
     </div>
-    <div class="header-right">
-      <button class="btn-header btn-new-issue" onclick="window.UNIVERSAL_QA.ENGINE.openNewIssueModal()">➕ <span data-i18n="btnNewIssue">New Issue</span></button>
-      <a href="index.html" class="btn-header">🏠 Hub</a>
-      <a href="qa_dashboard.html" class="btn-header" style="color: var(--accent-purple);" data-i18n="dashboardView">📊 Visual Dashboard</a>
-      <button class="btn-header" id="langToggleBtn">🌐 EN</button>
-      <button class="btn-header" id="themeToggleBtn" data-i18n="themeToggle">🌓 Theme</button>
+
+    <!-- Apple Segmented Navigation Switcher -->
+    <nav class="nav-view-switcher">
+      <a href="index.html" class="nav-view-tab">🏠 Hub</a>
+      <a href="qa_analytics_dashboard.html" class="nav-view-tab" data-i18n="dashboardView">📊 비주얼 대시보드</a>
+      <a href="qa_spreadsheet.html" class="nav-view-tab active" data-i18n="spreadsheetView">📋 스프레드시트</a>
+      <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC Studio</a>
+    </nav>
+
+    <div class="nav-right">
+      <button class="nav-btn-action nav-btn-sync" id="btnSyncGoogleSheet" onclick="window.MODO_QA ? window.MODO_QA.openSyncModal() : null" title="Sync with Google Sheets"><img src="assets/icons/icon_cloud_sync.webp" style="width:14px; height:14px; object-fit:contain; vertical-align:-2px; margin-right:4px;" alt="Sync" /> <span data-i18n="btnSyncSheet">시트 동기화</span></button>
+      <button class="nav-btn-action" onclick="window.MODO_QA ? window.MODO_QA.toggleSeverityGuideModal(true) : null" id="btnHelpGuide" data-i18n="helpGuideBtn" title="도움말 &amp; 결함 표준 가이드">❓ 도움말</button>
+      
+      <!-- Settings Dropdown Container -->
+      <div class="settings-menu-container">
+        <button class="nav-btn-icon" id="btnSettingsMenu" onclick="window.toggleSettingsPopover()" title="설정 및 도구"><img src="assets/icons/icon_gear.webp" style="width:16px; height:16px; object-fit:contain;" alt="Settings" /></button>
+        
+        <!-- Apple Frosted Settings Popover Card -->
+        <div class="settings-popover" id="settingsPopover">
+          <div class="popover-section-title">외관 &amp; 언어</div>
+          <div class="popover-row">
+            <span>테마 전환</span>
+            <button class="popover-btn" onclick="window.MODO_QA ? window.MODO_QA.toggleTheme() : null" data-i18n="themeToggle">🌓 테마 토글</button>
+          </div>
+          <div class="popover-row">
+            <span>표시 언어</span>
+            <button class="popover-btn qa-lang-btn" onclick="window.QA_I18N.toggleLang()">🌐 EN/KO</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title" data-i18n="appProfileSectionTitle">앱 &amp; 공식 스토어</div>
+          <div class="popover-row">
+            <span data-i18n="appProfileRowTitle">앱 정보 &amp; 스토어 링크</span>
+            <button class="popover-btn" onclick="window.openAppProfileModal()">📱 상세 정보 ↗</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">데이터 &amp; 이슈 등록</div>
+          <div class="popover-row">
+            <span>구글 스프레드시트</span>
+            <button class="popover-btn" onclick="openGoogleSheet()">📊 열기 ↗</button>
+          </div>
+          <div class="popover-row">
+            <span>CSV 내보내기</span>
+            <button class="popover-btn" onclick="window.MODO_QA && window.MODO_QA.exportCSV ? window.MODO_QA.exportCSV() : null"><img src="assets/icons/icon_copy_clipboard.webp" style="width:12px; height:12px; object-fit:contain; vertical-align:-2px; margin-right:2px;" alt="CSV" /> CSV</button>
+          </div>
+          <div class="popover-row">
+            <span>새 이슈 등록</span>
+            <button class="popover-btn" onclick="window.UNIVERSAL_QA && window.UNIVERSAL_QA.ENGINE ? window.UNIVERSAL_QA.ENGINE.openNewIssueModal() : null"><img src="assets/icons/icon_rocket_qa.webp" style="width:12px; height:12px; object-fit:contain; vertical-align:-2px; margin-right:2px;" alt="New" /> 새 이슈</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">문서 &amp; 가이드</div>
+          <a href="google_sheets_voc_setup_guide.html" class="popover-link-row">
+            <span>📖 구글 시트 연동 가이드</span>
+            <span class="popover-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Official Website Direct Link Button -->
+      <button class="nav-btn-icon" id="btnOfficialWeb" onclick="window.openOfficialWebsite()" data-i18n-title="officialWebBtnTitle" title="공식 웹사이트 바로가기 / Official Website" aria-label="Official Website"><img src="assets/icons/icon_globe.webp" style="width:16px; height:16px; object-fit:contain;" alt="Web" /></button>
     </div>
   </header>
 
-  <!-- Track Switching Tabs Bar -->
-  <div class="track-tabs-bar" id="trackTabsContainer"></div>
+  <!-- Track Scope Tabs Bar -->
+  <div class="track-tabs-bar" id="trackTabsBar"></div>
 
-  <!-- Multi-Dimensional Toolbar -->
+  <!-- 2-Row Dense Apple Filter Card Container -->
   <div class="toolbar-container">
+    <!-- Line 1: Search, Date, Status, Platform, and Item Count -->
     <div class="toolbar-row">
-      <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
-        <!-- Date Selector -->
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <!-- Search Box with Icon -->
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search (issue, root cause, file, OS, #ID)..." data-i18n-placeholder="searchPlaceholder" />
+        </div>
+
+        <!-- Date Filter Dropdown -->
         <div class="filter-group">
           <span class="filter-label" data-i18n="filterDateLabel">📅 Date:</span>
           <select class="select-dropdown" id="dateFilterSelect">
@@ -595,49 +1633,83 @@
           </select>
         </div>
 
-        <!-- Status Filter Tags -->
+        <div class="filter-divider"></div>
+
+        <!-- Status Filters -->
         <div class="filter-group" id="statusFilters">
           <span class="filter-label" data-i18n="filterStatusLabel">Status:</span>
           <span class="filter-tag active" data-status="all" data-i18n="statusAll">All Status</span>
           <span class="filter-tag" data-status="resolved" data-i18n="statusResolved">✅ Resolved</span>
           <span class="filter-tag" data-status="pending" data-i18n="statusPending">⏳ Pending</span>
           <span class="filter-tag" data-status="highlighted" data-i18n="statusHighlighted">★ Bookmarked</span>
+          <span class="filter-tag" data-status="voc" data-i18n="statusVoc">💬 VOC 승격</span>
         </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- Platform (OS) Filters -->
+        <div class="filter-group" id="platformFilters">
+          <span class="filter-label" data-i18n="filterPlatformLabel">📱 OS:</span>
+          <span class="filter-tag active" data-platform="all" data-i18n="platformAll">All OS</span>
+          <span class="filter-tag" data-platform="ios" data-label-base="🍎 iOS">🍎 iOS</span>
+          <span class="filter-tag" data-platform="android" data-label-base="🤖 Android">🤖 Android</span>
+          <span class="filter-tag" data-platform="all_common" data-label-base="🌐 Universal">🌐 Universal</span>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- Deploy Filters (Phase 3 Release Tracking) -->
+        <div class="filter-group" id="deployFilters">
+          <span class="filter-label" data-i18n="filterDeployLabel">🚀 Deploy:</span>
+          <span class="filter-tag active" data-deploy="all" data-i18n="filterDeployAll">All</span>
+          <span class="filter-tag" data-deploy="deployed" data-i18n="filterDeployed">🚀 Deployed</span>
+          <span class="filter-tag" data-deploy="pending" data-i18n="filterNotDeployed">⏳ Pending</span>
+        </div>
+
+        <!-- Target Release Version Input -->
+        <div class="filter-group" id="targetReleaseGroup" style="display: inline-flex; align-items: center; gap: 4px;" title="배포 ON 시 자동 스탬프될 기본 릴리즈 버전">
+          <span class="filter-label" data-i18n="targetReleaseLabel" style="font-size: 11px;">🏷️ Release:</span>
+          <input type="text" id="targetReleaseInput" class="select-dropdown" style="width: 82px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #2B8A3E;" value="69 (1.1.2)" data-i18n-placeholder="targetReleasePlaceholder" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease(this.value) : null" />
+        </div>
+
+        <!-- Release Notes Export Action Button -->
+        <button type="button" class="nav-btn-action" id="btnReleaseNotes" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes() : null" style="padding: 3px 8px; font-size: 11px; background: rgba(43, 138, 62, 0.1); color: #2B8A3E; border: 1px solid rgba(43, 138, 62, 0.28); font-weight: 700; border-radius: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 3px;" title="현재 배포 완료(ON)된 항목들만 스토어 릴리즈 노트로 클립보드 복사"><span data-i18n="btnCopyReleaseNotes">📢 릴리즈 노트</span></button>
       </div>
 
-      <div>
-        <input type="text" class="search-input" id="searchInput" placeholder="Search (issue, root cause, file, #ID)..." data-i18n-placeholder="searchPlaceholder" />
+      <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);" id="tableCountLabel">
+        Showing: 0 / 0 items
       </div>
     </div>
 
-    <!-- Platform & Category Filter Row -->
-    <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 6px;">
-      <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
-        <div class="filter-group" id="platformFilters">
-          <span class="filter-label" data-i18n="filterPlatformLabel">📱 Platform:</span>
-          <span class="filter-tag active" data-platform="all" data-i18n="platformAll">All Platforms</span>
-          <span class="filter-tag" data-platform="ios">🍎 iOS</span>
-          <span class="filter-tag" data-platform="android">🤖 Android</span>
-          <span class="filter-tag" data-platform="web">🌐 Web</span>
-          <span class="filter-tag" data-platform="backend">⚙️ Backend</span>
+    <!-- Line 2: Severity & Quality Category Dimensions -->
+    <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 5px;">
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <!-- Severity Filters (IEEE 1044 / ISTQB) -->
+        <div class="filter-group" id="severityFilters">
+          <span class="filter-label" data-i18n="filterSeverityLabel">Severity:</span>
+          <span class="filter-tag active" data-sev="all" data-i18n="sevAll">All Severity</span>
+          <span class="filter-tag" data-sev="S1" data-label-base="🚨 S1 Blocker">🚨 S1 Blocker</span>
+          <span class="filter-tag" data-sev="S2" data-label-base="🔥 S2 Critical">🔥 S2 Critical</span>
+          <span class="filter-tag" data-sev="S3" data-label-base="⚡ S3 Major">⚡ S3 Major</span>
+          <span class="filter-tag" data-sev="S4" data-label-base="🌱 S4 Minor">🌱 S4 Minor</span>
+          <span class="filter-tag" data-sev="S5" data-label-base="☕ S5 Trivial">☕ S5 Trivial</span>
         </div>
 
+        <div class="filter-divider"></div>
+
+        <!-- Category Filters (ISO/IEC 25010 8 Domains) -->
         <div class="filter-group" id="categoryFilters">
-          <span class="filter-label" data-i18n="filterCategoryLabel">🏷️ Category:</span>
-          <span class="filter-tag active" data-category="all" data-i18n="catAll">All</span>
-          <span class="filter-tag" data-category="reliability" data-i18n="catReliability">🛡️ Reliability</span>
-          <span class="filter-tag" data-category="core" data-i18n="catCore">⚡ Core</span>
-          <span class="filter-tag" data-category="ui" data-i18n="catUi">🎨 UI/UX</span>
-          <span class="filter-tag" data-category="perf" data-i18n="catPerf">🚀 Perf</span>
-          <span class="filter-tag" data-category="media" data-i18n="catMedia">🎙️ Media</span>
-          <span class="filter-tag" data-category="monetization" data-i18n="catMonetization">💰 Monetization</span>
-          <span class="filter-tag" data-category="auth" data-i18n="catAuth">🔒 Auth</span>
-          <span class="filter-tag" data-category="db" data-i18n="catDb">💾 DB</span>
+          <span class="filter-label" data-i18n="filterCategoryLabel">Category:</span>
+          <span class="filter-tag active" data-cat="all" data-i18n="catAll">All Categories</span>
+          <span class="filter-tag" data-cat="reliability" data-label-base="🛡️ Reliability">🛡️ Reliability</span>
+          <span class="filter-tag" data-cat="core" data-label-base="⚡ Core">⚡ Core</span>
+          <span class="filter-tag" data-cat="ui" data-label-base="🎨 UI/UX">🎨 UI/UX</span>
+          <span class="filter-tag" data-cat="perf" data-label-base="🚀 Perf">🚀 Perf</span>
+          <span class="filter-tag" data-cat="media" data-label-base="🎙️ Media">🎙️ Media</span>
+          <span class="filter-tag" data-cat="monetization" data-label-base="💰 Monetization">💰 Monetization</span>
+          <span class="filter-tag" data-cat="auth" data-label-base="🔒 Auth/Security">🔒 Auth/Security</span>
+          <span class="filter-tag" data-cat="db" data-label-base="💾 Database">💾 Database</span>
         </div>
-      </div>
-
-      <div style="font-size: 11.5px; color: var(--text-muted);" id="tableCountLabel">
-        Showing: 0 / 0 items
       </div>
     </div>
   </div>
@@ -647,20 +1719,25 @@
     <table class="sheet-table" id="qaTable">
       <thead>
         <tr>
-          <th style="width: 75px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('id')" data-i18n="thId">ID ↕</th>
-          <th style="width: 85px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('date')" data-i18n="thDate">Date ↕</th>
-          <th style="width: 90px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('platform')" data-i18n="thPlatform">Platform ↕</th>
-          <th style="width: 100px;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('category')" data-i18n="thCategory">Category ↕</th>
-          <th style="width: 22%;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('title')" data-i18n="thTitle">Issue Summary ↕</th>
-          <th style="width: 24%;" data-i18n="thCause">Root Cause Analysis</th>
-          <th style="width: 26%;" data-i18n="thSolution">Resolution & Action Items</th>
-          <th style="width: 130px;" data-i18n="thFiles">Target Files</th>
-          <th style="width: 80px; text-align: center;" onclick="window.UNIVERSAL_QA.ENGINE.sortTable('status')" data-i18n="thStatus">Status ↕</th>
+          <th style="width: 90px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed')" data-i18n="thDeploy">배포 ↕</th>
+          <th style="width: 70px;" onclick="window.MODO_QA.sortTable('id')" data-i18n="thId">ID ↕</th>
+          <th style="width: 90px;" onclick="window.MODO_QA.sortTable('date')" data-i18n="thDate">Date ↕</th>
+          <th style="width: 95px;" onclick="window.MODO_QA.sortTable('platform')" data-i18n="thPlatform">Platform ↕</th>
+          <th style="width: 95px;" onclick="window.MODO_QA.sortTable('category')" data-i18n="thCategory">Category ↕</th>
+          <th style="min-width: 220px;" onclick="window.MODO_QA.sortTable('title')" data-i18n="thTitle">Issue Summary ↕</th>
+          <th style="min-width: 240px;" data-i18n="thCause">Root Cause Analysis</th>
+          <th style="min-width: 260px;" data-i18n="thSolution">Resolution & Action Items</th>
+          <th style="width: 60px; text-align: center;" data-i18n="thFiles">Files</th>
+          <th style="width: 80px; text-align: center;" onclick="window.MODO_QA.sortTable('status')" data-i18n="thStatus">Status ↕</th>
         </tr>
       </thead>
+
       <tbody id="qaTableBody"></tbody>
     </table>
-    <div class="no-match" id="noMatchBox" data-i18n="noMatch">🔍 No issues found matching the search and filter criteria.</div>
+    <div class="no-match" id="noMatchBox">
+      <img src="assets/icons/icon_spreadsheet.webp" style="width:64px; height:64px; object-fit:contain; margin-bottom:8px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.12));" alt="No match" /><br />
+      <span data-i18n="noMatch">🔍 검색 및 필터 조건에 일치하는 결함 항목이 없습니다.</span>
+    </div>
   </main>
 
   <!-- In-Browser Quick Issue Generator Modal -->
@@ -752,5 +1829,242 @@
     </div>
   </div>
 
+  <!-- Fixed Bottom Inspection Panel (Zero-Reflow High Performance Drawer) -->
+  <aside class="qa-inspector-drawer" id="qaInspectorDrawer" aria-label="Issue Detail Inspector">
+    <!-- Drag Resizer Handle -->
+    <div class="inspector-resizer" id="inspectorResizer" title="↕ Drag up/down to resize height (Double-click to toggle)">
+      <div class="inspector-resizer-bar"></div>
+    </div>
+    <div class="inspector-header">
+      <div class="inspector-header-left">
+        <span class="inspector-badge-id" id="inspectorId">#00</span>
+        <span class="inspector-date" id="inspectorDate">-</span>
+        <span id="inspectorPlatform"></span>
+        <span id="inspectorCategory"></span>
+        <span id="inspectorStatus"></span>
+        <span class="inspector-title" id="inspectorTitle"></span>
+      </div>
+      <div class="inspector-header-right">
+        <a id="btnOpenInVocStudio" href="#" style="display:none; padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid rgba(12, 166, 120, 0.4); background: rgba(12, 166, 120, 0.1); color: #0CA678; font-weight: 700; text-decoration: none; align-items: center; gap: 4px;" title="Open in VOC Studio">💬 VOC 원문 ↗</a>
+        <button id="btnConvertToQa" style="display:none; padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-surface); cursor: pointer; color: var(--accent-blue); font-weight: 700;" onclick="window.MODO_QA ? window.MODO_QA.convertCurrentFeedbackToQa() : null" data-i18n="btnConvertToQa">🚀 Convert to QA</button>
+        <button class="btn-inspector-nav" id="btnPrevIssue" title="Previous Issue (↑)">▲</button>
+        <button class="btn-inspector-nav" id="btnNextIssue" title="Next Issue (↓)">▼</button>
+        <button class="btn-inspector-close" id="btnCloseInspector" title="Close (Esc)">✕</button>
+      </div>
+    </div>
+    <div class="inspector-body" id="inspectorQaBody">
+      <div class="inspector-col">
+        <div class="inspector-sec-title" id="inspectorCauseTitle">🔍 ROOT CAUSE & BACKGROUND</div>
+        <div class="inspector-sec-text" id="inspectorCauseText">-</div>
+        <div class="inspector-sec-title" style="margin-top: 10px;" id="inspectorFilesTitle">📂 TARGET FILES</div>
+        <div class="inspector-files-wrap" id="inspectorFilesWrap">-</div>
+      </div>
+      <div class="inspector-col">
+        <div class="inspector-sec-title" id="inspectorActionTitle">🛠️ RESOLUTION & ACTIONS</div>
+        <div class="inspector-sec-text" id="inspectorActionsText">-</div>
+      </div>
+    </div>
+
+    <!-- VOC Specific Customer Studio Body -->
+    <div class="inspector-body" id="inspectorVocBody" style="display: none; padding: 12px 20px; gap: 16px;">
+      <div class="inspector-col" style="flex: 1.1;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div class="inspector-sec-title" style="margin-bottom: 0;">💬 CUSTOMER ORIGINAL FEEDBACK</div>
+          <button style="padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" onclick="window.MODO_QA ? window.MODO_QA.copyVocCustomerQuote() : null" title="유저 원문 복사">
+            <span>📋</span>
+            <span data-i18n="btnCopyQuote">원문 복사</span>
+          </button>
+        </div>
+        <div id="vocCustomerContent" style="background: var(--bg-subtle); border-left: 3px solid var(--accent-blue); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-primary); line-height: 1.5; margin: 6px 0;">-</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;" id="vocDiagnosticsTags"></div>
+      </div>
+      <div class="inspector-col" style="flex: 1.3;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div class="inspector-sec-title">✍️ SMART CANNED RESPONSE (MACRO)</div>
+          <span style="font-size: 11px; color: var(--accent-green); font-weight: 600;">⚡ 기기명·버전 매크로 자동 치환</span>
+        </div>
+        <select id="vocInspectorTemplateSelect" style="width: 100%; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--text-primary); font-size: 11.5px; outline: none; margin-bottom: 6px; cursor: pointer;" onchange="window.MODO_QA.onVocTemplateSelect(this.value)">
+          <option value="">-- 상황에 맞는 빠른 답변 템플릿 선택 --</option>
+          <option value="five_star_review">🌟 [별점 5점 고객] 구글 스토어 5성 리뷰 유도 감사장</option>
+          <option value="bug_acknowledgement">🐛 [버그 접수] 원인 파악 중 & 빠른 패치 약속</option>
+          <option value="feature_planned">🚀 [기능 제안] 개발 로드맵 등록 & 반영 예정 안내</option>
+          <option value="update_shipped">✅ [업데이트 완료] 제안/버그 최신 버전 배포 완료 안내</option>
+          <option value="need_info">🔍 [정보 요청] 재현 환경 및 스크린샷 추가 문의</option>
+        </select>
+        <textarea id="vocInspectorReplyText" style="width: 100%; height: 75px; font-size: 12px; border-radius: 6px; border: 1px solid var(--border); padding: 8px; font-family: inherit; resize: vertical; background: var(--bg-surface); color: var(--text-primary); outline: none; line-height: 1.45;" placeholder="템플릿을 선택하거나 답글을 입력하세요..."></textarea>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+          <div style="display: flex; gap: 6px;">
+            <button onclick="window.MODO_QA.copyVocReply()" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; border-radius: 4px; border: 1px solid var(--border); background: var(--accent-blue); color: #fff; cursor: pointer;">📋 답변 복사</button>
+            <button onclick="window.MODO_QA.convertCurrentFeedbackToQa()" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; border-radius: 4px; border: 1px solid rgba(121,80,242,0.3); background: rgba(121,80,242,0.12); color: var(--accent-purple); cursor: pointer;">🚀 QA 이슈 승격</button>
+          </div>
+          <a href="voc_dashboard.html" target="_blank" style="font-size: 11.5px; color: var(--accent-blue); text-decoration: none; font-weight: 600;">전용 VOC 스튜디오 열기 ↗</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- IEEE 1044 Severity Guide Modal Dialog -->
+  <div class="guide-modal-overlay" id="severityGuideModal" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle" aria-hidden="true">
+    <div class="guide-modal-card">
+      <div class="guide-modal-header">
+        <div class="guide-modal-title-wrap">
+          <h2 class="guide-modal-title" id="guideModalTitle" data-i18n="modalGuideTitle">🚨 IEEE 1044 / ISTQB Software Severity Standards</h2>
+          <div class="guide-modal-subtitle" data-i18n="modalGuideSubtitle">Standard criteria for classifying issue criticality and SLA response priority.</div>
+        </div>
+        <button class="guide-modal-close-btn" onclick="window.MODO_QA ? window.MODO_QA.toggleSeverityGuideModal(false) : null" aria-label="Close" title="Close (Esc)">✕</button>
+      </div>
+      <div class="guide-modal-body">
+        <!-- S1 Blocker -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S1">🚨 S1 Blocker</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS1Badge">Immediate Fix (P0)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS1Title">S1 Blocker (Showstopper)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS1Desc">App crash, infinite freezing/deadlock, data loss/corruption, payment failure, or app store review rejection. Critical user journeys are completely blocked with zero workarounds.</div>
+          </div>
+        </div>
+
+        <!-- S2 Critical -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S2">🔥 S2 Critical</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS2Badge">Urgent Fix (P1)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS2Title">S2 Critical (Severe Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS2Desc">Core business logic defect, cloud sync loss, notification/permission failure, or significant feature breakdown without a viable workaround.</div>
+          </div>
+        </div>
+
+        <!-- S3 Major -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S3">⚡ S3 Major</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS3Badge">Sprint Priority (P2)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS3Title">S3 Major (Standard Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS3Desc">General feature bug or edge case error where a reasonable workaround exists. State sync delays or abnormal gesture responses.</div>
+          </div>
+        </div>
+
+        <!-- S4 Minor -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S4">🌱 S4 Minor</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS4Badge">Polishing (P3)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS4Title">S4 Minor (Cosmetic Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS4Desc">UI padding/alignment deviations, dark mode contrast issues, typos, or minor text overflow/clipping without functional impact.</div>
+          </div>
+        </div>
+
+        <!-- S5 Trivial -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S5">☕ S5 Trivial</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS5Badge">Maintenance (P4)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS5Title">S5 Trivial (Refactor / Hygiene)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS5Desc">Code readability refactoring, unused variable cleanup, 400-line modularization, and architectural governance for maintainability.</div>
+          </div>
+        </div>
+
+        <!-- Section: Keyboard Shortcuts & Tips -->
+        <div class="guide-modal-row" style="background:var(--bg-subtle);">
+          <div class="guide-badge-col">
+            <span class="sev-badge" style="background:rgba(34,139,230,0.14); color:#228BE6;">⌨️ 단축키 안내</span>
+            <span class="guide-sla-tag">Productivity</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title">스프레드시트 쾌속 단축키</div>
+            <div class="guide-text-desc"><b>J / K</b>: 이전/다음 이슈 행 즉시 이동 | <b>Esc</b>: 인스펙터 패널 및 모달 닫기 | <b>Enter</b>: 선택 행 인스펙터 상세 열기</div>
+          </div>
+        </div>
+
+        <!-- Section: Google Sheets Sync SOP -->
+        <div class="guide-modal-row" style="background:var(--bg-subtle);">
+          <div class="guide-badge-col">
+            <span class="sev-badge" style="background:rgba(12,166,120,0.14); color:#0CA678;">🔄 시트 양방향 연동</span>
+            <span class="guide-sla-tag">Live Sync SOP</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title">구글 스프레드시트 원본 동기화</div>
+            <div class="guide-text-desc">상단 [🔄 시트 동기화]를 통해 실시간 웹 앱 URL을 호출하여 구글 시트 원본의 최신 VOC 데이터를 언제든 동기화할 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-modal-footer">
+        <div class="guide-footer-tip" data-i18n="sevGuideTip">💡 Tip: When registering via CLI (add_issue.py), severity is automatically inferred if --severity is omitted.</div>
+        <button class="guide-btn-gotit" onclick="window.MODO_QA ? window.MODO_QA.toggleSeverityGuideModal(false) : null" data-i18n="modalGuideGotIt">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Sheet Sync Modal -->
+  <div id="googleSheetSyncModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; width: 92%; max-width: 820px; padding: 22px 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.25);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">🔄</span>
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Google Sheets Live Sync (구글 시트 실시간 동기화)</h3>
+        </div>
+        <button style="border: none; background: none; font-size: 18px; cursor: pointer; color: var(--text-muted); padding: 4px;" onclick="window.MODO_QA ? window.MODO_QA.closeSyncModal() : null">✕</button>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">🔗 Apps Script Web App API 엔드포인트 URL:</label>
+        <input type="text" id="syncSheetUrlInput" value="" placeholder="https://script.google.com/macros/s/.../exec (또는 qa_config.js에 설정)" style="width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-primary); color: var(--text-primary); font-size: 12px; font-family: var(--font-mono); outline: none; box-sizing: border-box;" />
+      </div>
+      <div style="margin-bottom: 14px;">
+        <label style="display:block; font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">📊 구글 스프레드시트 바로가기 웹 링크 (선택):</label>
+        <input type="text" id="syncSpreadsheetViewUrlInput" placeholder="https://docs.google.com/spreadsheets/d/.../edit" style="width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-primary); color: var(--text-primary); font-size: 12px; font-family: var(--font-mono); outline: none; box-sizing: border-box;" />
+      </div>
+      <div id="syncStatusMsg" style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px; padding: 8px 12px; background: var(--bg-subtle); border-radius: 6px; display: none; line-height: 1.5;"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 6px; flex-wrap: wrap;">
+        <a href="google_sheets_voc_setup_guide.html" target="_blank" style="font-size: 12px; color: var(--accent-blue); text-decoration: none; font-weight: 600; white-space: nowrap; flex-shrink: 0;">📖 연동 및 배포 가이드 보기 ↗</a>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button style="padding: 8px 14px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap;" onclick="window.MODO_QA ? window.MODO_QA.applyLocalFeedbackData() : null" title="동기화된 feedback_manifest.js 로컬 데이터를 즉시 UI에 반영">⚡ 로컬 데이터 적용</button>
+          <button style="padding: 8px 14px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap;" onclick="window.MODO_QA ? window.MODO_QA.downloadLocalFeedbackManifest() : null" title="최신 구글 시트 데이터를 feedback_manifest.js 파일로 다운로드">💾 로컬 JS 파일 저장</button>
+          <button style="padding: 8px 16px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap;" onclick="window.MODO_QA ? window.MODO_QA.closeSyncModal() : null">닫기</button>
+          <button id="btnExecuteSync" style="padding: 8px 18px; border: none; border-radius: 7px; background: var(--accent-blue); color: #fff; cursor: pointer; font-size: 12px; font-weight: 700; white-space: nowrap;" onclick="window.MODO_QA ? window.MODO_QA.executeSheetSync() : null">실시간 동기화 실행</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Deploy Release Version Modal (Custom Apple-Style Modal) -->
+  <div id="editDeployModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 600; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; width: 90%; max-width: 440px; padding: 20px 22px; box-shadow: 0 16px 40px rgba(0,0,0,0.25);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <span style="font-size: 16px;">🚀</span>
+          <h3 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0;" data-i18n="modalEditDeployTitle">배포 릴리즈 버전 수정</h3>
+        </div>
+        <button style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;" onclick="window.MODO_QA.closeEditDeployModal()">&times;</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.4;" id="editDeployItemDesc"></p>
+      
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 5px;" data-i18n="targetReleaseLabel">🏷️ 릴리즈 버전:</label>
+        <input type="text" id="editDeployVersionInput" class="select-dropdown" style="width: 100%; padding: 7px 10px; font-size: 13px; font-weight: 700; border-radius: 6px; box-sizing: border-box; color: #2B8A3E;" placeholder="예: 69 (1.1.2)" />
+      </div>
+
+      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 16px;">
+        <span style="font-size: 11px; color: var(--text-muted);">빠른 선택:</span>
+        <button type="button" class="btn-filter" id="btnQuickCurrentRelease" style="padding: 2px 8px; font-size: 11px; border-radius: 4px; font-weight: 700; background: var(--bg-subtle); border: 1px solid var(--border); cursor: pointer;" onclick="window.MODO_QA.applyQuickTargetRelease()"></button>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button style="padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.MODO_QA.closeEditDeployModal()" data-i18n="btnCancel">취소</button>
+        <button style="padding: 6px 16px; border: none; border-radius: 6px; background: #2B8A3E; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700;" onclick="window.MODO_QA.saveDeployVersion()" data-i18n="btnSaveRelease">저장</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
+

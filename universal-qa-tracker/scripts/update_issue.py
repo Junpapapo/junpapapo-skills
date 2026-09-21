@@ -49,7 +49,7 @@ def find_tracker_dir(project_root):
 
 def find_issue_span(content, target_id):
     """Locates the start and end character index of an issue object by its ID."""
-    pattern = re.compile(r'["\']id["\']\s*:\s*' + str(target_id) + r'\b')
+    pattern = re.compile(r'["\']id["\']\s*:\s*["\']?' + re.escape(str(target_id)) + r'["\']?(?:,|\s|\})')
     m = pattern.search(content)
     if not m:
         return None
@@ -95,7 +95,7 @@ def find_issue_span(content, target_id):
 
 def main():
     parser = argparse.ArgumentParser(description="Update an existing QA issue safely.")
-    parser.add_argument("--id", type=int, required=True, help="Numeric ID of the issue to update")
+    parser.add_argument("--id", type=str, required=True, help="ID of the issue to update (numeric or string, e.g. 385, FB-01)")
     parser.add_argument("--phase", type=str, default=None, help="Target phase ID or file prefix (optional, auto-detected)")
     parser.add_argument("--status", type=str, choices=["resolved", "pending"], default=None, help="New status")
     parser.add_argument("--solution", type=str, default=None, help="Updated solution description")
@@ -112,6 +112,7 @@ def main():
     parser.add_argument("--screenshots", nargs="*", default=None, help="Screenshots to add (or replace)")
     parser.add_argument("--replace-screenshots", action="store_true", help="Replace screenshots array instead of appending")
     parser.add_argument("--date", type=str, default=None, help="Date of update (YYYY-MM-DD)")
+    parser.add_argument("--severity", type=str, choices=["S1", "S2", "S3", "S4", "S5"], default=None, help="Updated severity (S1=Blocker, S2=Critical, S3=Major, S4=Minor, S5=Trivial)")
     parser.add_argument("--target-dir", type=str, default=None, help="Explicit tracker directory override")
 
     args = parser.parse_args()
@@ -193,6 +194,17 @@ def main():
     elif args.status == "resolved" and issue_obj.get("status") != "resolved":
         issue_obj["date"] = datetime.now().strftime("%Y-%m-%d")
 
+    if args.severity:
+        issue_obj["severity"] = args.severity
+        sev_labels = {
+            "S1": "🚨 S1 Blocker",
+            "S2": "🔥 S2 Critical",
+            "S3": "⚡ S3 Major",
+            "S4": "🌱 S4 Minor",
+            "S5": "☕ S5 Trivial"
+        }
+        issue_obj["severityLabel"] = sev_labels.get(args.severity, args.severity)
+
     # Files update
     if args.files is not None:
         existing_files = issue_obj.get("files", [])
@@ -238,6 +250,20 @@ def main():
         with open(target_file, "w", encoding="utf-8") as f:
             f.write(new_content)
 
+        # Automated Zero-Syntax-Error Verification Gate
+        import subprocess
+        try:
+            chk = subprocess.run(["node", "--check", target_file], capture_output=True, text=True, timeout=5)
+            if chk.returncode != 0:
+                print(f"[FATAL] JavaScript syntax error detected in {os.path.basename(target_file)} after update! Rolling back...")
+                print(chk.stderr)
+                if os.path.exists(backup_file):
+                    shutil.copy2(backup_file, target_file)
+                    os.remove(backup_file)
+                sys.exit(1)
+        except Exception:
+            pass
+
         # Remove backup on success
         if os.path.exists(backup_file):
             os.remove(backup_file)
@@ -245,6 +271,8 @@ def main():
         print(f"[SUCCESS] Updated QA Issue #{args.id} in {os.path.basename(target_file)}")
         print(f" - Title: {issue_obj.get('title')}")
         print(f" - Status: {issue_obj.get('status')}")
+        if issue_obj.get('severityLabel'):
+            print(f" - Severity: {issue_obj.get('severityLabel')}")
         if args.solution is not None:
             print(f" - Solution: {issue_obj.get('solution')}")
         if issue_obj.get("files"):

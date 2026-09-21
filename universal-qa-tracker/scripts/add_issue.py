@@ -48,12 +48,15 @@ def find_tracker_dir(project_root):
 
     return None
 
+def extract_all_issue_ids(content):
+    """Extracts all numeric issue IDs from JSON-like object definitions."""
+    matches = re.findall(r'(?:[{,\n]\s*["\']id["\']\s*:\s*(\d+))', content)
+    return [int(m) for m in matches] if matches else []
+
 def extract_highest_id(content):
     """Finds highest numeric issue ID from file content."""
-    matches = re.findall(r'["\']id["\']\s*:\s*(\d+)', content)
-    if matches:
-        return max([int(m) for m in matches])
-    return 0
+    ids = extract_all_issue_ids(content)
+    return max(ids) if ids else 0
 
 def extract_highest_global_id(data_dir):
     """Finds highest numeric issue ID across ALL dataset files in data directory."""
@@ -65,9 +68,9 @@ def extract_highest_global_id(data_dir):
             try:
                 with open(os.path.join(data_dir, f), "r", encoding="utf-8") as fp:
                     content = fp.read()
-                    matches = re.findall(r'["\']id["\']\s*:\s*(\d+)', content)
-                    if matches:
-                        file_max = max([int(m) for m in matches])
+                    ids = extract_all_issue_ids(content)
+                    if ids:
+                        file_max = max(ids)
                         if file_max > highest:
                             highest = file_max
             except Exception:
@@ -108,9 +111,9 @@ def update_manifest_badge(manifest_path, phase_id, new_total):
         with open(manifest_path, "r", encoding="utf-8") as f:
             text = f.read()
 
-        # Update pattern like: badge: 'v1.0.29 (314건 100% 해결)', or badge: 'Phase 1 (1 items)'
+        # Update pattern like: badge: 'v1.0.37 (362건 100% 해결)', or badge: 'Phase 1 (1 items)'
         updated = re.sub(
-            r"(id:\s*['\"]" + re.escape(phase_id) + r"['\"][^}]+?badge:\s*['\"][^'\"]*?)(\d+)(건| items)",
+            r"(id:\s*['\"]" + re.escape(phase_id) + r"['\"][^}]+?badge:\s*['\"][^'\"]*?\()(\d+)(건| items)",
             lambda m: f"{m.group(1)}{new_total}{m.group(3)}",
             text,
             flags=re.DOTALL
@@ -130,6 +133,7 @@ def main():
     parser.add_argument("--cause", type=str, default="", help="Root cause analysis")
     parser.add_argument("--category", type=str, default="core", help="Category code (reliability, core, ui, perf, media, monetization, auth, db)")
     parser.add_argument("--category-label", type=str, default=None, help="Category display label (e.g. 🎨 UI, ⚡ Core)")
+    parser.add_argument("--severity", type=str, choices=["S1", "S2", "S3", "S4", "S5"], default=None, help="Issue severity (S1=Blocker, S2=Critical, S3=Major, S4=Minor, S5=Trivial)")
     parser.add_argument("--platform", type=str, default="all", help="Platform (all, ios, android, web, backend)")
     parser.add_argument("--platform-label", type=str, default=None, help="Platform display label")
     parser.add_argument("--files", nargs="*", default=[], help="List of modified files")
@@ -141,8 +145,8 @@ def main():
     parser.add_argument("--solution-en", type=str, default=None, help="Optional English solution")
     parser.add_argument("--screenshots", nargs="*", default=[], help="Screenshot image paths or URLs")
     parser.add_argument("--from-git", action="store_true", help="Auto-populate title and modified files from latest git commit / working tree")
-    parser.add_argument("--global-id", dest="global_id", action="store_true", default=True, help="Continuously increment ID across all phases (default: True)")
-    parser.add_argument("--phase-id", dest="global_id", action="store_false", help="Increment ID per-phase starting from 1")
+    parser.add_argument("--phase-id", dest="global_id", action="store_false", default=False, help="Increment ID per-phase starting from 1 (default: True)")
+    parser.add_argument("--global-id", dest="global_id", action="store_true", help="Continuously increment ID across all phases")
     parser.add_argument("--target-dir", type=str, default=None, help="Explicit tracker directory override")
 
     args = parser.parse_args()
@@ -195,6 +199,14 @@ def main():
         content = f.read()
 
     # Calculate new ID (Global vs Phase)
+    existing_ids = extract_all_issue_ids(content)
+    if existing_ids:
+        sorted_ids = sorted(existing_ids)
+        expected = set(range(sorted_ids[0], sorted_ids[-1] + 1))
+        missing = sorted(list(expected - set(existing_ids)))
+        if missing:
+            print(f"[!] WARNING: Target phase file has {len(missing)} sequence gap(s): {missing[:5]}{'...' if len(missing) > 5 else ''}")
+
     if args.global_id:
         highest_id = extract_highest_global_id(data_dir)
     else:
@@ -203,30 +215,71 @@ def main():
     new_id = highest_id + 1
     issue_date = args.date or datetime.now().strftime("%Y-%m-%d")
 
-    # Category label fallback
-    cat_label = args.category_label
-    if not cat_label:
-        cat_map = {
-            "reliability": "🛡️ Reliability",
-            "core": "⚡ Core / Logic",
-            "logic": "⚙️ Logic",
-            "ui": "🎨 UI/UX",
-            "perf": "🚀 Performance",
-            "media": "🎙️ Media / Audio",
-            "monetization": "💰 Monetization",
-            "auth": "🔒 Auth & Security",
-            "db": "💾 Database & Storage"
-        }
-        cat_label = cat_map.get(args.category.lower(), args.category.upper())
+    # ISO/IEC 25010 Standard Quality Domains & Robust Alias Normalization
+    STANDARD_DOMAINS = ["reliability", "core", "ui", "perf", "media", "monetization", "auth", "db"]
+    STANDARD_CATEGORY_LABELS = {
+        "reliability": "🛡️ Reliability",
+        "core": "⚡ Core",
+        "ui": "🎨 UI/UX",
+        "perf": "🚀 Perf",
+        "media": "🎙️ Media",
+        "monetization": "💰 Monetization",
+        "auth": "🔒 Auth/Security",
+        "db": "💾 Database"
+    }
+    CATEGORY_ALIASES = {
+        "crash": "reliability", "bug": "reliability", "stability": "reliability",
+        "logic": "core", "feature": "core", "func": "core", "functional": "core",
+        "editor": "core", "route": "core", "governance": "core", "setting": "core", "settings": "core",
+        "ui_ux": "ui", "design": "ui", "theme": "ui", "widget": "ui", "modal": "ui", "ux": "ui", "i18n": "ui",
+        "performance": "perf", "navigation": "perf", "architecture": "perf", "arch": "perf", "refactor": "perf", "enhancement": "perf",
+        "voice": "media",
+        "legal": "monetization", "release": "monetization",
+        "security": "auth",
+        "data": "db"
+    }
+
+    raw_cat = (args.category or "core").strip().lower()
+    category = raw_cat if raw_cat in STANDARD_DOMAINS else CATEGORY_ALIASES.get(raw_cat, "core")
+    cat_label = args.category_label or STANDARD_CATEGORY_LABELS.get(category, "⚡ Core")
+
+    # Severity deduction if not explicitly provided
+    severity = args.severity
+    if not severity:
+        text_corpus = f"{args.title} {args.problem} {args.cause}".lower()
+        cat = args.category.lower()
+        s1_keys = ["크래시", "crash", "freeze", "프리징", "유실", "loss", "reject", "스토어 심사", "404", "비정상 종료", "먹통", "붕괴"]
+        s5_keys = ["400줄", "거버넌스", "refactor", "리팩토링", "정리", "가이드", "목차", "테스트 코드", "cleanup"]
+        s2_keys = ["동기화", "sync", "알림 권한", "sqlite", "db", "저장 실패", "누락", "backhandler", "쿼터", "실패", "인앱결제", "결제"]
+        if any(k in text_corpus for k in s1_keys) or cat in ["crash", "bug"]:
+            severity = "S1"
+        elif any(k in text_corpus for k in s5_keys) or "governance" in cat:
+            severity = "S5"
+        elif any(k in text_corpus for k in s2_keys) or cat in ["reliability", "db", "auth"]:
+            severity = "S2"
+        elif cat in ["ui", "ui_ux", "design", "i18n"]:
+            severity = "S4"
+        else:
+            severity = "S3"
+
+    sev_labels = {
+        "S1": "🚨 S1 Blocker",
+        "S2": "🔥 S2 Critical",
+        "S3": "⚡ S3 Major",
+        "S4": "🌱 S4 Minor",
+        "S5": "☕ S5 Trivial"
+    }
 
     # Construct issue object
     issue_obj = {
         "id": new_id,
         "phase": args.phase,
         "date": issue_date,
+        "severity": severity,
+        "severityLabel": sev_labels[severity],
         "platform": args.platform,
         "platformLabel": args.platform_label or ("🌐 Universal" if args.platform == "all" else args.platform.upper()),
-        "category": args.category,
+        "category": category,
         "categoryLabel": cat_label,
         "title": args.title,
         "problem": args.problem,
@@ -265,7 +318,7 @@ def main():
         new_content = array_prefix + separator + formatted_issue + "\n];\n"
 
         # Update header total count if present
-        phase_count = len(re.findall(r'["\']id["\']\s*:\s*\d+', new_content))
+        phase_count = len(extract_all_issue_ids(new_content))
         new_content = re.sub(
             r"Total Issues:\s*(\d+)",
             f"Total Issues: {phase_count}",
@@ -274,6 +327,20 @@ def main():
 
         with open(target_file, "w", encoding="utf-8") as f:
             f.write(new_content)
+
+        # Automated Zero-Syntax-Error Verification Gate
+        import subprocess
+        try:
+            chk = subprocess.run(["node", "--check", target_file], capture_output=True, text=True, timeout=5)
+            if chk.returncode != 0:
+                print(f"[FATAL] JavaScript syntax error detected in {target_filename} after append! Rolling back...")
+                print(chk.stderr)
+                if os.path.exists(backup_file):
+                    shutil.copy2(backup_file, target_file)
+                    os.remove(backup_file)
+                sys.exit(1)
+        except Exception:
+            pass
 
         # Update manifest
         manifest_path = os.path.join(data_dir, "qa_manifest.js")

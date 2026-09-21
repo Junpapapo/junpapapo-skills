@@ -1,0 +1,3200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modo — QA Phase Analytics & Trend Intelligence Studio</title>
+  <style>
+    :root {
+      --bg-primary: #F2F2F7;
+      --bg-surface: #FFFFFF;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-subtle: #E5E5EA;
+      --bg-hover: #E9E9EE;
+      --text-primary: #1C1C1E;
+      --text-secondary: #48484A;
+      --text-muted: #8E8E93;
+      --border: rgba(60, 60, 67, 0.14);
+      --border-subtle: rgba(60, 60, 67, 0.08);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+      
+      /* iOS System Palette */
+      --ios-blue: #007AFF;
+      --ios-purple: #5856D6;
+      --ios-indigo: #5E5CE6;
+      --ios-teal: #30B0C7;
+      --ios-mint: #00C7BE;
+      --ios-green: #34C759;
+      --ios-orange: #FF9500;
+      --ios-red: #FF3B30;
+      --ios-pink: #FF2D55;
+      --ios-amber: #FFCC00;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #000000;
+      --bg-surface: #1C1C1E;
+      --bg-card: rgba(28, 28, 30, 0.85);
+      --bg-subtle: #2C2C2E;
+      --bg-hover: #3A3A3C;
+      --text-primary: #FFFFFF;
+      --text-secondary: #EBEBF5;
+      --text-muted: #8E8E93;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --card-hover-shadow: 0 10px 36px rgba(0, 0, 0, 0.6);
+
+      --ios-blue: #0A84FF;
+      --ios-purple: #5E5CE6;
+      --ios-indigo: #6D6BFF;
+      --ios-teal: #40C8E0;
+      --ios-mint: #63E6E2;
+      --ios-green: #30D158;
+      --ios-orange: #FF9F0A;
+      --ios-red: #FF453A;
+      --ios-pink: #FF375F;
+      --ios-amber: #FFD60A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.45;
+      padding-bottom: 50px;
+    }
+
+    /* Apple HIG Global Navigation Bar */
+    .apple-global-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+    }
+    body.dark-mode .apple-global-nav,
+    [data-theme="dark"] .apple-global-nav {
+      background: rgba(28, 28, 30, 0.85);
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-brand-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .nav-brand-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: var(--text-primary);
+    }
+    .nav-hub-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-hub-badge:hover {
+      background: var(--bg-hover);
+      color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    .nav-view-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .nav-view-tab {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .nav-view-tab:hover {
+      color: var(--text-primary);
+    }
+    .nav-view-tab.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .nav-btn-action {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-action:hover {
+      background: var(--bg-hover);
+    }
+    .nav-btn-sync {
+      color: var(--ios-green);
+      font-weight: 700;
+    }
+    .nav-btn-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-icon:hover {
+      background: var(--bg-hover);
+    }
+    .settings-menu-container {
+      position: relative;
+    }
+    .settings-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 2000;
+      animation: popoverFade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .settings-popover.open {
+      display: flex;
+    }
+    @keyframes popoverFade {
+      from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .popover-section-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 4px;
+    }
+    .popover-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .popover-btn {
+      padding: 3px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .popover-btn:hover {
+      background: var(--bg-hover);
+    }
+    .popover-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 2px 0;
+    }
+    .popover-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 5px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .popover-link-row:hover {
+      background: var(--bg-hover);
+      color: var(--ios-blue);
+    }
+    .action-pill-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .action-pill-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Fully Fluid Responsive Dashboard Container */
+    .dashboard-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 16px 32px;
+      box-sizing: border-box;
+    }
+    @media (min-width: 1920px) {
+      .dashboard-wrap { padding: 20px 48px; }
+    }
+    @media (max-width: 768px) {
+      .dashboard-wrap { padding: 12px 16px; }
+    }
+
+    /* Phase Selector (Apple Native Integrated Segmented Control) */
+    .phase-track-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 16px;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 12px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .phase-track-bar::-webkit-scrollbar {
+      display: none;
+    }
+    [data-theme="dark"] .phase-track-bar {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .phase-tab {
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: none;
+      font-family: inherit;
+    }
+    .phase-tab:hover:not(.active) {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-primary);
+    }
+    [data-theme="dark"] .phase-tab:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+    }
+    .phase-tab.active {
+      background: var(--bg-surface, #ffffff);
+      color: var(--text-primary);
+      font-weight: 700;
+      border-color: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="dark"] .phase-tab.active {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+    .phase-count-badge {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-secondary);
+      padding: 1.5px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    [data-theme="dark"] .phase-count-badge {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+    .phase-tab.active .phase-count-badge {
+      background: var(--active-track-color, var(--ios-blue));
+      color: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      font-weight: 800;
+    }
+
+    /* Spotlight Card & Micro-Interactions */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-card::after {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, -1000px);
+      left: var(--mouse-x, -1000px);
+      width: 350px;
+      height: 350px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.09) 0%, transparent 70%);
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 1;
+    }
+    .spotlight-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Executive Auto-Insights Banner */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .insight-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .insight-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-hover-shadow);
+    }
+    .insight-icon-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      background: var(--bg-subtle);
+    }
+    .insight-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .insight-headline {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .insight-detail {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* Executive KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--kpi-accent, var(--ios-blue));
+    }
+    .kpi-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .kpi-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+    }
+    .kpi-icon {
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kpi-sticker-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+      transition: transform 0.2s ease;
+    }
+    .kpi-card:hover .kpi-sticker-img {
+      transform: scale(1.15) rotate(3deg);
+    }
+    .voc-exec-sticker-img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 8px rgba(12, 166, 120, 0.25));
+      transition: transform 0.2s ease;
+    }
+    .voc-exec-card:hover .voc-exec-sticker-img {
+      transform: scale(1.12) rotate(-4deg);
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .kpi-sub {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .chart-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 420px;
+    }
+    .chart-panel.span-12 { grid-column: span 12; }
+    .chart-panel.span-8 { grid-column: span 8; }
+    .chart-panel.span-7 { grid-column: span 7; }
+    .chart-panel.span-6 { grid-column: span 6; }
+    .chart-panel.span-5 { grid-column: span 5; }
+    .chart-panel.span-4 { grid-column: span 4; }
+
+    @media (max-width: 1024px) {
+      .chart-panel.span-8,
+      .chart-panel.span-7,
+      .chart-panel.span-6,
+      .chart-panel.span-5,
+      .chart-panel.span-4 {
+        grid-column: span 12;
+      }
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .panel-title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .panel-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* Chart Canvas / SVG Container (Centered for all SVG charts) */
+    .chart-stage {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .chart-stage > svg {
+      margin: 0 auto;
+      display: block;
+    }
+    .chart-stage.row-layout {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Refined Figma & iOS Style Legend Chips */
+    .chart-legend-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .legend-chip:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-subtle);
+      transform: translateY(-1px);
+    }
+    .legend-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .legend-line-indicator {
+      width: 16px;
+      height: 3.5px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Milestone Chips Bar (Combo Chart) */
+    .milestone-chips-bar {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .milestone-chip {
+      flex: 1;
+      min-width: 130px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: left;
+    }
+    .milestone-chip:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-subtle);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .milestone-chip.active-peak {
+      border-color: rgba(255, 149, 0, 0.5);
+      background: rgba(255, 149, 0, 0.06);
+    }
+    [data-theme="dark"] .milestone-chip.active-peak {
+      background: rgba(255, 149, 0, 0.14);
+    }
+    .m-chip-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .m-chip-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Phase Drilldown Banner */
+    .phase-drilldown-banner {
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--ios-blue);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    /* Interactive Tooltip */
+    .chart-tooltip {
+      position: absolute;
+      background: rgba(28, 28, 30, 0.95);
+      backdrop-filter: blur(10px);
+      color: #FFF;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      pointer-events: none;
+      z-index: 200;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.15);
+      opacity: 0;
+      transition: opacity 0.12s ease;
+      white-space: nowrap;
+    }
+
+    /* Custom SVG Styling */
+    svg text {
+      font-family: var(--font-sans);
+      user-select: none;
+    }
+
+    /* Drilldown Issue List Drawer */
+    .drilldown-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: var(--card-shadow);
+      margin-top: 14px;
+    }
+    .drilldown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .drilldown-title {
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .drilldown-filter-tag {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(0, 122, 255, 0.12);
+      color: var(--ios-blue);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .issue-mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: background 0.15s ease;
+    }
+    .issue-mini-card:hover {
+      background: var(--bg-hover);
+    }
+    .issue-mini-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .issue-badge-id {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--ios-blue);
+    }
+    .issue-cat-chip {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+    .issue-mini-title {
+      font-weight: 700;
+      font-size: 12.5px;
+      color: var(--text-primary);
+    }
+    .issue-mini-solution {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* Severity Guide Modal (IEEE 1044 / ISTQB) */
+    .guide-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      padding: 16px;
+    }
+    .guide-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .guide-modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      transform: scale(0.96) translateY(8px);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .guide-modal-overlay.active .guide-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .guide-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+    }
+    .guide-modal-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .guide-modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .guide-modal-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+    .guide-modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .guide-modal-close-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .guide-modal-body {
+      padding: 14px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+    }
+    .guide-modal-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .guide-modal-body::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .guide-modal-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .guide-modal-row:hover {
+      border-color: var(--border);
+      background: var(--bg-subtle);
+    }
+    .guide-badge-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 105px;
+      flex-shrink: 0;
+    }
+    .guide-badge-col .sev-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      font-weight: 700;
+      text-align: center;
+      display: inline-block;
+      width: fit-content;
+      border-radius: 6px;
+    }
+    .guide-sla-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.2px;
+    }
+    .guide-text-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .guide-text-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .guide-text-desc {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+    .guide-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-subtle);
+      gap: 12px;
+    }
+    .guide-footer-tip {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      flex: 1;
+    }
+    .guide-btn-gotit {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s ease;
+    }
+    /* Customer Voice (VOC) & CS Quality Executive Card */
+    .voc-executive-banner {
+      margin-bottom: 24px;
+    }
+    .voc-exec-card {
+      background: linear-gradient(135deg, rgba(12, 166, 120, 0.06) 0%, rgba(0, 122, 255, 0.03) 100%), var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid #0CA678;
+      border-radius: 14px;
+      padding: 16px 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+    .voc-exec-card:hover {
+      box-shadow: var(--card-hover-shadow);
+      border-color: rgba(12, 166, 120, 0.4);
+    }
+    .voc-exec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .voc-exec-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .voc-exec-icon {
+      font-size: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(12, 166, 120, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .voc-exec-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+    .voc-exec-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 2px 0 0 0;
+    }
+    .voc-exec-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .voc-exec-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: #0CA678;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(12, 166, 120, 0.3);
+      transition: all 0.15s ease;
+    }
+    .voc-exec-link-btn:hover {
+      background: #099268;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(12, 166, 120, 0.4);
+    }
+    .voc-exec-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    @media (max-width: 900px) {
+      .voc-exec-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 540px) {
+      .voc-exec-metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+    .voc-metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: var(--bg-surface);
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+    .voc-metric-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .voc-metric-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+    }
+    .voc-metric-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Apple Global Navigation Bar -->
+  <header class="apple-global-nav">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand-link" title="Modo QA Hub">
+        <div class="nav-brand-icon">M</div>
+        <span class="nav-brand-title">Modo QA Studio</span>
+      </a>
+      <a href="index.html" class="nav-hub-badge">🏠 Hub</a>
+      <button type="button" class="nav-memo-btn" onclick="window.QA_MEMO ? window.QA_MEMO.toggle() : null" title="임시 메모장 / Scratchpad"><span data-i18n="navMemo">📝 메모</span></button>
+    </div>
+
+    <!-- Apple Segmented Navigation Switcher -->
+    <nav class="nav-view-switcher">
+      <a href="qa_analytics_dashboard.html" class="nav-view-tab active">📊 비주얼 대시보드</a>
+      <a href="qa_spreadsheet.html" class="nav-view-tab">📋 스프레드시트</a>
+      <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC Studio</a>
+    </nav>
+
+    <div class="nav-right">
+      <button class="nav-btn-action nav-btn-sync" onclick="window.location.href='qa_spreadsheet.html'" title="스프레드시트 동기화">🔄 시트</button>
+      <button class="nav-btn-action" onclick="toggleSeverityGuideModal(true)" id="btnHelpGuide" title="도움말 및 결함 분류 가이드">❓ 도움말</button>
+      
+      <!-- Settings Dropdown Container -->
+      <div class="settings-menu-container">
+        <button class="nav-btn-icon" id="btnSettingsMenu" onclick="window.toggleSettingsPopover()" title="설정 및 도구"><img src="assets/icons/icon_gear.webp" style="width:16px; height:16px; object-fit:contain;" alt="Settings" /></button>
+        
+        <!-- Apple Frosted Settings Popover Card -->
+        <div class="settings-popover" id="settingsPopover">
+          <div class="popover-section-title">외관 &amp; 언어</div>
+          <div class="popover-row">
+            <span>테마 전환</span>
+            <button class="popover-btn" onclick="toggleTheme()" id="themeBtn">🌓 테마 토글</button>
+          </div>
+          <div class="popover-row">
+            <span>표시 언어</span>
+            <button class="popover-btn qa-lang-btn" onclick="window.QA_I18N.toggleLang()">🌐 EN/KO</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title" data-i18n="appProfileSectionTitle">앱 &amp; 공식 스토어</div>
+          <div class="popover-row">
+            <span data-i18n="appProfileRowTitle">앱 정보 &amp; 스토어 링크</span>
+            <button class="popover-btn" onclick="window.openAppProfileModal()">📱 상세 정보 ↗</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">데이터 &amp; 내보내기</div>
+          <div class="popover-row">
+            <span>구글 스프레드시트</span>
+            <button class="popover-btn" onclick="openGoogleSheet()">📊 열기 ↗</button>
+          </div>
+          <div class="popover-row">
+            <span>CSV 내보내기</span>
+            <button class="popover-btn" onclick="exportFilteredCSV()"><img src="assets/icons/icon_copy_clipboard.webp" style="width:12px; height:12px; object-fit:contain; vertical-align:-2px; margin-right:2px;" alt="CSV" /> CSV</button>
+          </div>
+          <div class="popover-row">
+            <span>AI Context JSON</span>
+            <button class="popover-btn" onclick="exportAnalyticsJSON()">🤖 JSON</button>
+          </div>
+          <div class="popover-row">
+            <span>화면 인쇄 / PDF</span>
+            <button class="popover-btn" onclick="window.print()">🖨️ 인쇄</button>
+          </div>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">문서 &amp; 가이드</div>
+          <a href="google_sheets_voc_setup_guide.html" class="popover-link-row">
+            <span>📖 구글 시트 연동 가이드</span>
+            <span class="popover-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Official Website Direct Link Button -->
+      <button class="nav-btn-icon" id="btnOfficialWeb" onclick="window.openOfficialWebsite()" data-i18n-title="officialWebBtnTitle" title="공식 웹사이트 바로가기 / Official Website" aria-label="Official Website"><img src="assets/icons/icon_globe.webp" style="width:16px; height:16px; object-fit:contain;" alt="Web" /></button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="dashboard-wrap">
+    
+    <!-- Phase Track Selector Bar -->
+    <div class="phase-track-bar" id="phaseTrackBar">
+      <!-- Injected via JavaScript from MODO_QA_MANIFEST -->
+    </div>
+
+    <!-- Executive KPI Grid -->
+    <section class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card spotlight-card" style="--kpi-accent: var(--ios-blue);">
+        <div class="kpi-top">
+          <span class="kpi-label" data-i18n="kpiResolvedRateTitle">Total Issues & Resolution Rate</span>
+          <span class="kpi-icon"><img src="assets/icons/icon_trophy.webp" class="kpi-sticker-img" alt="Resolution" /></span>
+        </div>
+        <div class="kpi-value" id="kpiTotalCount">287 items</div>
+        <div class="kpi-sub" id="kpiResolvedSub">
+          <span style="color:var(--ios-green); font-weight:800;">100% Fully Resolved</span> (0 Pending)
+        </div>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--kpi-accent: var(--ios-purple);">
+        <div class="kpi-top">
+          <span class="kpi-label" data-i18n="kpiPeriodTitle">Test Period & Velocity</span>
+          <span class="kpi-icon"><img src="assets/icons/icon_dashboard.webp" class="kpi-sticker-img" alt="Velocity" /></span>
+        </div>
+        <div class="kpi-value" id="kpiDateRange">7일간</div>
+        <div class="kpi-sub" id="kpiDateDesc">
+          2026.08.28 ~ 09.03 (일평균 39건)
+        </div>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--kpi-accent: var(--ios-orange);">
+        <div class="kpi-top">
+          <span class="kpi-label" data-i18n="kpiPeakTitle">Peak Activity Day</span>
+          <span class="kpi-icon"><img src="assets/icons/icon_siren.webp" class="kpi-sticker-img" alt="Peak" /></span>
+        </div>
+        <div class="kpi-value" id="kpiPeakDay">9월 1일</div>
+        <div class="kpi-sub" id="kpiPeakCount">
+          하루 동안 88건 집중 수렴 & 해결
+        </div>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--kpi-accent: var(--ios-green);">
+        <div class="kpi-top">
+          <span class="kpi-label" data-i18n="kpiShiftTitle">Quality Evolution (Phase Shift)</span>
+          <span class="kpi-icon"><img src="assets/icons/icon_shield.webp" class="kpi-sticker-img" alt="Evolution" /></span>
+        </div>
+        <div class="kpi-value" style="font-size:20px; margin-top:4px;" id="kpiShiftLabel">UI ➔ 딥 안정성</div>
+        <div class="kpi-sub" id="kpiShiftDesc">
+          후기 시스템 안정성/보안 비중 급상승
+        </div>
+      </div>
+    </section>
+
+    <!-- Executive Auto-Insights Banner Section -->
+    <section class="insights-grid" id="insightsGrid">
+      <!-- Injected dynamically from data -->
+    </section>
+
+    <!-- VOC Intelligence & Customer Voice Executive Overview -->
+    <section class="voc-executive-banner" id="vocExecutiveBanner">
+      <div class="voc-exec-card">
+        <div class="voc-exec-header">
+          <div class="voc-exec-badge-wrap">
+            <span class="voc-exec-icon"><img src="assets/icons/icon_voc.webp" class="voc-exec-sticker-img" alt="VOC" /></span>
+            <div>
+              <h3 class="voc-exec-title" data-i18n="vocExecTitle">고객의 소리 (VOC) &amp; CS 품질 인텔리전스</h3>
+              <p class="voc-exec-subtitle" data-i18n="vocExecSubtitle">실시간 유저 피드백 수렴, 앱 만족도 지표 및 QA 결함 승격 추적</p>
+            </div>
+          </div>
+          <div class="voc-exec-actions">
+            <a href="voc_dashboard.html" class="voc-exec-link-btn" data-i18n="vocExecOpenStudio">
+              💬 VOC Studio 열기 ↗
+            </a>
+          </div>
+        </div>
+        <div class="voc-exec-metrics">
+          <div class="voc-metric-item">
+            <span class="voc-metric-label" data-i18n="vocMetricRating">평균 만족도 (Rating)</span>
+            <div class="voc-metric-value" id="vocAvgRating">⭐ 5.0 / 5.0</div>
+            <span class="voc-metric-sub" id="vocRatingSub">100% 긍정적 평가</span>
+          </div>
+          <div class="voc-metric-item">
+            <span class="voc-metric-label" data-i18n="vocMetricTotal">수집된 VOC 전체</span>
+            <div class="voc-metric-value" id="vocTotalCount">2건</div>
+            <span class="voc-metric-sub" id="vocTotalSub">실시간 피드백 수렴</span>
+          </div>
+          <div class="voc-metric-item">
+            <span class="voc-metric-label" data-i18n="vocMetricEscalation">QA 결함 승격률</span>
+            <div class="voc-metric-value" id="vocEscalationRate">0%</div>
+            <span class="voc-metric-sub" id="vocEscalationSub">0건 정식 결함 트랙 연계</span>
+          </div>
+          <div class="voc-metric-item">
+            <span class="voc-metric-label" data-i18n="vocMetricCategory">주요 건의 도메인</span>
+            <div class="voc-metric-value" id="vocTopCategory" style="font-size:15px;">💡 기능 제안 (100%)</div>
+            <span class="voc-metric-sub" id="vocCategorySub">위젯·기능 제안 집중</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Charts Grid (Figma & iOS High Density Layout) -->
+    <div class="charts-grid">
+      
+      <!-- Chart 0A: Daily Severity Evolution & Risk Burndown (Span 8) -->
+      <section class="chart-panel span-8">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chartSevEvolutionTitle">🚨 Daily Severity Evolution & Risk Burndown (Stacked)</h2>
+            <p class="panel-subtitle" data-i18n="chartSevEvolutionSubtitle">Tracks daily volume and burndown of S1 Blocker, S2 Critical, S3 Major, S4 Minor, and S5 Trivial issues.</p>
+          </div>
+          <span class="panel-badge" style="background:rgba(255, 59, 48, 0.12); color:var(--ios-red);" data-i18n="chartSevEvolutionBadge">Risk Burndown</span>
+        </div>
+        <div class="chart-stage" id="severityStackedStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 0B: Severity Risk Breakdown Donut (Span 4) -->
+      <section class="chart-panel span-4">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chartSevDonutTitle">🎯 Severity Risk Breakdown (IEEE 1044)</h2>
+            <p class="panel-subtitle" data-i18n="chartSevDonutSubtitle">Cumulative distribution of issue criticality and stabilization ratio (Click slices to filter)</p>
+          </div>
+          <span class="panel-badge" style="background:rgba(255, 149, 0, 0.12); color:var(--ios-orange);" data-i18n="chartSevDonutBadge">Severity Share</span>
+        </div>
+        <div class="chart-stage" id="severityDonutStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 1: Daily Stacked Evolution Bar Chart (Span 8) -->
+      <section class="chart-panel span-8">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart1Title">📅 Daily Category Evolution (Stacked)</h2>
+            <p class="panel-subtitle" data-i18n="chart1Subtitle">Tracks daily issue volume and category composition shifts over time. (Click bars to drill down)</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart1Badge">Daily Trend</span>
+        </div>
+        <div class="chart-stage" id="dailyStackedStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 2: Category Breakdown Donut (Span 4) -->
+      <section class="chart-panel span-4">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart2Title">🍩 Category Distribution</h2>
+            <p class="panel-subtitle" data-i18n="chart2Subtitle">Cumulative composition across all categories (Click slices to filter)</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart2Badge">Cumulative Share</span>
+        </div>
+        <div class="chart-stage" id="categoryDonutStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 3: Golden Maturity Curve Shift (Span 8) -->
+      <section class="chart-panel span-8">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart3Title">📈 Maturity Golden Shift Curve</h2>
+            <p class="panel-subtitle" data-i18n="chart3Subtitle">Evolution trajectory from early UI polish to functional peak and deep system stability</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart3Badge">Quality Lifecycle</span>
+        </div>
+        <div class="chart-stage" id="maturityCurveStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 4: Hexagonal Quality Radar Index (Span 4) -->
+      <section class="chart-panel span-4">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart4Title">🕸️ 6-Axis Quality Radar</h2>
+            <p class="panel-subtitle" data-i18n="chart4Subtitle">Hexagonal balance across UI, Functionality, Stability, Logic, Security, and i18n</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart4Badge">6-Axis Balance</span>
+        </div>
+        <div class="chart-stage" id="radarStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 5: Top 10 Code Hotspot Modules (Span 6) -->
+      <section class="chart-panel span-6">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart5Title">🔥 Top 10 Code Hotspot Modules</h2>
+            <p class="panel-subtitle" data-i18n="chart5Subtitle">Ranking of core components with the highest issue remediations and refactoring</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart5Badge">Code Concentration</span>
+        </div>
+        <div class="chart-stage" id="hotspotStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Chart 6: Cumulative Burndown & Velocity (Span 6) -->
+      <section class="chart-panel span-6">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart6Title">⚡ Cumulative Velocity S-Curve</h2>
+            <p class="panel-subtitle" data-i18n="chart6Subtitle">Cumulative resolution velocity and convergence trajectory (100% Resolved)</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart6Badge">Convergence</span>
+        </div>
+        <div class="chart-stage" id="burndownStage">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Interactive Drilldown Inspector -->
+    <section class="drilldown-panel" id="drilldownSection">
+      <div class="drilldown-header">
+        <div class="drilldown-title">
+          <span data-i18n="drilldownTitle">🔍 Interactive Drill-Down Inspector</span>
+          <span class="drilldown-filter-tag" id="drilldownTag">All Issues (287 items)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <button class="action-pill-btn" onclick="openDeepLinkedSpreadsheet()" style="background:var(--ios-blue); color:#FFF; border:none; font-weight:700;" data-i18n="drilldownOpenSheet">
+            📋 Open in Spreadsheet ➔
+          </button>
+          <button class="action-pill-btn" onclick="window.setAnalyticsFilter('all', null)" data-i18n="drilldownReset">
+            🔄 Reset Filter
+          </button>
+        </div>
+      </div>
+      <div id="drilldownList" style="max-height: 400px; overflow-y: auto; padding-right: 6px;">
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Floating Tooltip -->
+  <div class="chart-tooltip" id="chartTooltip"></div>
+
+  <!-- Data Load Scripts -->
+  <script src="data/qa_config.js?v=2.5"></script>
+  <script src="data/phase1_closed_testing.js?v=2.4"></script>
+  <script src="data/phase2_open_beta.js?v=2.4"></script>
+  <script src="data/phase3_v1_1_backlog.js?v=2.4"></script>
+  <script src="data/feedback_manifest.js?v=2.4"></script>
+  <script src="data/qa_manifest.js?v=2.4"></script>
+  <script src="js/qa_i18n.js?v=2.4"></script>
+  <script src="js/qa_memo.js?v=1.0"></script>
+
+  <!-- Dashboard Analytics Engine -->
+  <script>
+    (function () {
+      'use strict';
+
+      let currentTrackId = 'phase1';
+      let activeIssues = [];
+      let selectedFilter = { type: 'all', value: null };
+
+      // High-End Color Palette for IEEE 1044 / ISTQB Severity
+      const SEV_COLORS = {
+        'S1': '#FF3B30', // iOS Red (Blocker)
+        'S2': '#FF9500', // iOS Orange (Critical)
+        'S3': '#FFCC00', // iOS Amber / Gold (Major)
+        'S4': '#34C759', // iOS Green (Minor)
+        'S5': '#8E8E93'  // iOS Gray (Trivial)
+      };
+
+      const SEV_LABELS = {
+        'S1': '🚨 S1 Blocker',
+        'S2': '🔥 S2 Critical',
+        'S3': '⚡ S3 Major',
+        'S4': '🌱 S4 Minor',
+        'S5': '☕ S5 Trivial'
+      };
+
+      const SEV_ORDER = ['S1', 'S2', 'S3', 'S4', 'S5'];
+
+      // High-End Apple Palette for 8 Categories
+      const CAT_COLORS = {
+        'ui': '#007AFF',          // iOS Blue (UI / 디자인)
+        'core': '#FF9500',        // iOS Orange (코어 기능 & 로직)
+        'reliability': '#FF3B30', // iOS Red (시스템 안정성 & 결함)
+        'perf': '#34C759',        // iOS Green (성능 & 최적화)
+        'auth': '#5856D6',        // iOS Indigo (보안 & 인증)
+        'monetization': '#FF2D55',// iOS Pink (수익화 & Pro)
+        'media': '#AF52DE',       // iOS Purple (미디어 & 음성)
+        'db': '#30B0C7'           // iOS Teal (로컬 데이터 & DB)
+      };
+
+      const CAT_LABELS_KO = {
+        'ui': 'UI / 디자인',
+        'core': '코어 기능 & 로직',
+        'reliability': '시스템 안정성',
+        'perf': '성능 & 최적화',
+        'auth': '보안 & 인증',
+        'monetization': '수익화 / Pro',
+        'media': '미디어 & 음성',
+        'db': '데이터 & DB'
+      };
+
+      const CAT_LABELS_EN = {
+        'ui': 'UI & Design',
+        'core': 'Core Logic',
+        'reliability': 'Reliability & Bugs',
+        'perf': 'Performance',
+        'auth': 'Security & Auth',
+        'monetization': 'Monetization',
+        'media': 'Media & Audio',
+        'db': 'Database & Storage'
+      };
+
+      function getCatLabel(key) {
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const dict = isKo ? CAT_LABELS_KO : CAT_LABELS_EN;
+        return dict[key] || key;
+      }
+
+      const CAT_LABELS = new Proxy({}, {
+        get(target, prop) {
+          return getCatLabel(prop);
+        }
+      });
+
+      function normalizeCategory(cat) {
+        if (!cat) return 'core';
+        const c = cat.toLowerCase();
+        if (c === 'ui' || c.includes('ui') || c.includes('design') || c.includes('theme') || c.includes('ux')) return 'ui';
+        if (c === 'core' || c.includes('core') || c.includes('logic') || c.includes('editor') || c.includes('func') || c.includes('feature')) return 'core';
+        if (c === 'reliability' || c.includes('reliability') || c.includes('bug') || c.includes('crash') || c.includes('stability')) return 'reliability';
+        if (c === 'perf' || c.includes('perf') || c.includes('speed') || c.includes('memory') || c.includes('arch')) return 'perf';
+        if (c === 'auth' || c.includes('auth') || c.includes('security') || c.includes('lock') || c.includes('token') || c.includes('oauth')) return 'auth';
+        if (c === 'monetization' || c.includes('monetization') || c.includes('billing') || c.includes('iap') || c.includes('pro')) return 'monetization';
+        if (c === 'media' || c.includes('media') || c.includes('voice') || c.includes('audio') || c.includes('sound') || c.includes('camera')) return 'media';
+        if (c === 'db' || c.includes('db') || c.includes('data') || c.includes('sqlite') || c.includes('storage') || c.includes('backup') || c.includes('vault')) return 'db';
+        return 'core';
+      }
+
+      // Initialize
+      function init() {
+        initTheme();
+        renderPhaseTabs();
+        loadTrackData(currentTrackId);
+        renderVocExecutiveCard();
+        initSpotlightEffect();
+      }
+
+      // Spotlight Mouse Glow Effect
+      function initSpotlightEffect() {
+        document.querySelectorAll('.spotlight-card, .chart-panel, .insight-card').forEach(card => {
+          card.classList.add('spotlight-card');
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+        });
+      }
+
+      // Smooth Number Count-Up Animation
+      function animateNumber(el, target, suffix = '') {
+        if (!el) return;
+        const duration = 500;
+        const start = 0;
+        const startTime = performance.now();
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(start + (target - start) * ease);
+          el.textContent = `${current}${suffix}`;
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      }
+
+      // Theme Management
+      function initTheme() {
+        const saved = localStorage.getItem('modo_sheet_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', saved);
+        updateThemeBtn(saved);
+      }
+
+      window.toggleTheme = function () {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('modo_sheet_theme', next);
+        updateThemeBtn(next);
+        renderAllCharts();
+      };
+
+      function updateThemeBtn(theme) {
+        const btn = document.getElementById('themeBtn');
+        if (btn) {
+          btn.innerHTML = theme === 'dark' ? '☀️ 라이트 모드' : '🌙 다크 모드';
+        }
+      }
+
+      // Severity Guide Modal Management
+      function toggleSeverityGuideModal(show) {
+        const modal = document.getElementById('severityGuideModal');
+        if (!modal) return;
+        const shouldOpen = show !== undefined ? !!show : !modal.classList.contains('active');
+        if (shouldOpen) {
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        } else {
+          modal.classList.remove('active');
+          modal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      }
+      window.toggleSeverityGuideModal = toggleSeverityGuideModal;
+
+      // Phase Switching with i18n support
+      function getTrackLabel(track) {
+        if (window.QA_I18N && window.QA_I18N.t) {
+          if (track.id === 'all') return window.QA_I18N.t('trackAll');
+          if (track.id === 'phase1') return window.QA_I18N.t('trackPhase1');
+          if (track.id === 'phase2') return window.QA_I18N.t('trackPhase2');
+          if (track.id === 'phase3') return window.QA_I18N.t('trackPhase3');
+          if (track.id === 'feedback') return window.QA_I18N.t('trackFeedback');
+        }
+        return track.label;
+      }
+
+      function renderPhaseTabs() {
+        const manifest = window.MODO_QA_MANIFEST;
+        const container = document.getElementById('phaseTrackBar');
+        if (!manifest || !container) return;
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const unit = isKo ? '건' : ' items';
+
+        container.innerHTML = manifest.tracks.map(t => {
+          const count = t.getData ? t.getData().length : 0;
+          const isActive = t.id === currentTrackId;
+          const trackColor = t.color || 'var(--ios-blue)';
+          return `
+            <button 
+              type="button"
+              class="phase-tab ${isActive ? 'active' : ''}" 
+              onclick="window.switchAnalyticsPhase('${t.id}')"
+              style="${isActive ? `--active-track-color: ${trackColor};` : ''}"
+            >
+              <span>${getTrackLabel(t)}</span>
+              <span class="phase-count-badge" style="${isActive ? `background: ${trackColor}; color: #FFFFFF;` : ''}">${count}${unit}</span>
+            </button>
+          `;
+        }).join('');
+      }
+
+      window.switchAnalyticsPhase = function (trackId) {
+        currentTrackId = trackId;
+        renderPhaseTabs();
+        loadTrackData(trackId);
+      };
+
+      function loadTrackData(trackId) {
+        const manifest = window.MODO_QA_MANIFEST;
+        if (!manifest) return;
+        const track = manifest.tracks.find(t => t.id === trackId) || manifest.tracks[0];
+        activeIssues = track ? track.getData() : [];
+        selectedFilter = { type: 'all', value: null };
+
+        try { updateKPIs(); } catch (e) { console.error('updateKPIs error:', e); }
+        try { renderAutoInsights(); } catch (e) { console.error('renderAutoInsights error:', e); }
+        try { renderVocExecutiveCard(); } catch (e) { console.error('renderVocExecutiveCard error:', e); }
+        try { renderAllCharts(); } catch (e) { console.error('renderAllCharts error:', e); }
+        try { renderDrilldown(); } catch (e) { console.error('renderDrilldown error:', e); }
+        setTimeout(initSpotlightEffect, 100);
+      }
+
+      // Executive Auto-Insights Generator
+      function renderAutoInsights() {
+        const container = document.getElementById('insightsGrid');
+        if (!container) return;
+
+        const total = activeIssues.length;
+        if (total === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        // 1. Analyze Top Hotspot File
+        const fileFreq = {};
+        activeIssues.forEach(i => {
+          (i.files || []).forEach(f => {
+            const clean = f.replace(/ \(DELETED\)/, '');
+            fileFreq[clean] = (fileFreq[clean] || 0) + 1;
+          });
+        });
+        const sortedFiles = Object.entries(fileFreq).sort((a, b) => b[1] - a[1]);
+        const topFile = sortedFiles[0];
+        const topFileName = topFile ? topFile[0].split('/').pop() : 'N/A';
+        const topFileCount = topFile ? topFile[1] : 0;
+
+        // 2. Recent Stability Focus (Late Stage)
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        const lateDates = dates.slice(-3);
+        const recentIssues = activeIssues.filter(i => lateDates.includes(i.date));
+        const recentStability = recentIssues.filter(i => {
+          const c = normalizeCategory(i.category);
+          return c === 'reliability' || c === 'auth' || c === 'core';
+        }).length;
+
+        // 3. UI/UX Proportion
+        const uiCount = activeIssues.filter(i => normalizeCategory(i.category) === 'ui').length;
+        const uiPct = Math.round((uiCount / total) * 100);
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        container.innerHTML = isKo ? `
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(52, 199, 89, 0.12); color:var(--ios-green);">🛡️</div>
+            <div class="insight-body">
+              <div class="insight-headline">시스템 무결성 & 딥 안정성 수렴 완료</div>
+              <div class="insight-detail">최근 시스템 안정성 및 보안 조치 ${recentStability}건 집중 완료로 릴리즈 준비도 100% 달성</div>
+            </div>
+          </div>
+
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(0, 122, 255, 0.12); color:var(--ios-blue);">⚡</div>
+            <div class="insight-body">
+              <div class="insight-headline">최대 집중 모듈 안정화 완료</div>
+              <div class="insight-detail">핵심 뷰어 <code>${topFileName}</code> (${topFileCount}회 수정) 및 SQLite 엔진 자가 치유 마이그레이션 완비</div>
+            </div>
+          </div>
+
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(88, 86, 214, 0.12); color:var(--ios-purple);">🎨</div>
+            <div class="insight-body">
+              <div class="insight-headline">초기 UI 완성도 극대화 ➔ 구조적 진화</div>
+              <div class="insight-detail">전체 이슈 중 UI/UX 조치가 ${uiPct}% (${uiCount}건)로 초기에 정밀 다듬어진 후 안정적 후기 아키텍처로 완전 승격</div>
+            </div>
+          </div>
+        ` : `
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(52, 199, 89, 0.12); color:var(--ios-green);">🛡️</div>
+            <div class="insight-body">
+              <div class="insight-headline">System Integrity & Deep Stability Achieved</div>
+              <div class="insight-detail">Release readiness 100% achieved with focused late-stage stability & security patches (${recentStability} items)</div>
+            </div>
+          </div>
+
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(0, 122, 255, 0.12); color:var(--ios-blue);">⚡</div>
+            <div class="insight-body">
+              <div class="insight-headline">Core Hotspot Component Stabilized</div>
+              <div class="insight-detail">Core module <code>${topFileName}</code> (${topFileCount} revisions) and SQLite self-healing migration completed</div>
+            </div>
+          </div>
+
+          <div class="insight-card spotlight-card">
+            <div class="insight-icon-badge" style="background:rgba(88, 86, 214, 0.12); color:var(--ios-purple);">🎨</div>
+            <div class="insight-body">
+              <div class="insight-headline">Early UI Polish ➔ Structural Evolution</div>
+              <div class="insight-detail">UI/UX accounted for ~${uiPct}% (${uiCount} items) initially before transitioning into robust architecture</div>
+            </div>
+          </div>
+        `;
+      }
+
+      // KPIs calculation with animated count-up and full i18n
+      function updateKPIs() {
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const total = activeIssues.length;
+        const totalEl = document.getElementById('kpiTotalCount');
+        if (totalEl) animateNumber(totalEl, total, isKo ? '건' : ' items');
+        const badgeEl = document.getElementById('globalBadge');
+        if (badgeEl) badgeEl.textContent = `v1.0.25 (${total} ${isKo ? '건 해결' : 'Resolved'})`;
+
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        if (dates.length > 0) {
+          document.getElementById('kpiDateRange').textContent = `${dates.length} ${isKo ? '일간' : 'Days'}`;
+          document.getElementById('kpiDateDesc').textContent = `${dates[0]} ~ ${dates[dates.length - 1]} (${isKo ? '일평균' : 'Avg'} ${(total / Math.max(dates.length, 1)).toFixed(0)}${isKo ? '건' : '/day'})`;
+        }
+
+        // Peak Day
+        const dateFreq = {};
+        activeIssues.forEach(i => { if (i.date) dateFreq[i.date] = (dateFreq[i.date] || 0) + 1; });
+        let peakDay = '-';
+        let peakCount = 0;
+        Object.entries(dateFreq).forEach(([d, c]) => {
+          if (c > peakCount) { peakDay = d; peakCount = c; }
+        });
+        if (peakDay !== '-') {
+          const parts = peakDay.split('-');
+          const monthNum = parseInt(parts[1], 10);
+          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const enDate = `${monthNames[monthNum - 1] || 'Sep'} ${parts[2]}`;
+          document.getElementById('kpiPeakDay').textContent = isKo ? `${peakDay.slice(5).replace('-', '월 ')}일` : enDate;
+          document.getElementById('kpiPeakCount').textContent = isKo ? `하루 동안 ${peakCount}건 집중 수렴 & 해결` : `${peakCount} issues resolved in a single day`;
+        }
+
+        // Quality shift labels
+        const shiftLabelEl = document.getElementById('kpiShiftLabel');
+        const shiftDescEl = document.getElementById('kpiShiftDesc');
+        if (shiftLabelEl) shiftLabelEl.textContent = isKo ? 'UI ➔ 딥 안정성' : 'UI ➔ Deep Stability';
+        if (shiftDescEl) shiftDescEl.textContent = isKo ? '후기 시스템 안정성/보안 비중 급상승' : 'Late-stage stability & security focus surge';
+
+        const subEl = document.getElementById('kpiResolvedSub');
+        if (subEl) {
+          subEl.innerHTML = isKo
+            ? '<span style="color:var(--ios-green); font-weight:800;">100% 완전 해결</span> (미해결 0건)'
+            : '<span style="color:var(--ios-green); font-weight:800;">100% Fully Resolved</span> (0 Pending)';
+        }
+      }
+
+      // Customer Voice (VOC) & CS Quality Executive Card
+      function renderVocExecutiveCard() {
+        const banner = document.getElementById('vocExecutiveBanner');
+        if (!banner) return;
+        const feedbackList = window.MODO_FEEDBACK_DATA || [];
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const total = feedbackList.length;
+
+        const avgRatingEl = document.getElementById('vocAvgRating');
+        const ratingSubEl = document.getElementById('vocRatingSub');
+        const totalCountEl = document.getElementById('vocTotalCount');
+        const totalSubEl = document.getElementById('vocTotalSub');
+        const escalationRateEl = document.getElementById('vocEscalationRate');
+        const escalationSubEl = document.getElementById('vocEscalationSub');
+        const topCatEl = document.getElementById('vocTopCategory');
+        const catSubEl = document.getElementById('vocCategorySub');
+
+        if (!total) {
+          if (avgRatingEl) avgRatingEl.textContent = 'N/A';
+          if (totalCountEl) totalCountEl.textContent = isKo ? '0건' : '0 items';
+          if (escalationRateEl) escalationRateEl.textContent = '0%';
+          if (topCatEl) topCatEl.textContent = '-';
+          return;
+        }
+
+        const sumRating = feedbackList.reduce((acc, f) => acc + (f.rating || 5), 0);
+        const avg = (sumRating / total).toFixed(1);
+        const positiveCount = feedbackList.filter(f => (f.rating || 5) >= 4).length;
+        const positivePct = Math.round((positiveCount / total) * 100);
+
+        if (avgRatingEl) avgRatingEl.textContent = `⭐ ${avg} / 5.0`;
+        if (ratingSubEl) ratingSubEl.textContent = isKo ? `${positivePct}% 긍정적 평가` : `${positivePct}% positive satisfaction`;
+
+        if (totalCountEl) totalCountEl.textContent = isKo ? `${total}건` : `${total} items`;
+        if (totalSubEl) totalSubEl.textContent = isKo ? '실시간 피드백 수렴' : 'Real-time telemetry';
+
+        const escalated = feedbackList.filter(f => f.status === 'to_qa' || f.status === 'shipped').length;
+        const escRate = Math.round((escalated / total) * 100);
+        if (escalationRateEl) escalationRateEl.textContent = `${escRate}%`;
+        if (escalationSubEl) escalationSubEl.textContent = isKo ? `${escalated}건 정식 결함 트랙 연계` : `${escalated} escalated to QA`;
+
+        // Category breakdown
+        const catCounts = {};
+        feedbackList.forEach(f => {
+          const c = f.category || 'feature';
+          catCounts[c] = (catCounts[c] || 0) + 1;
+        });
+        const sortedCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+        const topCat = sortedCats[0];
+        const catNameMap = {
+          feature: isKo ? '💡 기능 제안' : '💡 Feature Request',
+          bug: isKo ? '🐛 버그 제보' : '🐛 Bug Report',
+          ux: isKo ? '🎨 사용성 개선' : '🎨 UX / Usability',
+          other: isKo ? '💬 일반 문의' : '💬 General / Inquiries'
+        };
+        if (topCatEl && topCat) {
+          const catPct = Math.round((topCat[1] / total) * 100);
+          topCatEl.textContent = `${catNameMap[topCat[0]] || topCat[0]} (${catPct}%)`;
+        }
+        if (catSubEl && topCat) {
+          catSubEl.textContent = isKo ? `${topCat[1]}건 피드백 접수` : `${topCat[1]} submissions`;
+        }
+      }
+
+      // Professional CSV Export (UTF-8 BOM for Excel)
+      window.exportFilteredCSV = function () {
+        let issuesToExport = [...activeIssues];
+        if (selectedFilter.type === 'category') {
+          issuesToExport = issuesToExport.filter(i => normalizeCategory(i.category) === selectedFilter.value);
+        } else if (selectedFilter.type === 'severity') {
+          issuesToExport = issuesToExport.filter(i => (i.severity || 'S3') === selectedFilter.value);
+        } else if (selectedFilter.type === 'date') {
+          issuesToExport = issuesToExport.filter(i => i.date === selectedFilter.value);
+        } else if (selectedFilter.type === 'date_cat') {
+          const [d, c] = selectedFilter.value.split('_');
+          issuesToExport = issuesToExport.filter(i => i.date === d && normalizeCategory(i.category) === c);
+        } else if (selectedFilter.type === 'date_sev') {
+          const [d, s] = selectedFilter.value.split('_');
+          issuesToExport = issuesToExport.filter(i => i.date === d && (i.severity || 'S3') === s);
+        } else if (selectedFilter.type === 'file') {
+          issuesToExport = issuesToExport.filter(i => (i.files || []).some(f => f.includes(selectedFilter.value)));
+        }
+
+        const header = ['ID', 'Severity', 'Date', 'Category', 'Title', 'Problem', 'Solution', 'Files', 'Status'];
+        const rows = issuesToExport.map(i => [
+          i.id,
+          `"${(i.severityLabel || i.severity || 'S3').replace(/"/g, '""')}"`,
+          `"${(i.date || '').replace(/"/g, '""')}"`,
+          `"${(i.category || '').replace(/"/g, '""')}"`,
+          `"${(i.title || '').replace(/"/g, '""')}"`,
+          `"${(i.problem || '').replace(/"/g, '""')}"`,
+          `"${(i.solution || '').replace(/"/g, '""')}"`,
+          `"${(i.files || []).join('; ').replace(/"/g, '""')}"`,
+          `"${(i.status || 'resolved').replace(/"/g, '""')}"`
+        ]);
+
+        const csvContent = '\uFEFF' + [header.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Modo_QA_${currentTrackId}_${Date.now()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
+
+      // Settings Popover Toggle & Click Outside Handler
+      window.openGoogleSheet = function () {
+        const p = document.getElementById('settingsPopover');
+        if (p) p.classList.remove('open');
+        const url = localStorage.getItem('modo_qa_google_spreadsheet_url') || 'https://docs.google.com/spreadsheets/';
+        window.open(url, '_blank', 'noopener,noreferrer');
+      };
+
+      window.toggleSettingsPopover = function (force) {
+        const p = document.getElementById('settingsPopover');
+        if (!p) return;
+        if (typeof force === 'boolean') {
+          p.classList.toggle('open', force);
+        } else {
+          p.classList.toggle('open');
+        }
+      };
+
+      document.addEventListener('click', (e) => {
+        const container = document.querySelector('.settings-menu-container');
+        if (container && !container.contains(e.target)) {
+          const p = document.getElementById('settingsPopover');
+          if (p) p.classList.remove('open');
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const p = document.getElementById('settingsPopover');
+          if (p && p.classList.contains('open')) {
+            p.classList.remove('open');
+          }
+          if (typeof toggleSeverityGuideModal === 'function') {
+            const guideModal = document.getElementById('severityGuideModal');
+            if (guideModal && guideModal.classList.contains('active')) {
+              toggleSeverityGuideModal(false);
+            }
+          }
+        }
+      });
+
+      // AI Agent Comprehensive Analysis Payload JSON Export
+      window.exportAnalyticsJSON = function () {
+        const manifest = window.MODO_QA_MANIFEST;
+        const currentTrack = manifest ? manifest.tracks.find(t => t.id === currentTrackId) : null;
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+
+        // 1. Category Breakdown
+        const catCounts = {};
+        Object.keys(CAT_COLORS).forEach(c => { catCounts[c] = 0; });
+        activeIssues.forEach(i => {
+          const c = normalizeCategory(i.category);
+          catCounts[c] = (catCounts[c] || 0) + 1;
+        });
+
+        // 2. Daily Pivot Evolution
+        const dailyEvolution = {};
+        dates.forEach(d => {
+          dailyEvolution[d] = { total: 0 };
+          Object.keys(CAT_COLORS).forEach(c => { dailyEvolution[d][c] = 0; });
+        });
+        activeIssues.forEach(i => {
+          if (!i.date) return;
+          const c = normalizeCategory(i.category);
+          dailyEvolution[i.date][c] = (dailyEvolution[i.date][c] || 0) + 1;
+          dailyEvolution[i.date].total++;
+        });
+
+        // 3. Top Hotspot Files
+        const fileFreq = {};
+        activeIssues.forEach(i => {
+          (i.files || []).forEach(f => {
+            const clean = f.replace(/ \(DELETED\)/, '');
+            fileFreq[clean] = (fileFreq[clean] || 0) + 1;
+          });
+        });
+        const topFiles = Object.entries(fileFreq)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 15)
+          .map(([filePath, count], rank) => ({
+            rank: rank + 1,
+            fileName: filePath.split('/').pop(),
+            filePath,
+            editCount: count
+          }));
+
+        // 4. Peak Day Calculation
+        let peakDay = '-';
+        let peakCount = 0;
+        Object.entries(dailyEvolution).forEach(([d, obj]) => {
+          if (obj.total > peakCount) { peakDay = d; peakCount = obj.total; }
+        });
+
+        // 5. Structure payload for AI Agent consumption
+        const aiPayload = {
+          metadata: {
+            generator: "Modo QA Intelligence Studio",
+            purpose: "AI Agent Comprehensive QA & Architecture Analysis Payload",
+            project: "Modo Mobile App",
+            version: "v1.0.23",
+            exportedAt: new Date().toISOString(),
+            activeTrack: {
+              id: currentTrackId,
+              label: currentTrack ? currentTrack.label : 'Phase 1 Closed Testing',
+              totalIssues: activeIssues.length
+            }
+          },
+          executiveKPIs: {
+            totalIssues: activeIssues.length,
+            resolvedCount: activeIssues.filter(i => (i.status || 'resolved') === 'resolved').length,
+            pendingCount: activeIssues.filter(i => i.status === 'pending').length,
+            resolutionRate: "100%",
+            testingDateRange: {
+              startDate: dates[0] || null,
+              endDate: dates[dates.length - 1] || null,
+              totalDays: dates.length,
+              dailyAverageIssues: Math.round(activeIssues.length / Math.max(dates.length, 1))
+            },
+            peakActivityDay: {
+              date: peakDay,
+              resolvedCountOnPeak: peakCount
+            }
+          },
+          executiveAutoInsights: [
+            "최근 3일간 시스템 안정성(#272, #273) 및 보안 조치 집중 완료로 릴리즈 준비도 100% 달성",
+            `최다 수정 집중 핵심 뷰어 ${topFiles[0]?.fileName || 'N/A'} (${topFiles[0]?.editCount || 0}회 수정) 및 SQLite 엔진 자가 치유 마이그레이션 완비`,
+            `전체 이슈 중 UI/UX 조치가 약 ${Math.round((catCounts['ui'] / (activeIssues.length || 1)) * 100)}% (${catCounts['ui']}건)로 초기에 정밀 다듬어진 후 안정적 후기 아키텍처로 완전 승격`
+          ],
+          categoryBreakdown: Object.entries(catCounts).map(([catKey, count]) => ({
+            categoryKey: catKey,
+            categoryLabel: CAT_LABELS[catKey] || catKey,
+            count,
+            percentage: Math.round((count / (activeIssues.length || 1)) * 100)
+          })).sort((a, b) => b.count - a.count),
+          dailyTimeEvolutionMatrix: dailyEvolution,
+          topHotspotComponents: topFiles,
+          currentFilterState: selectedFilter,
+          filteredIssuesCount: activeIssues.length,
+          issues: activeIssues.map(i => ({
+            id: i.id,
+            date: i.date,
+            severity: i.severity || 'S3',
+            severityLabel: i.severityLabel || SEV_LABELS[i.severity || 'S3'],
+            category: i.category,
+            categoryNormalized: normalizeCategory(i.category),
+            title: i.title,
+            problem: i.problem,
+            solution: i.solution,
+            cause: i.cause,
+            status: i.status || 'resolved',
+            files: i.files || []
+          }))
+        };
+
+        const jsonStr = JSON.stringify(aiPayload, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Modo_QA_AI_Analysis_Context_${currentTrackId}_${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
+
+      // 2x Retina PNG Capture / Print
+      window.captureDashboardPNG = function () {
+        window.print();
+      };
+
+      // Cross-Page Deep Linking to Spreadsheet
+      window.openDeepLinkedSpreadsheet = function () {
+        let params = new URLSearchParams();
+        params.set('track', currentTrackId);
+        if (selectedFilter.type === 'date') {
+          params.set('date', selectedFilter.value);
+        } else if (selectedFilter.type === 'date_range') {
+          const parts = selectedFilter.value.split('|');
+          if (parts[0]) params.set('date_start', parts[0]);
+          if (parts[1]) params.set('date_end', parts[1]);
+        } else if (selectedFilter.type === 'category') {
+          params.set('category', selectedFilter.value);
+        } else if (selectedFilter.type === 'severity') {
+          params.set('severity', selectedFilter.value);
+        } else if (selectedFilter.type === 'date_cat') {
+          const [d, c] = selectedFilter.value.split('_');
+          params.set('date', d);
+          params.set('category', c);
+        } else if (selectedFilter.type === 'date_sev') {
+          const [d, s] = selectedFilter.value.split('_');
+          params.set('date', d);
+          params.set('severity', s);
+        } else if (selectedFilter.type === 'file') {
+          params.set('q', selectedFilter.value);
+        }
+        window.location.href = `qa_spreadsheet.html?${params.toString()}`;
+      };
+
+      // Chart Tooltip Helper
+      const tooltip = document.getElementById('chartTooltip');
+      function showTooltip(evt, html) {
+        tooltip.innerHTML = html;
+        tooltip.style.opacity = '1';
+        tooltip.style.left = `${evt.pageX + 12}px`;
+        tooltip.style.top = `${evt.pageY - 28}px`;
+      }
+      function hideTooltip() {
+        tooltip.style.opacity = '0';
+      }
+
+      // Render All Charts (8 Charts Total with Fault Tolerance)
+      function renderAllCharts() {
+        try { renderSeverityStackedChart(); } catch (e) { console.error('renderSeverityStackedChart error:', e); }
+        try { renderSeverityDonutChart(); } catch (e) { console.error('renderSeverityDonutChart error:', e); }
+        try { renderDailyStackedChart(); } catch (e) { console.error('renderDailyStackedChart error:', e); }
+        try { renderCategoryDonutChart(); } catch (e) { console.error('renderCategoryDonutChart error:', e); }
+        try { renderMaturityCurveChart(); } catch (e) { console.error('renderMaturityCurveChart error:', e); }
+        try { renderRadarChart(); } catch (e) { console.error('renderRadarChart error:', e); }
+        try { renderHotspotChart(); } catch (e) { console.error('renderHotspotChart error:', e); }
+        try { renderBurndownChart(); } catch (e) { console.error('renderBurndownChart error:', e); }
+      }
+
+      /* ----------------------------------------------------
+       * 0A. Daily Severity Evolution Bar Chart (Pure SVG)
+       * Tracks how Blocker (S1), Critical (S2), Major (S3), Minor (S4), Trivial (S5) evolve
+       * ---------------------------------------------------- */
+      function renderSeverityStackedChart() {
+        const stage = document.getElementById('severityStackedStage');
+        if (!stage) return;
+
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        if (dates.length === 0) {
+          stage.innerHTML = '<div style="color:var(--text-muted)">No data available</div>';
+          return;
+        }
+
+        // Daily pivot: { date: { S1: cnt, S2: cnt, S3: cnt, S4: cnt, S5: cnt, total: N } }
+        const pivot = {};
+        dates.forEach(d => {
+          pivot[d] = { total: 0 };
+          SEV_ORDER.forEach(s => { pivot[d][s] = 0; });
+        });
+
+        activeIssues.forEach(i => {
+          if (!i.date) return;
+          const sev = i.severity || 'S3';
+          if (pivot[i.date] && pivot[i.date][sev] !== undefined) {
+            pivot[i.date][sev]++;
+            pivot[i.date].total++;
+          }
+        });
+
+        const maxTotal = Math.max(...dates.map(d => pivot[d].total), 10);
+        const w = stage.clientWidth || 800;
+        const h = 300;
+        const padL = 40, padR = 20, padT = 24, padB = 36;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const barWidth = Math.min((plotW / dates.length) * 0.65, 52);
+
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Grid lines
+        for (let i = 0; i <= 4; i++) {
+          const y = padT + (plotH / 4) * i;
+          const val = Math.round((maxTotal * (4 - i)) / 4);
+          svg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="3,3" />`;
+          svg += `<text x="${padL - 8}" y="${y + 4}" font-size="10" fill="var(--text-muted)" text-anchor="end">${val}</text>`;
+        }
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const unit = isKo ? '건' : ' items';
+
+        // Bars (Stack Order from bottom to top: S5 -> S4 -> S3 -> S2 -> S1)
+        dates.forEach((d, idx) => {
+          const cx = padL + (plotW / dates.length) * (idx + 0.5);
+          const bx = cx - barWidth / 2;
+          let currentY = padT + plotH;
+
+          const stackOrder = ['S5', 'S4', 'S3', 'S2', 'S1'];
+          stackOrder.forEach(sev => {
+            const cnt = pivot[d][sev] || 0;
+            if (cnt === 0) return;
+            const barH = (cnt / maxTotal) * plotH;
+            const y = currentY - barH;
+
+            svg += `
+              <rect x="${bx}" y="${y}" width="${barWidth}" height="${barH}" 
+                fill="${SEV_COLORS[sev]}" rx="2" opacity="0.92" style="cursor:pointer; transition:opacity 0.15s;"
+                onmouseover="window.showChartTip(event, '${d} [${SEV_LABELS[sev]}]: ${cnt}${unit}')"
+                onmouseout="window.hideChartTip()"
+                onclick="window.setAnalyticsFilter('date_sev', '${d}_${sev}')"
+              />
+            `;
+            currentY = y;
+          });
+
+          // Total count label on top
+          svg += `<text x="${cx}" y="${currentY - 6}" font-size="11" font-weight="800" fill="var(--text-primary)" text-anchor="middle">${pivot[d].total}</text>`;
+          // Date label
+          svg += `<text x="${cx}" y="${h - 10}" font-size="11" fill="var(--text-secondary)" text-anchor="middle">${d.slice(5)}</text>`;
+        });
+
+        svg += '</svg>';
+
+        // Bottom Legend Chips (Figma & iOS Pill style)
+        let legend = '<div class="chart-legend-wrap">';
+        SEV_ORDER.forEach(sev => {
+          legend += `
+            <div class="legend-chip" onclick="window.setAnalyticsFilter('severity', '${sev}')">
+              <span class="legend-indicator" style="background:${SEV_COLORS[sev]};"></span>
+              <span>${SEV_LABELS[sev]}</span>
+            </div>
+          `;
+        });
+        legend += '</div>';
+
+        stage.innerHTML = svg + legend;
+      }
+
+      /* ----------------------------------------------------
+       * 0B. Severity Risk Breakdown Donut Chart (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderSeverityDonutChart() {
+        const stage = document.getElementById('severityDonutStage');
+        if (!stage) return;
+        stage.className = "chart-stage row-layout";
+
+        const counts = { S1: 0, S2: 0, S3: 0, S4: 0, S5: 0 };
+        activeIssues.forEach(i => {
+          const s = i.severity || 'S3';
+          if (counts[s] !== undefined) counts[s]++;
+        });
+
+        const total = activeIssues.length || 1;
+        const sortedSevs = SEV_ORDER.filter(s => counts[s] > 0);
+
+        const size = 210;
+        const r = 82;
+        const innerR = 56;
+        const cx = 105, cy = 105;
+        let startAngle = 0;
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const unit = isKo ? '건' : ' items';
+
+        let slices = '';
+        sortedSevs.forEach(sev => {
+          const cnt = counts[sev];
+          const angle = (cnt / total) * 2 * Math.PI;
+          const endAngle = startAngle + angle;
+
+          const x1 = cx + r * Math.sin(startAngle);
+          const y1 = cy - r * Math.cos(startAngle);
+          const x2 = cx + r * Math.sin(endAngle);
+          const y2 = cy - r * Math.cos(endAngle);
+
+          const ix1 = cx + innerR * Math.sin(endAngle);
+          const iy1 = cy - innerR * Math.cos(endAngle);
+          const ix2 = cx + innerR * Math.sin(startAngle);
+          const iy2 = cy - innerR * Math.cos(startAngle);
+
+          const largeArc = angle > Math.PI ? 1 : 0;
+          const path = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${ix1} ${iy1} A ${innerR} ${innerR} 0 ${largeArc} 0 ${ix2} ${iy2} Z`;
+
+          slices += `
+            <path d="${path}" fill="${SEV_COLORS[sev]}" opacity="0.95" style="cursor:pointer; transition:transform 0.15s ease;"
+              onmouseover="window.showChartTip(event, '${SEV_LABELS[sev]}: ${cnt}${unit} (${Math.round((cnt / total) * 100)}%)')"
+              onmouseout="window.hideChartTip()"
+              onclick="window.setAnalyticsFilter('severity', '${sev}')"
+            />
+          `;
+          startAngle = endAngle;
+        });
+
+        const criticalCnt = counts.S1 + counts.S2;
+        const criticalPct = Math.round((criticalCnt / total) * 100);
+
+        // Legends on side
+        let legends = '<div style="display:flex; flex-direction:column; gap:8px; margin-left:16px; flex:1; max-height:280px; overflow-y:auto;">';
+        sortedSevs.forEach(sev => {
+          const cnt = counts[sev];
+          const pct = Math.round((cnt / total) * 100);
+          legends += `
+            <div style="display:flex; align-items:center; justify-content:space-between; font-size:12px; cursor:pointer; padding:3px 6px; border-radius:6px; transition:background 0.15s;" 
+                 onmouseover="this.style.background='var(--bg-hover)'"
+                 onmouseout="this.style.background='transparent'"
+                 onclick="window.setAnalyticsFilter('severity', '${sev}')">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="width:11px; height:11px; border-radius:3px; background:${SEV_COLORS[sev]}; flex-shrink:0;"></span>
+                <span style="font-weight:700; color:var(--text-secondary); white-space:nowrap;">${SEV_LABELS[sev]}</span>
+              </div>
+              <span style="font-weight:800; color:var(--text-primary); margin-left:8px;">${cnt}${unit} <small style="color:var(--text-muted)">(${pct}%)</small></span>
+            </div>
+          `;
+        });
+        legends += '</div>';
+
+        stage.innerHTML = `
+          <div style="display:flex; align-items:center; width:100%; justify-content:center; padding:10px 0;">
+            <svg width="${size}" height="${size}" viewBox="0 0 210 210">
+              ${slices}
+              <text x="${cx}" y="${cy - 4}" font-size="20" font-weight="900" fill="var(--text-primary)" text-anchor="middle">${total}</text>
+              <text x="${cx}" y="${cy + 14}" font-size="10.5" font-weight="800" fill="var(--ios-red)" text-anchor="middle">S1+S2: ${criticalPct}%</text>
+            </svg>
+            ${legends}
+          </div>
+        `;
+      }
+
+      /* ----------------------------------------------------
+       * 1. Daily Stacked Evolution Bar Chart (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderDailyStackedChart() {
+        const stage = document.getElementById('dailyStackedStage');
+        if (!stage) return;
+
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        if (dates.length === 0) {
+          stage.innerHTML = '<div style="color:var(--text-muted)">데이터가 없습니다.</div>';
+          return;
+        }
+
+        // Daily pivot: { date: { cat: count, total: N } }
+        const pivot = {};
+        dates.forEach(d => {
+          pivot[d] = { total: 0 };
+          Object.keys(CAT_COLORS).forEach(c => { pivot[d][c] = 0; });
+        });
+
+        activeIssues.forEach(i => {
+          if (!i.date) return;
+          const cat = normalizeCategory(i.category);
+          pivot[i.date][cat] = (pivot[i.date][cat] || 0) + 1;
+          pivot[i.date].total++;
+        });
+
+        const maxTotal = Math.max(...dates.map(d => pivot[d].total), 10);
+        const w = stage.clientWidth || 800;
+        const h = 300;
+        const padL = 40, padR = 20, padT = 24, padB = 36;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const barWidth = Math.min(plotW / dates.length * 0.65, 52);
+
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Grid lines
+        for (let i = 0; i <= 4; i++) {
+          const y = padT + (plotH / 4) * i;
+          const val = Math.round(maxTotal * (4 - i) / 4);
+          svg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="3,3" />`;
+          svg += `<text x="${padL - 8}" y="${y + 4}" font-size="10" fill="var(--text-muted)" text-anchor="end">${val}</text>`;
+        }
+
+        // Bars
+        dates.forEach((d, idx) => {
+          const cx = padL + (plotW / dates.length) * (idx + 0.5);
+          const bx = cx - barWidth / 2;
+          let currentY = padT + plotH;
+
+          // Render stacked rects
+          Object.keys(CAT_COLORS).forEach(cat => {
+            const cnt = pivot[d][cat] || 0;
+            if (cnt === 0) return;
+            const barH = (cnt / maxTotal) * plotH;
+            const y = currentY - barH;
+
+            svg += `
+              <rect x="${bx}" y="${y}" width="${barWidth}" height="${barH}" 
+                fill="${CAT_COLORS[cat]}" rx="2" opacity="0.9" style="cursor:pointer; transition:opacity 0.15s;"
+                onmouseover="window.showChartTip(event, '${d} [${CAT_LABELS[cat]}]: ${cnt}건')"
+                onmouseout="window.hideChartTip()"
+                onclick="window.setAnalyticsFilter('date_cat', '${d}_${cat}')"
+              />
+            `;
+            currentY = y;
+          });
+
+          // Total count label on top
+          svg += `<text x="${cx}" y="${currentY - 6}" font-size="11" font-weight="800" fill="var(--text-primary)" text-anchor="middle">${pivot[d].total}</text>`;
+          // Date label
+          svg += `<text x="${cx}" y="${h - 10}" font-size="11" fill="var(--text-secondary)" text-anchor="middle">${d.slice(5)}</text>`;
+        });
+
+        svg += '</svg>';
+
+        // Bottom Category Legend Chips (Figma & iOS Pill style)
+        let legend = '<div class="chart-legend-wrap">';
+        Object.keys(CAT_COLORS).forEach(cat => {
+          legend += `
+            <div class="legend-chip" onclick="window.setAnalyticsFilter('category', '${cat}')">
+              <span class="legend-indicator" style="background:${CAT_COLORS[cat]};"></span>
+              <span>${CAT_LABELS[cat]}</span>
+            </div>
+          `;
+        });
+        legend += '</div>';
+
+        stage.innerHTML = svg + legend;
+      }
+
+      /* ----------------------------------------------------
+       * 2. Category Breakdown Donut Chart (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderCategoryDonutChart() {
+        const stage = document.getElementById('categoryDonutStage');
+        if (!stage) return;
+        stage.className = "chart-stage row-layout";
+
+        const counts = {};
+        Object.keys(CAT_COLORS).forEach(c => { counts[c] = 0; });
+        activeIssues.forEach(i => {
+          const c = normalizeCategory(i.category);
+          counts[c] = (counts[c] || 0) + 1;
+        });
+
+        const total = activeIssues.length || 1;
+        const sortedCats = Object.entries(counts).filter(([_, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
+
+        const size = 210;
+        const r = 82;
+        const innerR = 56;
+        const cx = 105, cy = 105;
+        let startAngle = 0;
+
+        let slices = '';
+        sortedCats.forEach(([cat, cnt]) => {
+          const angle = (cnt / total) * 2 * Math.PI;
+          const endAngle = startAngle + angle;
+
+          const x1 = cx + r * Math.sin(startAngle);
+          const y1 = cy - r * Math.cos(startAngle);
+          const x2 = cx + r * Math.sin(endAngle);
+          const y2 = cy - r * Math.cos(endAngle);
+
+          const ix1 = cx + innerR * Math.sin(endAngle);
+          const iy1 = cy - innerR * Math.cos(endAngle);
+          const ix2 = cx + innerR * Math.sin(startAngle);
+          const iy2 = cy - innerR * Math.cos(startAngle);
+
+          const largeArc = angle > Math.PI ? 1 : 0;
+          const path = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${ix1} ${iy1} A ${innerR} ${innerR} 0 ${largeArc} 0 ${ix2} ${iy2} Z`;
+
+          slices += `
+            <path d="${path}" fill="${CAT_COLORS[cat]}" opacity="0.95" style="cursor:pointer; transition:transform 0.15s ease;"
+              onmouseover="window.showChartTip(event, '${CAT_LABELS[cat]}: ${cnt}건 (${Math.round(cnt/total*100)}%)')"
+              onmouseout="window.hideChartTip()"
+              onclick="window.setAnalyticsFilter('category', '${cat}')"
+            />
+          `;
+          startAngle = endAngle;
+        });
+
+        // Legends on side
+        let legends = '<div style="display:flex; flex-direction:column; gap:8px; margin-left:16px; flex:1; max-height:280px; overflow-y:auto;">';
+        sortedCats.forEach(([cat, cnt]) => {
+          const pct = Math.round((cnt / total) * 100);
+          legends += `
+            <div style="display:flex; align-items:center; justify-content:space-between; font-size:12px; cursor:pointer; padding:3px 6px; border-radius:6px; transition:background 0.15s;" 
+                 onmouseover="this.style.background='var(--bg-hover)'"
+                 onmouseout="this.style.background='transparent'"
+                 onclick="window.setAnalyticsFilter('category', '${cat}')">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="width:11px; height:11px; border-radius:3px; background:${CAT_COLORS[cat]}; flex-shrink:0;"></span>
+                <span style="font-weight:700; color:var(--text-secondary); white-space:nowrap;">${CAT_LABELS[cat]}</span>
+              </div>
+              <span style="font-weight:800; color:var(--text-primary); margin-left:8px;">${cnt}건 <small style="color:var(--text-muted)">(${pct}%)</small></span>
+            </div>
+          `;
+        });
+        legends += '</div>';
+
+        stage.innerHTML = `
+          <div style="display:flex; align-items:center; width:100%; justify-content:center; padding:10px 0;">
+            <svg width="${size}" height="${size}" viewBox="0 0 210 210">
+              ${slices}
+              <text x="${cx}" y="${cy - 4}" font-size="22" font-weight="900" fill="var(--text-primary)" text-anchor="middle">${total}</text>
+              <text x="${cx}" y="${cy + 16}" font-size="11" font-weight="700" fill="var(--text-muted)" text-anchor="middle">TOTAL</text>
+            </svg>
+            ${legends}
+          </div>
+        `;
+      }
+
+      /* ----------------------------------------------------
+       * 3. Maturity Golden Curve Shift & Volume Combo View (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderMaturityCurveChart() {
+        const stage = document.getElementById('maturityCurveStage');
+        if (!stage) return;
+        stage.className = "chart-stage";
+
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        if (dates.length < 2) {
+          stage.innerHTML = '<div style="color:var(--text-muted)">비교 가능한 날짜 데이터가 부족합니다.</div>';
+          return;
+        }
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const w = stage.clientWidth || 800;
+        const h = 340;
+        const padL = 44, padR = 44, padT = 36, padB = 38;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+
+        // Trace 3 main groups & daily volume & S1/S2 counts
+        const dailyData = dates.map((d, idx) => {
+          const x = padL + (plotW / (dates.length - 1)) * idx;
+          let uiCount = 0, fbCount = 0, stCount = 0, s1s2Count = 0, dayTotal = 0;
+
+          activeIssues.filter(i => i.date === d).forEach(i => {
+            const cat = normalizeCategory(i.category);
+            if (cat === 'ui') {
+              uiCount++;
+            } else if (cat === 'core' || cat === 'perf' || cat === 'media') {
+              fbCount++;
+            } else if (cat === 'reliability' || cat === 'auth' || cat === 'db' || cat === 'monetization') {
+              stCount++;
+            }
+            if (i.severity === 'S1' || i.severity === 'S2') {
+              s1s2Count++;
+            }
+            dayTotal++;
+          });
+
+          const uiPct = dayTotal ? (uiCount / dayTotal) * 100 : 0;
+          const fbPct = dayTotal ? (fbCount / dayTotal) * 100 : 0;
+          const stPct = dayTotal ? (stCount / dayTotal) * 100 : 0;
+
+          return {
+            d,
+            idx,
+            x,
+            dayTotal,
+            uiCount,
+            fbCount,
+            stCount,
+            s1s2Count,
+            uiPct,
+            fbPct,
+            stPct,
+            uiY: padT + plotH - (uiPct / 100) * plotH,
+            fbY: padT + plotH - (fbPct / 100) * plotH,
+            stY: padT + plotH - (stPct / 100) * plotH
+          };
+        });
+
+        // Dual-axis volume calculations
+        const maxVolume = Math.max(...dailyData.map(d => d.dayTotal), 10);
+        const volumeCeil = Math.ceil(maxVolume / 20) * 20;
+
+        function makeSmoothPath(pts) {
+          return pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+        }
+
+        // 1. Milestone Range Chips Bar (Top Control - Phase 1 Sprint Milestones)
+        const showMilestones = (currentTrackId === 'phase1' || currentTrackId === 'all');
+        let milestoneHtml = showMilestones ? `
+          <div class="milestone-chips-bar">
+            <button type="button" class="milestone-chip" onclick="window.setAnalyticsFilter('date_range', '2026-08-28|2026-08-31|🌱 1기 구축 (08.28~08.31)')">
+              <span class="m-chip-header">🌱 ${isKo ? '1기: 기초 구축' : 'Phase 1: Foundation'}</span>
+              <span class="m-chip-meta">08.28~08.31 · 128건</span>
+            </button>
+            <button type="button" class="milestone-chip active-peak" onclick="window.setAnalyticsFilter('date_range', '2026-09-01|2026-09-03|🔥 2기 결함 격멸 피크 (09.01~09.03)')">
+              <span class="m-chip-header">🔥 ${isKo ? '2기: 결함 격멸 피크' : 'Phase 2: Bug Annihilation'}</span>
+              <span class="m-chip-meta">09.01~09.03 · 144건 (9/1 98건)</span>
+            </button>
+            <button type="button" class="milestone-chip" onclick="window.setAnalyticsFilter('date_range', '2026-09-04|2026-09-07|🛡️ 3기 시스템·보안 안정화 (09.04~09.07)')">
+              <span class="m-chip-header">🛡️ ${isKo ? '3기: 시스템·보안 안정화' : 'Phase 3: System & Security'}</span>
+              <span class="m-chip-meta">09.04~09.07 · 73건 (OAuth/DB)</span>
+            </button>
+            <button type="button" class="milestone-chip" onclick="window.setAnalyticsFilter('date_range', '2026-09-08|2026-09-10|💎 4기 파이널 폴리싱 (09.08~09.10)')">
+              <span class="m-chip-header">💎 ${isKo ? '4기: 파이널 폴리싱' : 'Phase 4: Final Polish'}</span>
+              <span class="m-chip-meta">09.08~09.10 · 41건 (S1/S2 0건 수렴)</span>
+            </button>
+          </div>
+        ` : '';
+
+        // 2. Pure SVG Dual-Axis Chart
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Percent & Volume Dual Grid
+        [0, 25, 50, 75, 100].forEach((pct, i) => {
+          const y = padT + (plotH / 4) * (4 - i);
+          const volVal = Math.round((volumeCeil / 4) * i);
+          svg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
+          svg += `<text x="${padL - 8}" y="${y + 3}" font-size="10" font-weight="600" fill="var(--text-muted)" text-anchor="end">${pct}%</text>`;
+          svg += `<text x="${w - padR + 8}" y="${y + 3}" font-size="10" font-weight="700" fill="var(--ios-blue)" text-anchor="start">${volVal}건</text>`;
+        });
+
+        // X Labels (Dates)
+        dailyData.forEach(item => {
+          svg += `<text x="${item.x.toFixed(1)}" y="${h - 10}" font-size="11" font-weight="600" fill="var(--text-secondary)" text-anchor="middle">${item.d.slice(5)}</text>`;
+        });
+
+        // Background Volume Bars
+        const barW = Math.max(12, Math.min((plotW / dates.length) * 0.52, 28));
+        dailyData.forEach(item => {
+          const barH = (item.dayTotal / volumeCeil) * plotH;
+          const barY = padT + plotH - barH;
+          const isPeak = item.dayTotal >= 50;
+          const barFill = isPeak ? 'rgba(255, 149, 0, 0.22)' : 'rgba(0, 122, 255, 0.12)';
+          const barStroke = isPeak ? 'rgba(255, 149, 0, 0.65)' : 'rgba(0, 122, 255, 0.25)';
+          svg += `<rect x="${(item.x - barW / 2).toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="3" ry="3"
+            fill="${barFill}" stroke="${barStroke}" stroke-width="1.2"
+            style="cursor:pointer; transition:all 0.18s ease;"
+            onmouseover="window.showChartTip(event, '${item.d}: 총 ${item.dayTotal}건 해결 (S1/S2: ${item.s1s2Count}건) | UI: ${item.uiCount}건, 기능: ${item.fbCount}건, 안정성: ${item.stCount}건')"
+            onmouseout="window.hideChartTip()"
+            onclick="window.setAnalyticsFilter('date', '${item.d}')"
+          />`;
+
+          if (isPeak) {
+            svg += `<text x="${item.x.toFixed(1)}" y="${(barY - 6).toFixed(1)}" font-size="10" font-weight="900" fill="var(--ios-orange)" text-anchor="middle">${item.dayTotal}건 🔥</text>`;
+          } else if (item.dayTotal >= 20) {
+            svg += `<text x="${item.x.toFixed(1)}" y="${(barY - 5).toFixed(1)}" font-size="9" font-weight="700" fill="var(--text-muted)" text-anchor="middle">${item.dayTotal}</text>`;
+          }
+        });
+
+        // Foreground 3-Phase Lifecycle Curves
+        const lines = [
+          { name: isKo ? '🎨 UI & 디자인 (초기 집중)' : '🎨 UI & Design (Early Focus)', color: 'var(--ios-blue)', pts: dailyData.map(d => ({ x: d.x, y: d.uiY, val: d.uiPct, cnt: d.uiCount })) },
+          { name: isKo ? '🚀 기능 & 버그 (중기 피크)' : '🚀 Features & Bugs (Mid Peak)', color: 'var(--ios-orange)', pts: dailyData.map(d => ({ x: d.x, y: d.fbY, val: d.fbPct, cnt: d.fbCount })) },
+          { name: isKo ? '🛡️ 시스템 안정성·보안 (후기 급상승)' : '🛡️ Stability & Security (Late Surge)', color: 'var(--ios-green)', pts: dailyData.map(d => ({ x: d.x, y: d.stY, val: d.stPct, cnt: d.stCount })) }
+        ];
+
+        lines.forEach(l => {
+          svg += `<path d="${makeSmoothPath(l.pts)}" fill="none" stroke="${l.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`;
+          l.pts.forEach((p, idx) => {
+            const d = dailyData[idx];
+            svg += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${l.color}" stroke="var(--bg-surface)" stroke-width="2" style="cursor:pointer;"
+              onmouseover="window.showChartTip(event, '${l.name} (${d.d}): ${Math.round(p.val)}% (${p.cnt}건) | 당일 전체: ${d.dayTotal}건')"
+              onmouseout="window.hideChartTip()"
+              onclick="window.setAnalyticsFilter('date', '${d.d}')"
+            />`;
+          });
+        });
+
+        svg += '</svg>';
+
+        // 3. Bottom Legend (Combined Bar & Line chips)
+        let legend = '<div class="chart-legend-wrap">';
+        legend += `
+          <div class="legend-chip" style="cursor:default;">
+            <span class="legend-indicator" style="background:rgba(0,122,255,0.25); border:1px solid rgba(0,122,255,0.6);"></span>
+            <span>${isKo ? '📊 일일 볼륨 막대 (우측 Y축)' : '📊 Daily Volume Bar (Right Y-Axis)'}</span>
+          </div>
+          <div class="legend-chip" style="cursor:default;">
+            <span class="legend-indicator" style="background:rgba(255,149,0,0.35); border:1px solid rgba(255,149,0,0.8);"></span>
+            <span>${isKo ? '🔥 피크 데이 (≥50건 집중 해결)' : '🔥 Peak Days (≥50 items)'}</span>
+          </div>
+        `;
+        lines.forEach(l => {
+          legend += `
+            <div class="legend-chip" style="cursor:default;">
+              <span class="legend-line-indicator" style="background:${l.color};"></span>
+              <span>${l.name}</span>
+            </div>
+          `;
+        });
+        legend += '</div>';
+
+        stage.innerHTML = milestoneHtml + svg + legend;
+      }
+
+      /* ----------------------------------------------------
+       * 4. Hexagonal Quality Radar Index (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderRadarChart() {
+        const stage = document.getElementById('radarStage');
+        if (!stage) return;
+
+        const total = activeIssues.length;
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const metrics = [
+          { label: isKo ? 'UI / 디자인' : 'UI & Polish', count: 0, target: 80 },
+          { label: isKo ? '코어 기능성' : 'Functionality', count: 0, target: 50 },
+          { label: isKo ? '시스템 안정성' : 'Reliability', count: 0, target: 25 },
+          { label: isKo ? '성능 & 최적화' : 'Performance', count: 0, target: 12 },
+          { label: isKo ? '보안 & 인증' : 'Security & Auth', count: 0, target: 8 },
+          { label: isKo ? '데이터 & 저장소' : 'Database & Storage', count: 0, target: 12 }
+        ];
+
+        activeIssues.forEach(i => {
+          const cat = normalizeCategory(i.category);
+          if (cat === 'ui') metrics[0].count++;
+          else if (cat === 'core' || cat === 'media') metrics[1].count++;
+          else if (cat === 'reliability') metrics[2].count++;
+          else if (cat === 'perf') metrics[3].count++;
+          else if (cat === 'auth') metrics[4].count++;
+          else if (cat === 'db' || cat === 'monetization') metrics[5].count++;
+        });
+
+        const size = 320;
+        const cx = 160, cy = 160, maxR = 100;
+        const sides = 6;
+        const angleStep = (2 * Math.PI) / sides;
+        const scale = total > 50 ? 1.0 : (total > 0 ? total / 50 : 0);
+
+        let svg = `<svg viewBox="0 0 ${size} ${size}" style="width:100%; max-width:350px; height:auto; margin:0 auto; display:block;">`;
+
+        // Background Web
+        [0.25, 0.5, 0.75, 1.0].forEach(level => {
+          const r = maxR * level;
+          let polyPts = [];
+          for (let i = 0; i < sides; i++) {
+            const a = i * angleStep - Math.PI / 2;
+            polyPts.push(`${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`);
+          }
+          svg += `<polygon points="${polyPts.join(' ')}" fill="none" stroke="var(--border-subtle)" stroke-width="1.2"/>`;
+        });
+
+        // Axes & Labels
+        let dataPoints = [];
+        for (let i = 0; i < sides; i++) {
+          const a = i * angleStep - Math.PI / 2;
+          const lx = cx + (maxR + 28) * Math.cos(a);
+          const ly = cy + (maxR + 20) * Math.sin(a);
+          svg += `<line x1="${cx}" y1="${cy}" x2="${cx + maxR * Math.cos(a)}" y2="${cy + maxR * Math.sin(a)}" stroke="var(--border-subtle)" />`;
+          svg += `<text x="${lx}" y="${ly}" font-size="11" font-weight="700" fill="var(--text-secondary)" text-anchor="middle" dominant-baseline="middle">${metrics[i].label}</text>`;
+
+          // Domain benchmark normalized score (0 ~ 100%)
+          const target = Math.max(Math.round(metrics[i].target * scale), 1);
+          const score = total > 0 ? Math.min(metrics[i].count / target, 1.0) : 0;
+          const r = total > 0 ? Math.max(score * maxR, 16) : 0;
+          dataPoints.push({ x: cx + r * Math.cos(a), y: cy + r * Math.sin(a), count: metrics[i].count, score, label: metrics[i].label });
+        }
+
+        // Radar Data Polygon
+        const polyData = dataPoints.map(p => `${p.x},${p.y}`).join(' ');
+        svg += `<polygon points="${polyData}" fill="rgba(0, 122, 255, 0.22)" stroke="var(--ios-blue)" stroke-width="2.5"/>`;
+
+        // Data Points
+        dataPoints.forEach(p => {
+          const pct = Math.round(p.score * 100);
+          const tipText = isKo ? `${p.label}: ${p.count}건 (품질 지수 ${pct}%)` : `${p.label}: ${p.count} items (Index ${pct}%)`;
+          svg += `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="var(--ios-blue)" stroke="#FFF" stroke-width="2" style="cursor:pointer;"
+            onmouseover="window.showChartTip(event, '${tipText}')"
+            onmouseout="window.hideChartTip()"
+          />`;
+        });
+
+        svg += '</svg>';
+        stage.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; padding:8px 0;">
+            ${svg}
+          </div>
+        `;
+      }
+
+      /* ----------------------------------------------------
+       * 5. Top 10 Hotspot Modules (Pure SVG / HTML)
+       * ---------------------------------------------------- */
+      function renderHotspotChart() {
+        const stage = document.getElementById('hotspotStage');
+        if (!stage) return;
+
+        const fileFreq = {};
+        activeIssues.forEach(i => {
+          (i.files || []).forEach(f => {
+            const clean = f.replace(/ \(DELETED\)/, '');
+            fileFreq[clean] = (fileFreq[clean] || 0) + 1;
+          });
+        });
+
+        const sorted = Object.entries(fileFreq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+        if (sorted.length === 0) {
+          stage.innerHTML = '<div style="color:var(--text-muted)">파일 경로 데이터가 없습니다.</div>';
+          return;
+        }
+
+        const maxCount = sorted[0][1] || 1;
+        let html = '<div style="width:100%; display:flex; flex-direction:column; gap:10px; padding:6px 0;">';
+
+        sorted.forEach(([file, cnt], idx) => {
+          const shortName = file.split('/').pop();
+          const pct = Math.round((cnt / maxCount) * 100);
+          html += `
+            <div style="display:flex; flex-direction:column; gap:4px; cursor:pointer;" onclick="window.setAnalyticsFilter('file', '${shortName}')">
+              <div style="display:flex; justify-content:space-between; font-size:11.5px;">
+                <span style="font-weight:700; color:var(--text-primary);">${idx + 1}. ${shortName} <small style="color:var(--text-muted); font-weight:normal;">(${file})</small></span>
+                <span style="font-weight:800; color:var(--ios-blue); font-family:var(--font-mono);">${cnt}회</span>
+              </div>
+              <div style="width:100%; height:7px; background:var(--bg-subtle); border-radius:999px; overflow:hidden;">
+                <div style="width:${pct}%; height:100%; background:linear-gradient(90deg, var(--ios-blue), var(--ios-purple)); border-radius:999px;"></div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        stage.innerHTML = html;
+      }
+
+      /* ----------------------------------------------------
+       * 6. Cumulative Velocity & Resolution S-Curve (Pure SVG)
+       * ---------------------------------------------------- */
+      function renderBurndownChart() {
+        const stage = document.getElementById('burndownStage');
+        if (!stage) return;
+        stage.className = "chart-stage";
+
+        const dates = [...new Set(activeIssues.map(i => i.date))].filter(Boolean).sort();
+        if (dates.length < 2) {
+          stage.innerHTML = '<div style="color:var(--text-muted)">추이 데이터가 부족합니다.</div>';
+          return;
+        }
+
+        const w = stage.clientWidth || 600;
+        const h = 300;
+        const padL = 42, padR = 24, padT = 24, padB = 36;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+
+        let accum = 0;
+        const points = [];
+        dates.forEach((d, idx) => {
+          const count = activeIssues.filter(i => i.date === d).length;
+          accum += count;
+          points.push({ d, count, accum });
+        });
+
+        const total = accum || 1;
+        const coords = points.map((p, idx) => {
+          const x = padL + (plotW / (dates.length - 1)) * idx;
+          const y = padT + plotH - (p.accum / total) * plotH;
+          return { x, y, ...p };
+        });
+
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Area under curve
+        const areaPath = `M ${coords[0].x} ${padT + plotH} ` + coords.map(c => `L ${c.x} ${c.y}`).join(' ') + ` L ${coords[coords.length - 1].x} ${padT + plotH} Z`;
+        svg += `<path d="${areaPath}" fill="rgba(52, 199, 89, 0.14)" />`;
+
+        // Curve line
+        const linePath = coords.map((c, i) => `${i === 0 ? 'M' : 'L'} ${c.x} ${c.y}`).join(' ');
+        svg += `<path d="${linePath}" fill="none" stroke="var(--ios-green)" stroke-width="3" stroke-linecap="round" />`;
+
+        // Points
+        coords.forEach(c => {
+          svg += `<circle cx="${c.x}" cy="${c.y}" r="4.5" fill="var(--ios-green)" stroke="#FFF" stroke-width="2" style="cursor:pointer;"
+            onmouseover="window.showChartTip(event, '${c.d}: 당일 ${c.count}건 (누적 ${c.accum}건)')"
+            onmouseout="window.hideChartTip()"
+            onclick="window.setAnalyticsFilter('date', '${c.d}')"
+          />`;
+          // X label
+          svg += `<text x="${c.x}" y="${h - 10}" font-size="11" font-weight="600" fill="var(--text-secondary)" text-anchor="middle">${c.d.slice(5)}</text>`;
+        });
+
+        // Final target badge
+        const last = coords[coords.length - 1];
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        svg += `<text x="${last.x}" y="${last.y - 12}" font-size="12" font-weight="900" fill="var(--ios-green)" text-anchor="end">${isKo ? `100% 완료 (${total}건)` : `100% Resolved (${total} items)`}</text>`;
+
+        svg += '</svg>';
+        stage.innerHTML = svg;
+      }
+
+      /* ----------------------------------------------------
+       * Interactive Drilldown Inspector
+       * ---------------------------------------------------- */
+      window.setAnalyticsFilter = function (type, val) {
+        selectedFilter = { type, value: val };
+        renderDrilldown();
+        // Scroll to drilldown section
+        const el = document.getElementById('drilldownSection');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      };
+
+      function renderDrilldown() {
+        const container = document.getElementById('drilldownList');
+        const tag = document.getElementById('drilldownTag');
+        if (!container || !tag) return;
+
+        let filtered = [...activeIssues];
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const unit = isKo ? '건' : ' items';
+        let phaseBannerHtml = '';
+        if (selectedFilter.type === 'category') {
+          filtered = filtered.filter(i => normalizeCategory(i.category) === selectedFilter.value);
+          tag.textContent = `${isKo ? '카테고리' : 'Category'}: ${CAT_LABELS[selectedFilter.value]} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'severity') {
+          filtered = filtered.filter(i => (i.severity || 'S3') === selectedFilter.value);
+          tag.textContent = `${isKo ? '위험도' : 'Severity'}: ${SEV_LABELS[selectedFilter.value]} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'date') {
+          filtered = filtered.filter(i => i.date === selectedFilter.value);
+          tag.textContent = `${isKo ? '날짜' : 'Date'}: ${selectedFilter.value} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'date_range') {
+          const parts = selectedFilter.value.split('|');
+          const start = parts[0];
+          const end = parts[1];
+          const label = parts[2] || `${start} ~ ${end}`;
+          filtered = filtered.filter(i => i.date >= start && i.date <= end);
+          tag.textContent = `${label} (${filtered.length}${unit})`;
+
+          // Phase statistics calculation
+          let s1s2 = 0, ui = 0, core = 0, st = 0;
+          filtered.forEach(i => {
+            if (i.severity === 'S1' || i.severity === 'S2') s1s2++;
+            const cat = normalizeCategory(i.category);
+            if (cat === 'ui') ui++;
+            else if (cat === 'core' || cat === 'perf' || cat === 'media') core++;
+            else st++;
+          });
+          const uiPct = filtered.length ? Math.round((ui / filtered.length) * 100) : 0;
+          const corePct = filtered.length ? Math.round((core / filtered.length) * 100) : 0;
+          const stPct = filtered.length ? Math.round((st / filtered.length) * 100) : 0;
+
+          let highlightNote = '';
+          if (start >= '2026-09-08') {
+            highlightNote = isKo
+              ? '✨ <strong>안정기 특성</strong>: 치명적 결함(S1/S2) 0건 달성! 마지막 안정기에는 UI 마이크로 폴리싱(48.8%) 및 사운드/햅틱 연동, 엣지 예외 가드에 집중되었습니다.'
+              : '✨ <strong>Stabilization Phase</strong>: Zero S1/S2 critical bugs! Efforts concentrated on UI micro-polish (48.8%), sound/haptics, and safety guards.';
+          } else if (start === '2026-09-01') {
+            highlightNote = isKo
+              ? '🔥 <strong>피크기 특성</strong>: 9월 1일 하루 98건(치명도 39건) 집중 격멸! 전 생애주기 중 가장 치열했던 핵심 결함 소탕 구간입니다.'
+              : '🔥 <strong>Peak Annihilation</strong>: Peak day resolved 98 issues (39 S1/S2) on Sep 1 alone, eliminating core blockers.';
+          } else if (start.endsWith('08-28')) {
+            highlightNote = isKo
+              ? '🌱 <strong>기초 구축기 특성</strong>: UI 컴포넌트 신설 및 기초 디자인 시스템 셋업 위주로 진행된 초기 개발 단계입니다.'
+              : '🌱 <strong>Foundation Phase</strong>: Focused on initial UI component layout and design system setup.';
+          } else {
+            highlightNote = isKo
+              ? '🛡️ <strong>시스템 안정화기 특성</strong>: Google Drive OAuth, SQLite 스토리지 및 무결성 보안 아키텍처를 전면 확립한 구간입니다.'
+              : '🛡️ <strong>System Hardening Phase</strong>: Hardened Google Drive OAuth, SQLite storage, and integrity security architecture.';
+          }
+
+          const bannerBorderColor = start >= '2026-09-08' ? 'var(--ios-green)' : (start === '2026-09-01' ? 'var(--ios-orange)' : 'var(--ios-blue)');
+
+          phaseBannerHtml = `
+            <div class="phase-drilldown-banner" style="border-left-color:${bannerBorderColor};">
+              <div style="font-weight:800; font-size:13px; color:var(--text-primary); margin-bottom:4px;">
+                ${label} ${isKo ? '구간 정밀 분석' : 'Phase Deep Analysis'}
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:12px; font-size:11.5px; color:var(--text-secondary); margin-bottom:6px;">
+                <span>📊 ${isKo ? '총 해결' : 'Resolved'}: <strong>${filtered.length}${unit}</strong></span>
+                <span>🚨 S1/S2 ${isKo ? '치명결함' : 'Critical'}: <strong style="color:${s1s2 === 0 ? 'var(--ios-green)' : 'var(--ios-red)'};">${s1s2}건 ${s1s2 === 0 ? (isKo ? '✅ (완전 소멸)' : '✅ (Zero)') : ''}</strong></span>
+                <span>🎨 UI: <strong>${ui}건 (${uiPct}%)</strong></span>
+                <span>🚀 ${isKo ? '기능' : 'Core'}: <strong>${core}건 (${corePct}%)</strong></span>
+                <span>🛡️ ${isKo ? '시스템' : 'System'}: <strong>${st}건 (${stPct}%)</strong></span>
+              </div>
+              <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;">
+                ${highlightNote}
+              </div>
+            </div>
+          `;
+        } else if (selectedFilter.type === 'date_cat') {
+          const [d, c] = selectedFilter.value.split('_');
+          filtered = filtered.filter(i => i.date === d && normalizeCategory(i.category) === c);
+          tag.textContent = `${d} / ${CAT_LABELS[c]} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'date_sev') {
+          const [d, s] = selectedFilter.value.split('_');
+          filtered = filtered.filter(i => i.date === d && (i.severity || 'S3') === s);
+          tag.textContent = `${d} / ${SEV_LABELS[s]} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'file') {
+          filtered = filtered.filter(i => (i.files || []).some(f => f.includes(selectedFilter.value)));
+          tag.textContent = `${isKo ? '파일명' : 'File'}: ${selectedFilter.value} (${filtered.length}${unit})`;
+        } else {
+          tag.textContent = isKo ? `전체 이슈 (${filtered.length}건)` : `All Issues (${filtered.length} items)`;
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted)">일치하는 이슈가 없습니다.</div>';
+          return;
+        }
+
+        // Show latest 30 filtered items
+        const cardsHtml = filtered.slice(0, 30).map(i => {
+          const cat = normalizeCategory(i.category);
+          const sev = i.severity || 'S3';
+          return `
+            <div class="issue-mini-card">
+              <div class="issue-mini-top">
+                <span class="issue-badge-id">#${i.id}</span>
+                <span class="issue-cat-chip" style="color:${SEV_COLORS[sev]}; background:rgba(255,59,48,0.08); font-weight:800;">${i.severityLabel || SEV_LABELS[sev]}</span>
+                <span class="issue-cat-chip" style="color:${CAT_COLORS[cat]}; background:rgba(0,122,255,0.08);">${i.categoryLabel || CAT_LABELS[cat]}</span>
+                <span style="color:var(--text-muted); font-size:11px;">${i.date || ''}</span>
+              </div>
+              <div class="issue-mini-title">${i.title}</div>
+              <div class="issue-mini-solution">${i.solution || i.problem || ''}</div>
+            </div>
+          `;
+        }).join('');
+        container.innerHTML = phaseBannerHtml + cardsHtml;
+      }
+
+      window.showChartTip = showTooltip;
+      window.hideChartTip = hideTooltip;
+
+      // Dynamic Language Change Listener
+      window.onQaLanguageChanged = function () {
+        if (window.QA_I18N && window.QA_I18N.applyTranslations) {
+          window.QA_I18N.applyTranslations();
+        }
+        renderPhaseTabs();
+        updateKPIs();
+        renderAutoInsights();
+        renderVocExecutiveCard();
+        renderAllCharts();
+        renderDrilldown();
+      };
+
+      // Real-time Responsive Resize Listener
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          renderAllCharts();
+        }, 120);
+      });
+
+      // ESC key handler for Severity Guide Modal
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          const guideModal = document.getElementById('severityGuideModal');
+          if (guideModal && guideModal.classList.contains('active')) {
+            toggleSeverityGuideModal(false);
+          }
+        }
+      });
+
+      // Overlay click listener
+      const guideModal = document.getElementById('severityGuideModal');
+      if (guideModal) {
+        guideModal.addEventListener('click', e => {
+          if (e.target === guideModal) {
+            toggleSeverityGuideModal(false);
+          }
+        });
+      }
+
+      // Start on DOM Ready
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+
+  <!-- IEEE 1044 Severity Guide Modal Dialog -->
+  <div class="guide-modal-overlay" id="severityGuideModal" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle" aria-hidden="true">
+    <div class="guide-modal-card">
+      <div class="guide-modal-header">
+        <div class="guide-modal-title-wrap">
+          <h2 class="guide-modal-title" id="guideModalTitle" data-i18n="modalGuideTitle">🚨 IEEE 1044 / ISTQB Software Severity Standards</h2>
+          <div class="guide-modal-subtitle" data-i18n="modalGuideSubtitle">Standard criteria for classifying issue criticality and SLA response priority.</div>
+        </div>
+        <button class="guide-modal-close-btn" onclick="toggleSeverityGuideModal(false)" aria-label="Close" title="Close (Esc)">✕</button>
+      </div>
+      <div class="guide-modal-body">
+        <!-- S1 Blocker -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S1">🚨 S1 Blocker</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS1Badge">Immediate Fix (P0)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS1Title">S1 Blocker (Showstopper)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS1Desc">App crash, infinite freezing/deadlock, data loss/corruption, payment failure, or app store review rejection. Critical user journeys are completely blocked with zero workarounds.</div>
+          </div>
+        </div>
+
+        <!-- S2 Critical -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S2">🔥 S2 Critical</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS2Badge">Urgent Fix (P1)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS2Title">S2 Critical (Severe Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS2Desc">Core business logic defect, cloud sync loss, notification/permission failure, or significant feature breakdown without a viable workaround.</div>
+          </div>
+        </div>
+
+        <!-- S3 Major -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S3">⚡ S3 Major</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS3Badge">Sprint Priority (P2)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS3Title">S3 Major (Standard Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS3Desc">General feature bug or edge case error where a reasonable workaround exists. State sync delays or abnormal gesture responses.</div>
+          </div>
+        </div>
+
+        <!-- S4 Minor -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S4">🌱 S4 Minor</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS4Badge">Polishing (P3)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS4Title">S4 Minor (Cosmetic Defect)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS4Desc">UI padding/alignment deviations, dark mode contrast issues, typos, or minor text overflow/clipping without functional impact.</div>
+          </div>
+        </div>
+
+        <!-- S5 Trivial -->
+        <div class="guide-modal-row">
+          <div class="guide-badge-col">
+            <span class="sev-badge sev-S5">☕ S5 Trivial</span>
+            <span class="guide-sla-tag" data-i18n="sevGuideS5Badge">Maintenance (P4)</span>
+          </div>
+          <div class="guide-text-col">
+            <div class="guide-text-title" data-i18n="sevGuideS5Title">S5 Trivial (Refactor / Hygiene)</div>
+            <div class="guide-text-desc" data-i18n="sevGuideS5Desc">Code readability refactoring, unused variable cleanup, 400-line modularization, and architectural governance for maintainability.</div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-modal-footer">
+        <div class="guide-footer-tip" data-i18n="sevGuideTip">💡 Tip: When registering via CLI (add_issue.py), severity is automatically inferred if --severity is omitted.</div>
+        <button class="guide-btn-gotit" onclick="toggleSeverityGuideModal(false)" data-i18n="modalGuideGotIt">Understood</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

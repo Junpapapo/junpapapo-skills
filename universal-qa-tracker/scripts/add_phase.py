@@ -59,7 +59,7 @@ def inject_script_tag(html_path, script_tag):
         return True  # Already injected
 
     # Insert right before data/qa_manifest.js
-    pattern = re.compile(r'([ \t]*<script\s+src=["\']data/qa_manifest\.js["\']><\/script>)')
+    pattern = re.compile(r'([ \t]*<script\s+src=["\']data/qa_manifest\.js(?:\?[^"\']*)?["\']><\/script>)')
     match = pattern.search(html)
     if match:
         indent = match.group(0)[:len(match.group(0)) - len(match.group(0).lstrip())]
@@ -168,16 +168,25 @@ window.UNIVERSAL_QA.DATA["{phase_clean}"] = [
     # 3. Inject script tags into HTML files
     script_tag = f'<script src="data/{data_filename}"></script>'
     spreadsheet_path = os.path.join(tracker_dir, "qa_spreadsheet.html")
+    analytics_path = os.path.join(tracker_dir, "qa_analytics_dashboard.html")
     dashboard_path = os.path.join(tracker_dir, "qa_dashboard.html")
 
-    inject_script_tag(spreadsheet_path, script_tag)
-    inject_script_tag(dashboard_path, script_tag)
+    updated_views = []
+    if os.path.exists(spreadsheet_path):
+        if inject_script_tag(spreadsheet_path, script_tag):
+            updated_views.append("qa_spreadsheet.html")
+    if os.path.exists(analytics_path):
+        if inject_script_tag(analytics_path, script_tag):
+            updated_views.append("qa_analytics_dashboard.html")
+    if os.path.exists(dashboard_path):
+        if inject_script_tag(dashboard_path, script_tag):
+            updated_views.append("qa_dashboard.html")
 
     print(f"\n[SUCCESS] New QA Track '{phase_clean}' successfully created & registered!")
     print(f" - Data file: data/{data_filename}")
     print(f" - Label: {phase_label}")
     print(f" - Badge: {phase_badge}")
-    print(f" - Views updated: qa_spreadsheet.html, qa_dashboard.html")
+    print(f" - Views updated: {', '.join(updated_views) if updated_views else 'None'}")
 
 if __name__ == "__main__":
     main()

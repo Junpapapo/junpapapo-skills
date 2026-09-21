@@ -3,39 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="portalTitle">Universal QA Intelligence & Tracker Portal</title>
+  <title>Modo QA Intelligence &amp; Master Launchpad</title>
   <style>
     :root {
-      --bg-primary: #F8F9FA;
-      --bg-surface: #FFFFFF;
-      --bg-subtle: #F1F3F5;
-      --bg-hover: #E9ECEF;
-      --text-primary: #212529;
-      --text-secondary: #495057;
-      --text-muted: #868E96;
-      --border: #DEE2E6;
-      --accent: #E0533C;
-      --accent-blue: #228BE6;
-      --accent-green: #2B8A3E;
-      --accent-purple: #7950F2;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --radius-md: 12px;
+      --bg-primary: #F2F2F7;
+      --bg-surface: rgba(255, 255, 255, 0.85);
+      --bg-surface-solid: #FFFFFF;
+      --bg-subtle: #F2F2F7;
+      --bg-hover: #E5E5EA;
+      --text-primary: #1C1C1E;
+      --text-secondary: #48484A;
+      --text-muted: #8E8E93;
+      --border: rgba(60, 60, 67, 0.12);
+      --border-subtle: rgba(60, 60, 67, 0.06);
+      --accent-blue: #007AFF;
+      --accent-purple: #5856D6;
+      --accent-green: #34C759;
+      --accent-orange: #FF9500;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      --card-hover-shadow: 0 16px 36px rgba(0, 122, 255, 0.12);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "SF Pro Display", sans-serif;
+      --font-mono: "SF Mono", Menlo, Consolas, monospace;
     }
+
     [data-theme="dark"] {
-      --bg-primary: #121214;
-      --bg-surface: #1A1A1E;
-      --bg-subtle: #242429;
-      --bg-hover: #2C2C33;
-      --text-primary: #ECECF1;
-      --text-secondary: #A6A7AB;
-      --text-muted: #6C6D71;
-      --border: #2E2E35;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --bg-primary: #0A0A0C;
+      --bg-surface: rgba(28, 28, 30, 0.85);
+      --bg-surface-solid: #1C1C1E;
+      --bg-subtle: #2C2C2E;
+      --bg-hover: #3A3A3C;
+      --text-primary: #FFFFFF;
+      --text-secondary: #EBEBF5;
+      --text-muted: #8E8E93;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --accent-blue: #0A84FF;
+      --accent-purple: #5E5CE6;
+      --accent-green: #30D158;
+      --accent-orange: #FF9F0A;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --card-hover-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
     body {
       background: var(--bg-primary);
       color: var(--text-primary);
@@ -43,146 +53,652 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      line-height: 1.45;
+    }
+
+    /* Apple Global Glassmorphic Header */
+    .apple-global-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 48px;
+      background: var(--bg-surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-brand-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #007AFF, #5856D6);
+      color: #FFF;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      font-weight: 900;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
     }
-    .portal-card {
-      background: var(--bg-surface);
+    .nav-brand-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+    .nav-hub-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      background: rgba(0, 122, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: var(--bg-subtle);
       border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
-      max-width: 760px;
-      width: 100%;
-      padding: 36px 32px;
-      text-align: center;
+      color: var(--text-primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
     }
-    .portal-badge {
-      display: inline-block;
+    .nav-btn:hover {
+      background: var(--bg-hover);
+    }
+    .nav-btn-icon {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-icon:hover {
+      background: var(--bg-hover);
+    }
+    .settings-menu-container {
+      position: relative;
+    }
+    .settings-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: var(--bg-surface-solid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 2000;
+      animation: popoverFade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .settings-popover.open {
+      display: flex;
+    }
+    @keyframes popoverFade {
+      from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .popover-section-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 4px;
+    }
+    .popover-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .popover-btn {
+      padding: 3px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .popover-btn:hover {
+      background: var(--bg-hover);
+    }
+    .popover-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 2px 0;
+    }
+    .popover-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      padding: 5px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .popover-link-row:hover {
+      background: var(--bg-hover);
+      color: var(--accent-blue);
+    }
+
+    /* Main Hub Container */
+    .hub-container {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Hero Section */
+    .hero-wrap {
+      text-align: center;
+      margin-bottom: 28px;
+      max-width: 680px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 4px 12px;
       border-radius: 999px;
-      background: rgba(121, 80, 242, 0.12);
-      color: var(--accent-purple);
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--accent-blue);
       font-size: 12px;
       font-weight: 700;
       margin-bottom: 12px;
     }
-    .portal-h1 {
-      font-size: 24px;
+    .hero-title {
+      font-size: 32px;
       font-weight: 800;
+      letter-spacing: -0.8px;
       margin-bottom: 8px;
+      background: linear-gradient(180deg, var(--text-primary) 30%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .portal-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-    .grid-links {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      text-align: left;
-    }
-    .hub-link-item {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 20px;
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .hub-link-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent-blue);
-      box-shadow: var(--shadow-sm);
-    }
-    .hub-link-title {
-      font-size: 16px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .hub-link-desc {
-      font-size: 12.5px;
+    .hero-subtitle {
+      font-size: 14.5px;
       color: var(--text-secondary);
       line-height: 1.5;
     }
-    .top-controls {
+
+    /* Realtime Telemetry Bar */
+    .telemetry-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 28px;
+    }
+    .telemetry-card {
+      background: var(--bg-surface-solid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
       display: flex;
-      gap: 8px;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s ease;
+    }
+    .telemetry-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+    .telemetry-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .telemetry-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+    }
+    .telemetry-icon {
+      font-size: 22px;
+      opacity: 0.85;
+    }
+
+    /* 4-Card Apple Portal Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+    .portal-card {
+      background: var(--bg-surface-solid);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-hover-shadow);
+      border-color: var(--card-accent, var(--accent-blue));
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .card-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      background: var(--card-accent-bg, rgba(0, 122, 255, 0.1));
+      padding: 5px;
+      box-sizing: border-box;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .portal-card:hover .card-icon-wrap {
+      transform: scale(1.1) rotate(-3deg);
+    }
+    .portal-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.12));
+    }
+    .telemetry-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+    }
+    .card-text-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+    .card-tagline {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--card-accent, var(--accent-blue));
+    }
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
       margin-bottom: 16px;
     }
-    .ctrl-btn {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 12px;
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .card-meta-tag {
+      font-size: 11px;
       font-weight: 600;
-      cursor: pointer;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .card-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--card-accent, var(--accent-blue));
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.15s ease;
+    }
+    .portal-card:hover .card-cta {
+      transform: translateX(3px);
+    }
+
+    /* Footer */
+    .hub-footer {
+      margin-top: 40px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-align: center;
     }
   </style>
-  <script src="js/qa_i18n.js"></script>
 </head>
 <body>
 
-  <div style="max-width: 760px; width: 100%;">
-    <div class="top-controls">
-      <button class="ctrl-btn" id="langToggleBtn">🌐 EN</button>
-      <button class="ctrl-btn" id="themeToggleBtn">🌓 Theme</button>
+  <!-- Apple Global Glassmorphic Header -->
+  <header class="apple-global-nav">
+    <div class="nav-left">
+      <div class="nav-brand-icon">M</div>
+      <span class="nav-brand-title">Modo QA Studio</span>
+      <span class="nav-hub-tag">Executive Hub</span>
+      <button type="button" class="nav-memo-btn" onclick="window.QA_MEMO ? window.QA_MEMO.toggle() : null" title="임시 메모장 / Scratchpad" style="margin-left:8px;"><span data-i18n="navMemo">📝 메모</span></button>
     </div>
-
-    <div class="portal-card">
-      <span class="portal-badge">UNIVERSAL QA SYSTEM</span>
-      <h1 class="portal-h1" data-i18n="portalTitle">QA Intelligence & Tracker Portal</h1>
-      <p class="portal-desc" data-i18n="portalSubtitle">Verified Issue Tracking Dataset & Phase Analytics System</p>
-
-      <div class="grid-links">
-        <a href="qa_spreadsheet.html" class="hub-link-item">
-          <div>
-            <div class="hub-link-title" style="color: var(--accent-blue);">
-              <span>📋</span> <span data-i18n="portalSheetTitle">Master Spreadsheet</span>
-            </div>
-            <div class="hub-link-desc" data-i18n="portalSheetDesc">
-              Full issue inspection table, multi-dimensional filters, bookmarks, and real-time search.
-            </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="window.QA_I18N.toggleLang()" title="언어 변경 / Switch Language">🌐 <span id="hubLangLabel">EN</span></button>
+      <button class="nav-btn" onclick="toggleTheme()" title="테마 변경">🌓 테마</button>
+      
+      <!-- Settings Dropdown Container -->
+      <div class="settings-menu-container">
+        <button class="nav-btn-icon" id="btnSettingsMenu" onclick="window.toggleSettingsPopover()" title="설정 및 도구">⚙️</button>
+        
+        <!-- Apple Frosted Settings Popover Card -->
+        <div class="settings-popover" id="settingsPopover">
+          <div class="popover-section-title">앱 &amp; 공식 스토어</div>
+          <div class="popover-row">
+            <span>앱 정보 &amp; 스토어 링크</span>
+            <button class="popover-btn" onclick="window.openAppProfileModal()">📱 상세 정보 ↗</button>
           </div>
-          <div style="margin-top: 16px; font-weight: 700; color: var(--accent-blue); font-size: 12.5px;">Open Spreadsheet ➔</div>
-        </a>
 
-        <a href="qa_dashboard.html" class="hub-link-item">
-          <div>
-            <div class="hub-link-title" style="color: var(--accent-purple);">
-              <span>📊</span> <span data-i18n="portalVisualTitle">Visual Analytics Dashboard</span>
-            </div>
-            <div class="hub-link-desc" data-i18n="portalVisualDesc">
-              Time-series resolution stack, quality radar, category breakdowns, and file hotspots.
-            </div>
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">데이터 &amp; 연동</div>
+          <div class="popover-row">
+            <span>구글 스프레드시트</span>
+            <button class="popover-btn" onclick="openGoogleSheet()">📊 열기 ↗</button>
           </div>
-          <div style="margin-top: 16px; font-weight: 700; color: var(--accent-purple); font-size: 12.5px;">Open Analytics ➔</div>
-        </a>
+
+          <div class="popover-divider"></div>
+          <div class="popover-section-title">문서 &amp; 가이드</div>
+          <a href="google_sheets_voc_setup_guide.html" class="popover-link-row">
+            <span>📖 구글 시트 연동 가이드</span>
+            <span class="popover-arrow">↗</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </div>
 
+      <!-- Official Website Direct Link Button -->
+      <button class="nav-btn-icon" id="btnOfficialWeb" onclick="window.openOfficialWebsite()" data-i18n-title="officialWebBtnTitle" title="공식 웹사이트 바로가기 / Official Website" aria-label="Official Website">🌐</button>
+    </div>
+  </header>
+
+  <!-- Hub Main Container -->
+  <main class="hub-container">
+
+    <!-- Hero Header -->
+    <section class="hero-wrap">
+      <div class="hero-badge">✨ Modo Universal QA &amp; VOC Intelligence</div>
+      <h1 class="hero-title" data-i18n="portalTitle">QA Intelligence &amp; Tracker Portal</h1>
+      <p class="hero-subtitle" data-i18n="portalSubtitle">검증 완료된 품질 결함 데이터셋, Phase별 시각화 트렌드 및 실시간 고객 피드백 응대 시스템</p>
+    </section>
+
+    <!-- Realtime Telemetry Metric Strip -->
+    <section class="telemetry-row">
+      <div class="telemetry-card">
+        <div>
+          <div class="telemetry-label">총 검증 결함 (Phase 1)</div>
+          <div class="telemetry-val" style="color:var(--accent-blue);" id="hubTotalIssues">354건</div>
+        </div>
+        <div class="telemetry-icon"><img src="assets/icons/icon_shield.webp" class="telemetry-img" alt="Phase 1" /></div>
+      </div>
+      <div class="telemetry-card">
+        <div>
+          <div class="telemetry-label">품질 해결율</div>
+          <div class="telemetry-val" style="color:var(--accent-green);">100.0%</div>
+        </div>
+        <div class="telemetry-icon"><img src="assets/icons/icon_trophy.webp" class="telemetry-img" alt="Resolved" /></div>
+      </div>
+      <div class="telemetry-card">
+        <div>
+          <div class="telemetry-label">누적 고객 피드백 (VOC)</div>
+          <div class="telemetry-val" style="color:#0CA678;" id="hubTotalVoc">31건</div>
+        </div>
+        <div class="telemetry-icon"><img src="assets/icons/icon_voc.webp" class="telemetry-img" alt="VOC" /></div>
+      </div>
+      <div class="telemetry-card">
+        <div>
+          <div class="telemetry-label">현재 잔여 미해결 (P0)</div>
+          <div class="telemetry-val" style="color:var(--accent-green);">0건</div>
+        </div>
+        <div class="telemetry-icon"><img src="assets/icons/icon_siren.webp" class="telemetry-img" alt="Zero Pending" /></div>
+      </div>
+    </section>
+
+    <!-- 4-Card Apple Portal Grid -->
+    <section class="cards-grid">
+
+      <!-- Card 1: Visual Analytics Dashboard -->
+      <a href="qa_analytics_dashboard.html" class="portal-card" style="--card-accent:#007AFF; --card-accent-bg:rgba(0,122,255,0.1);">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-wrap"><img src="assets/icons/icon_dashboard.webp" class="portal-card-img" alt="Dashboard" /></div>
+            <div class="card-text-wrap">
+              <div class="card-title" data-i18n="portalVisualTitle">비주얼 분석 대시보드</div>
+              <div class="card-tagline">Visual Intelligence Studio</div>
+            </div>
+          </div>
+          <div class="card-desc" data-i18n="portalVisualDesc">
+            8대 품질 카테고리 분포, IEEE 1044 심각도 피라미드, 시계열 누적 해결 추세 및 파일별 코드 핫스팟 실시간 시각화.
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-tag" id="cardPhase1Count">354 Verified Issues</span>
+          <span class="card-cta">대시보드 바로가기 ➔</span>
+        </div>
+      </a>
+
+      <!-- Card 2: Master Spreadsheet -->
+      <a href="qa_spreadsheet.html" class="portal-card" style="--card-accent:#5856D6; --card-accent-bg:rgba(88,86,214,0.1);">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-wrap"><img src="assets/icons/icon_spreadsheet.webp" class="portal-card-img" alt="Spreadsheet" /></div>
+            <div class="card-text-wrap">
+              <div class="card-title" data-i18n="portalSheetTitle">QA 마스터 스프레드시트</div>
+              <div class="card-tagline">High-Density Issue Tracker</div>
+            </div>
+          </div>
+          <div class="card-desc" data-i18n="portalSheetDesc">
+            2단 애플 압축 필터(날짜/상태/OS/위험도/카테고리), 고성능 하단 인스펙터 서랍, 쾌속 단축키(J/K/Esc) 완벽 지원.
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-tag">2-Row Apple Filter</span>
+          <span class="card-cta">스프레드시트 열기 ➔</span>
+        </div>
+      </a>
+
+      <!-- Card 3: VOC Customer Response Studio -->
+      <a href="voc_dashboard.html" class="portal-card" style="--card-accent:#0CA678; --card-accent-bg:rgba(12,166,120,0.1);">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-wrap"><img src="assets/icons/icon_voc.webp" class="portal-card-img" alt="VOC Studio" /></div>
+            <div class="card-text-wrap">
+              <div class="card-title">고객 피드백 &amp; VOC 스튜디오</div>
+              <div class="card-tagline">VOC Response Studio</div>
+            </div>
+          </div>
+          <div class="card-desc">
+            마우스 드래그 폭 조절(Splitter Resizer), 만족 유저 5성 리뷰 유도 매크로, 원클릭 답변 복사 및 QA 결함 즉시 전환.
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-tag" id="cardVocCount">31 Real Feedback</span>
+          <span class="card-cta">스튜디오 열기 ➔</span>
+        </div>
+      </a>
+
+      <!-- Card 4: Google Sheets & Webhook Guide -->
+      <a href="google_sheets_voc_setup_guide.html" class="portal-card" style="--card-accent:#FF9500; --card-accent-bg:rgba(255,149,0,0.1);">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-wrap"><img src="assets/icons/icon_shield.webp" class="portal-card-img" alt="Guide" /></div>
+            <div class="card-text-wrap">
+              <div class="card-title">구글 시트 연동 &amp; 가이드</div>
+              <div class="card-tagline">Integration &amp; Apps Script SOP</div>
+            </div>
+          </div>
+          <div class="card-desc">
+            Google Apps Script 웹 앱 API 실시간 배포 매뉴얼, 1클릭 헤더 자동 생성기, QA 대시보드 양방향 실시간 동기화.
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-tag">Live Sync SOP</span>
+          <span class="card-cta">연동 가이드 열기 ➔</span>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="hub-footer">
+      Modo QA Intelligence Suite • iOS HIG &amp; macOS Desktop Design Standard
+    </footer>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="data/qa_config.js?v=2.5"></script>
+  <script src="data/phase1_closed_testing.js?v=2.4"></script>
+  <script src="data/phase2_open_beta.js?v=2.4"></script>
+  <script src="data/phase3_v1_1_backlog.js?v=2.4"></script>
+  <script src="data/feedback_manifest.js?v=2.4"></script>
+  <script src="data/qa_manifest.js?v=2.4"></script>
+  <script src="js/qa_i18n.js?v=2.4"></script>
+  <script src="js/qa_memo.js?v=1.0"></script>
   <script>
-    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+    window.openGoogleSheet = openGoogleSheet;
+    function openGoogleSheet() {
+      const p = document.getElementById('settingsPopover');
+      if (p) p.classList.remove('open');
+      const url = localStorage.getItem('modo_qa_google_spreadsheet_url') || 'https://docs.google.com/spreadsheets/';
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    window.toggleSettingsPopover = function (force) {
+      const p = document.getElementById('settingsPopover');
+      if (!p) return;
+      if (typeof force === 'boolean') {
+        p.classList.toggle('open', force);
+      } else {
+        p.classList.toggle('open');
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      const container = document.querySelector('.settings-menu-container');
+      if (container && !container.contains(e.target)) {
+        const p = document.getElementById('settingsPopover');
+        if (p) p.classList.remove('open');
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const p = document.getElementById('settingsPopover');
+        if (p && p.classList.contains('open')) {
+          p.classList.remove('open');
+        }
+      }
+    });
+
+    function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('universal_qa_theme', next);
+      localStorage.setItem('modo_guide_theme', next);
+      localStorage.setItem('modo_sheet_theme', next);
+    }
+    const savedTheme = localStorage.getItem('modo_guide_theme') || localStorage.getItem('modo_sheet_theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    // Dynamic counts & language synchronization
+    function updateCounts() {
+      const p1 = window.MODO_QA_PHASE1 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase1) || [];
+      const p2 = window.MODO_QA_PHASE2 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase2) || [];
+      const p3 = window.MODO_QA_PHASE3 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase3) || [];
+      const totalIssues = (window.MODO_QA_MANIFEST && window.MODO_QA_MANIFEST.tracks)
+        ? (window.MODO_QA_MANIFEST.tracks.find(t => t.id === 'all')?.getData()?.length || (p1.length + p2.length + p3.length))
+        : (p1.length + p2.length + p3.length);
+
+      const totalEl = document.getElementById('hubTotalIssues');
+      if (totalEl) totalEl.textContent = `${totalIssues}건`;
+      const card1El = document.getElementById('cardPhase1Count');
+      if (card1El) card1El.textContent = `${totalIssues} Verified Issues`;
+
+      const voc = window.MODO_FEEDBACK_DATA || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.FEEDBACK) || [];
+      const vocLen = Array.isArray(voc) ? voc.length : 0;
+      const totalVocEl = document.getElementById('hubTotalVoc');
+      if (totalVocEl) totalVocEl.textContent = `${vocLen}건`;
+      const cardVocEl = document.getElementById('cardVocCount');
+      if (cardVocEl) cardVocEl.textContent = `${vocLen} Real Feedback`;
+    }
+
+    window.onQaLanguageChanged = function (lang) {
+      const langLabel = document.getElementById('hubLangLabel');
+      if (langLabel) {
+        langLabel.textContent = (lang || 'en').toUpperCase();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCounts();
+      const langLabel = document.getElementById('hubLangLabel');
+      if (langLabel && window.QA_I18N) {
+        langLabel.textContent = window.QA_I18N.getLang().toUpperCase();
+      }
     });
-    const savedTheme = localStorage.getItem('universal_qa_theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 </html>

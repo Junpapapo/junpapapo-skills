@@ -25,6 +25,7 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
 | [**`chrome-web-store-policy-checker`**](./chrome-web-store-policy-checker/) | **Store Compliance** | Zero-tolerance policy audit (RCE ban, `<all_urls>`, unused permissions), permission justification generation, and appeal letter drafting. | `python <skill_dir>/scripts/audit_policy.py`<br/>`python <skill_dir>/scripts/generate_justifications.py` |
 | [**`proactive-code-architect`**](./proactive-code-architect/) | **Architecture** | 400-line hard limits, Single Responsibility enforcement, complexity gates, and instant vertical-slice module scaffolding. | `python <skill_dir>/scripts/audit_architecture.py`<br/>`python <skill_dir>/scripts/scaffold_module.py` |
 | [**`universal-qa-tracker`**](./universal-qa-tracker/) | **QA & Release Tracking** | Zero-server browser execution (`file:///`) spreadsheet & analytics dashboard, atomic CLI issue management, and multilingual reports (EN/KO/JA). | `python <skill_dir>/scripts/init_tracker.py`<br/>`python <skill_dir>/scripts/add_issue.py`<br/>`python <skill_dir>/scripts/audit_qa.py` |
+| [**`universal-guardrail-bootstrap`**](./universal-guardrail-bootstrap/) | **SDLC Governance** | Adaptive 6-stage architectural guardrails (React Native, Next.js, Vite, Vue, Node): Zero-tolerance gatekeeping against technical debt from bootstrap to release. | Autonomous 6-Stage Gap Auditor & Bootstrap Protocols (`SKILL.md`) |
 
 > [!IMPORTANT]
 > **Script Execution Standard (`<skill_dir>`)**: AI agents and developers should replace `<skill_dir>` with the actual relative or absolute directory path of the skill (e.g. `.agents/skills/agent-friendly-rules`, `~/.gemini/config/skills/agent-friendly-rules`, or full absolute path). This prevents `FileNotFoundError` regardless of your current working directory (`CWD`).
@@ -34,14 +35,15 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
 ## 🔍 Skill-by-Skill Deep Dive
 
 ```
-                               ┌─────────────────────────────────────────┐
-                               │       junpapapo-skills Ecosystem        │
-                               └────────────────────┬────────────────────┘
-                                                    │
-     ┌─────────────────┬───────────────────┬────────┴──────────┬───────────────────┬─────────────────┐
-     ▼                 ▼                   ▼                   ▼                   ▼                 ▼
-1. agent-friendly 2. session-retro 3. final-checker 4. store-policy 5. code-architect 6. universal-qa
- (Rule Linter)     (Learning)        (Deep QA)       (Store Policy)    (Modularity)     (QA Tracker Hub)
+                                              │
+                                              │       junpapapo-skills Ecosystem        │
+                                              │
+                                              └─────────────────────┬───────────────────┘
+                                                                    │
+     ┌─────────────────┬───────────────────┬────────┬───────────────┴───┬───────────────────┬─────────────────┬──────────────────────┐
+     ▼                 ▼                   ▼        ▼                   ▼                   ▼                 ▼                      ▼
+1. agent-friendly 2. session-retro 3. final-checker 4. store-policy 5. code-architect 6. universal-qa 7. guardrail-bootstrap
+ (Rule Linter)     (Learning)        (Deep QA)       (Store Policy)    (Modularity)     (QA Tracker Hub) (Full SDLC Barrier)
 ```
 
 ---
@@ -107,6 +109,16 @@ Each skill in this repository is designed according to **Level 5 Autonomous Engi
   - `audit_qa.py`: Data integrity linter verifying unique IDs, required fields, and file paths.
   - `export_report.py`: Exports datasets to Markdown, CSV, or JSON for release notes & store appeals.
 * **Natural Triggers**: *"Set up a QA issue tracker"*, *"Log a QA bug fix"*, *"Export QA resolution report"*, *"QA 트래커 생성해줘"*.
+
+---
+
+### 7. 🛡️ [`universal-guardrail-bootstrap`](./universal-guardrail-bootstrap/)
+* **Category**: End-to-End SDLC Governance & Architecture Guardrails
+* **Description**: Adaptive, stack-aware architectural guardrail engine for React Native/Expo, Next.js, Vite/React, Vue, and Node/TS. Evaluates missing code-quality guardrails across all 6 SDLC stages (Bootstrap, Authoring, Testing, Pre-Commit, Pre-Build, Release) and establishes zero-tolerance static checks against technical debt, magic literals, and `any` types.
+* **Key Capabilities**:
+  - **6-Stage Gap Inspection**: Automatically audits design tokens, strict TypeScript, style locks, focused test leaks (`it.only`), circular dependencies, and i18n parity.
+  - **Machine-Evaluated Gatekeeping**: Bootstraps ESLint, Husky, lint-staged, knip, and pre-build fail-fast validation into repository pipelines.
+* **Natural Triggers**: *"Audit our project guardrails"*, *"Bootstrap SDLC guardrails"*, *"Check guardrails against technical debt"*, *"가드레일 점검해줘"*, *"프로젝트 가드레일 구축해줘"*.
 
 ---
 
