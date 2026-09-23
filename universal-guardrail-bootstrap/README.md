@@ -1,4 +1,4 @@
-# 🛡️ Universal Guardrail Bootstrap (v2.1.0)
+# 🛡️ Universal Guardrail Bootstrap (v2.2.0)
 
 > **End-to-End, Zero-Tolerance SDLC Architecture Guardrail for AI Agents and Developers.**  
 > Automatically detects any project's stack and establishes compile-time, test-time, commit-time, pre-build, and release barriers against technical debt.
@@ -10,6 +10,7 @@
 Technical debt enters codebases whenever engineering disciplines rely on human memory or soft guidelines. Without automated machine-evaluated locks:
 - Magic hex strings and arbitrary dimensions clutter stylesheets.
 - `any` types and unhandled promises introduce runtime crashes.
+- Legacy `<Image>` components trigger Out-of-Memory (OOM) crashes and fail Google Play Bitmap Memory Vitals.
 - `it.only` commits accidentally skip 500+ unit tests on CI.
 - Circular dependencies cause mysterious `undefined` failures in production.
 - Case-sensitivity mismatches pass on Windows/macOS but crash on Linux CI runners.
@@ -33,8 +34,8 @@ flowchart LR
 
 | Stage | Scope & Goal | Primary Tooling & Rules | Outcome |
 | :--- | :--- | :--- | :--- |
-| **Stage 1: Bootstrap Gate** | Design tokens, strict TS, secret isolation | Stack Detector, `tsconfig.json` (`strict: true`), `.gitignore` | Clean Day-0 foundation |
-| **Stage 2: Authoring Gate** | Zero magic literals, zero `any`, language key existence | `no-color-literals`, `no-inline-styles`, `no-explicit-any`, `no-floating-promises` | Clean, type-safe components |
+| **Stage 1: Bootstrap Gate** | Design tokens, strict TS, secret isolation, `expo-image` baseline | Stack Detector, `tsconfig.json` (`strict: true`), `.gitignore`, `expo-image` | Clean Day-0 foundation & memory safety |
+| **Stage 2: Authoring Gate** | Zero magic literals, zero `any`, `expo-image` enforcement, key existence | `no-color-literals`, `no-inline-styles`, `no-restricted-imports` (ban RN `<Image>`), `no-explicit-any` | Clean, type-safe, OOM-proof components |
 | **Stage 3: Testing QA Gate** | No `.only` leaks, no dummy tests, mock isolation | `jest/no-focused-tests`, `jest/expect-expect`, `clearMocks: true`, `coverageThreshold` | 100% reliable regression tests |
 | **Stage 4: Pre-Commit Gate** | Reject broken code, secret leaks, dead code | `husky`, `lint-staged`, `knip`, `npm outdated`, `npm audit` | Local git barrier |
 | **Stage 5: Pre-Build Gate** | Env validation, circular deps, Linux case, i18n key parity | `prebuild` hook, `dpdm --circular`, Zod env validation, `expo doctor` | Local fail-fast build verification |

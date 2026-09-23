@@ -4,7 +4,7 @@ description: Inspects any project configuration (React Native, Next.js, Vite/Rea
 license: MIT
 metadata:
   author: Modo Team
-  version: "2.1.0"
+  version: "2.2.0"
   domain: universal-software-engineering
   triggers: init project, setup linter, audit guardrails, guardrail bootstrap, code quality setup, zero technical debt, enforce linter, start new project, check guardrails, guardrail inspection, linter audit, prebuild check, release guardrails, test guardrails, guardrail audit
   role: enterprise-architect
@@ -45,8 +45,8 @@ When invoked, the agent MUST first inspect `package.json`, lockfiles, and config
 
 ### 2. The 6-Stage Gap Audit Checklist
 The agent must verify whether the project satisfies all 6 stages:
-1. **Stage 1: Project Bootstrap & Foundation Gate**: Are design tokens (`colors.ts`, `spacing.ts`) established? Is TypeScript strict? Are secrets blocked in `.gitignore`?
-2. **Stage 2: Code Authoring & Styling Gate**: Are raw colors (#HEX), magic dimensions, inline style objects, `any` types, and unhandled promises blocked at compile time?
+1. **Stage 1: Project Bootstrap & Foundation Gate**: Are design tokens (`colors.ts`, `spacing.ts`) established? Is TypeScript strict? Are secrets blocked in `.gitignore`? For Expo/RN apps, is `expo-image` installed as the baseline image engine?
+2. **Stage 2: Code Authoring & Styling Gate**: Are raw colors (#HEX), magic dimensions, inline style objects, `any` types, unhandled promises, and legacy `<Image>` imports (in favor of `expo-image`) blocked at compile time?
 3. **Stage 3: Automated Testing & QA Gate**: Are focused tests (`it.only`), assertion-less dummy tests, mock leaks, and timer flakiness prevented?
 4. **Stage 4: Version Control & Pre-Commit Gate**: Does a commit hook (Husky + lint-staged) reject invalid commits, secret leaks, and dead code/dependencies?
 5. **Stage 5: Pre-Build & Bundling Gate**: Does an automated `prebuild` pipeline verify environment schemas, circular dependencies, Linux case-sensitivity, i18n parity, and native SDK health?
@@ -83,6 +83,9 @@ The agent must verify whether the project satisfies all 6 stages:
   ```
 - Ensure `.gitignore` covers `.env*`, `*.pem`, `credentials.json`, and platform build artifacts.
 - Create design token baselines (`constants/colors.ts`, `constants/spacing.ts`) prior to any UI code.
+- **Mobile (React Native / Expo) Baseline Image Engine Gate**:
+  - Mandate `expo-image` in `package.json` for Greenfield Expo projects.
+  - Prevents native OOM (Out Of Memory) crashes, guarantees automatic downsampling and memory pooling, and ensures compliance with Google Play 2027 Bitmap Memory Vitals from Day 0.
 
 ### Stage 2: Code Authoring & Styling Gate
 - **i18n Language Key Existence Gate**:
@@ -95,6 +98,14 @@ The agent must verify whether the project satisfies all 6 stages:
   'react-native/no-raw-text': 'error',                // Ban raw untranslated strings outside <Text>
   'react-native/no-unused-styles': 'error',           // Ban dead StyleSheet entries
   'react-native/no-single-element-style-arrays': 'error', // Ban [styles.a] -> enforce styles.a
+  // Enforce modern expo-image over legacy React Native <Image>
+  'no-restricted-imports': ['error', {
+    paths: [{
+      name: 'react-native',
+      importNames: ['Image'],
+      message: 'Forbidden: Use Image from "expo-image" for automatic downsampling, memory caching, and Google Play Vitals compliance.'
+    }]
+  }],
   ```
 - **Web (Next.js / React / Vue)**:
   - Configure `stylelint-declaration-strict-value` to mandate CSS variables for `color` and `font-size`.
