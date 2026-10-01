@@ -1474,6 +1474,34 @@
         </div>
       </section>
 
+      <!-- Chart 7: OS Deployment Parity & Version Breakdown (Span 6) -->
+      <section class="chart-panel span-6">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart7Title">🤖 🍎 OS Deployment Parity & Release Breakdown</h2>
+            <p class="panel-subtitle" data-i18n="chart7Subtitle">Real-time cross-platform release tracking between Google Play (AOS) & App Store (iOS)</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart7Badge" style="background: rgba(52, 199, 89, 0.12); color: var(--ios-green);">Release Parity</span>
+        </div>
+        <div class="chart-stage" id="osDeployStage">
+          <!-- Rendered via Pure SVG & CSS Flex -->
+        </div>
+      </section>
+
+      <!-- Chart 8: Quality Domain Deployment & Pending Risk (Span 6) -->
+      <section class="chart-panel span-6">
+        <div class="panel-header">
+          <div class="panel-title-area">
+            <h2 class="panel-title" data-i18n="chart8Title">📦 Quality Domain Deployment & Pending Risk</h2>
+            <p class="panel-subtitle" data-i18n="chart8Subtitle">Deployment coverage across 8 ISO/IEC 25010 domains and un-deployed risk check</p>
+          </div>
+          <span class="panel-badge" data-i18n="chart8Badge" style="background: rgba(0, 122, 255, 0.12); color: var(--ios-blue);">Release Gatekeeper</span>
+        </div>
+        <div class="chart-stage" id="domainDeployStage">
+          <!-- Rendered via HTML/CSS & SVG -->
+        </div>
+      </section>
+
     </div>
 
     <!-- Interactive Drilldown Inspector -->
@@ -1598,6 +1626,113 @@
         if (c === 'media' || c.includes('media') || c.includes('voice') || c.includes('audio') || c.includes('sound') || c.includes('camera')) return 'media';
         if (c === 'db' || c.includes('db') || c.includes('data') || c.includes('sqlite') || c.includes('storage') || c.includes('backup') || c.includes('vault')) return 'db';
         return 'core';
+      }
+
+      // Deployment & Release Storage Keys & Helpers
+      const STORAGE_KEY_DEPLOY_STATUS = 'MODO_QA_DEPLOY_STATUS_V2';
+      const STORAGE_KEY_DEPLOY_STATUS_V1 = 'MODO_QA_DEPLOY_STATUS_V1';
+      const STORAGE_KEY_TARGET_RELEASE_AOS = 'modo_qa_target_release_aos';
+      const STORAGE_KEY_TARGET_RELEASE_IOS = 'modo_qa_target_release_ios';
+      const DEFAULT_TARGET_RELEASE_AOS = '77 (1.1.10)';
+      const DEFAULT_TARGET_RELEASE_IOS = '84 (1.1.5)';
+
+      function getTargetRelease(os = 'android') {
+        try {
+          if (os === 'ios') {
+            return localStorage.getItem(STORAGE_KEY_TARGET_RELEASE_IOS) || DEFAULT_TARGET_RELEASE_IOS;
+          }
+          return localStorage.getItem(STORAGE_KEY_TARGET_RELEASE_AOS) || localStorage.getItem('modo_qa_target_release') || DEFAULT_TARGET_RELEASE_AOS;
+        } catch {
+          return os === 'ios' ? DEFAULT_TARGET_RELEASE_IOS : DEFAULT_TARGET_RELEASE_AOS;
+        }
+      }
+
+      function isPlatformApplicable(item, os = 'android') {
+        if (!item) return false;
+        const plat = (item.platform || 'all').toLowerCase();
+        if (os === 'android') return plat !== 'ios';
+        if (os === 'ios') return plat !== 'android';
+        return true;
+      }
+
+      function getItemKey(item) {
+        if (!item) return '';
+        if (item._uid) return item._uid;
+        const phase = item.phase || item.track || (String(item.id).startsWith('FB-') ? 'feedback' : (currentTrackId === 'all' ? (item.phase || 'phase3') : currentTrackId));
+        return `${phase}_${item.id}`;
+      }
+
+      function getDeployMap() {
+        try {
+          const v2Raw = localStorage.getItem(STORAGE_KEY_DEPLOY_STATUS);
+          if (v2Raw) return JSON.parse(v2Raw);
+          const v1Raw = localStorage.getItem(STORAGE_KEY_DEPLOY_STATUS_V1);
+          if (v1Raw) {
+            const v1Map = JSON.parse(v1Raw);
+            const migrated = {};
+            Object.keys(v1Map).forEach(key => {
+              const val = v1Map[key];
+              const isDep = typeof val === 'object' ? !!val.deployed : !!val;
+              const ver = (typeof val === 'object' && val.version) ? val.version : '';
+              const at = (typeof val === 'object' && val.deployedAt) ? val.deployedAt : '';
+              migrated[key] = {
+                android: { deployed: isDep, version: ver, deployedAt: at },
+                ios: { deployed: isDep, version: ver, deployedAt: at }
+              };
+            });
+            return migrated;
+          }
+          return {};
+        } catch {
+          return {};
+        }
+      }
+
+      function isItemDeployed(item, os = 'android') {
+        if (!item) return false;
+        const map = getDeployMap();
+        const key = getItemKey(item);
+        const idStr = String(item.id);
+        const record = map[key] || map[`phase3_${item.id}`] || map[`phase1_${item.id}`] || map[idStr];
+
+        if (record) {
+          if (record[os] !== undefined) {
+            return typeof record[os] === 'object' ? !!record[os].deployed : !!record[os];
+          }
+          if (record.deployed !== undefined) {
+            return !!record.deployed;
+          }
+        }
+
+        if (os === 'android') {
+          if (item.deployedAos !== undefined) return !!item.deployedAos;
+          if ((item.platform || '').toLowerCase() === 'ios') return false;
+          return !!item.deployed;
+        }
+        if (os === 'ios') {
+          if (item.deployedIos !== undefined) return !!item.deployedIos;
+          if ((item.platform || '').toLowerCase() === 'android') return false;
+          return !!item.deployed;
+        }
+        return !!item.deployed;
+      }
+
+      function getDeployVersion(item, os = 'android') {
+        if (!item) return '';
+        const map = getDeployMap();
+        const key = getItemKey(item);
+        const idStr = String(item.id);
+        const record = map[key] || map[`phase3_${item.id}`] || map[`phase1_${item.id}`] || map[idStr];
+
+        if (record && record[os] && typeof record[os] === 'object' && record[os].version) {
+          return record[os].version;
+        }
+        if (record && typeof record === 'object' && record.version) {
+          return record.version;
+        }
+        if (os === 'android' && item.deployedVersionAos) return item.deployedVersionAos;
+        if (os === 'ios' && item.deployedVersionIos) return item.deployedVersionIos;
+        return item.deployedVersion || item.release || '';
       }
 
       // Initialize
@@ -2174,6 +2309,12 @@
           params.set('severity', s);
         } else if (selectedFilter.type === 'file') {
           params.set('q', selectedFilter.value);
+        } else if (selectedFilter.type === 'deploy') {
+          params.set('deploy', selectedFilter.value);
+        } else if (selectedFilter.type === 'deploy_ver') {
+          params.set('q', selectedFilter.value);
+        } else if (selectedFilter.type === 'deploy_cat') {
+          params.set('category', selectedFilter.value);
         }
         window.location.href = `qa_spreadsheet.html?${params.toString()}`;
       };
@@ -2190,7 +2331,7 @@
         tooltip.style.opacity = '0';
       }
 
-      // Render All Charts (8 Charts Total with Fault Tolerance)
+      // Render All Charts (10 Charts Total with Fault Tolerance)
       function renderAllCharts() {
         try { renderSeverityStackedChart(); } catch (e) { console.error('renderSeverityStackedChart error:', e); }
         try { renderSeverityDonutChart(); } catch (e) { console.error('renderSeverityDonutChart error:', e); }
@@ -2200,6 +2341,8 @@
         try { renderRadarChart(); } catch (e) { console.error('renderRadarChart error:', e); }
         try { renderHotspotChart(); } catch (e) { console.error('renderHotspotChart error:', e); }
         try { renderBurndownChart(); } catch (e) { console.error('renderBurndownChart error:', e); }
+        try { renderOsDeployChart(); } catch (e) { console.error('renderOsDeployChart error:', e); }
+        try { renderDomainDeployChart(); } catch (e) { console.error('renderDomainDeployChart error:', e); }
       }
 
       /* ----------------------------------------------------
@@ -2940,6 +3083,418 @@
       }
 
       /* ----------------------------------------------------
+       * 7. OS Deployment Parity & Release Breakdown (Pure SVG & Flex)
+       * ---------------------------------------------------- */
+      function renderOsDeployChart() {
+        const stage = document.getElementById('osDeployStage');
+        if (!stage) return;
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const isPreRelease = (currentTrackId === 'phase1' || currentTrackId === 'phase2' || currentTrackId === 'feedback');
+
+        if (isPreRelease) {
+          stage.innerHTML = `
+            <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:14px; padding:28px 22px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; width:100%; box-sizing:border-box;">
+              <div style="width:48px; height:48px; border-radius:12px; background:rgba(0, 122, 255, 0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">
+                🔒
+              </div>
+              <div style="font-size:14.5px; font-weight:800; color:var(--text-primary);">
+                ${isKo ? '출시 전 사전 검증 트랙 (Pre-Release Phase)' : 'Pre-Release Verification Track'}
+              </div>
+              <div style="font-size:12px; color:var(--text-secondary); line-height:1.55; max-width:440px;">
+                ${isKo 
+                  ? '현재 조회 중인 트랙은 <strong>앱 정식 출시 전 개발 및 비공개 테스트</strong> 단계입니다. 모든 결함(100% 해결 완료)은 초기 출시 빌드(v1.0.0)에 완전 통합 반영되었으므로, 스토어 개별 릴리즈 배포 모니터링 대상에서 제외됩니다.'
+                  : 'This track represents pre-release development. All resolved issues were integrated into the v1.0.0 initial release build.'}
+              </div>
+              <button type="button" class="action-pill-btn" style="background:var(--ios-blue); color:#fff; border:none; font-weight:700; margin-top:6px; cursor:pointer;" onclick="window.switchAnalyticsPhase('phase3')">
+                💎 ${isKo ? 'Phase 3 정식 운영 배포 현황 보기 ➔' : 'View Phase 3 Live Deployment ➔'}
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        let targetIssues = activeIssues;
+        let scopeBadgeHtml = '';
+        if (currentTrackId === 'all') {
+          targetIssues = activeIssues.filter(i => i.phase === 'phase3');
+          if (targetIssues.length === 0 && window.MODO_QA_PHASE3) {
+            targetIssues = window.MODO_QA_PHASE3;
+          }
+          scopeBadgeHtml = `
+            <div style="font-size:11px; font-weight:800; color:var(--ios-blue); background:rgba(0,122,255,0.08); padding:3px 8px; border-radius:6px; margin-bottom:8px; display:inline-flex; align-items:center; gap:4px; width:fit-content;">
+              💎 ${isKo ? 'Phase 3 정식 운영 대상 (총 43건: AOS 35건 / iOS 39건, N/A 제외 집계)' : 'Phase 3 Scope (43 items: AOS 35 / iOS 39, N/A excluded)'}
+            </div>
+          `;
+        }
+
+        const aosTargetIssues = targetIssues.filter(i => isPlatformApplicable(i, 'android'));
+        const iosTargetIssues = targetIssues.filter(i => isPlatformApplicable(i, 'ios'));
+        const totalAos = aosTargetIssues.length || 1;
+        const totalIos = iosTargetIssues.length || 1;
+        const naAosCount = targetIssues.length - aosTargetIssues.length;
+        const naIosCount = targetIssues.length - iosTargetIssues.length;
+
+        let aosCount = 0;
+        let iosCount = 0;
+        let bothCount = 0;
+        let aosOnlyCount = 0;
+        let iosOnlyCount = 0;
+        let pendingCount = 0;
+
+        const aosVerMap = {};
+        const iosVerMap = {};
+
+        targetIssues.forEach(i => {
+          const isAosApp = isPlatformApplicable(i, 'android');
+          const isIosApp = isPlatformApplicable(i, 'ios');
+          const isAos = isAosApp && isItemDeployed(i, 'android');
+          const isIos = isIosApp && isItemDeployed(i, 'ios');
+
+          if (isAos) aosCount++;
+          if (isIos) iosCount++;
+
+          if (isAos && isIos) {
+            bothCount++;
+          } else if (isAos && !isIos) {
+            aosOnlyCount++;
+          } else if (!isAos && isIos) {
+            iosOnlyCount++;
+          } else {
+            if (isAosApp || isIosApp) pendingCount++;
+          }
+
+          const verA = isAos ? (getDeployVersion(i, 'android') || '') : '';
+          const verI = isIos ? (getDeployVersion(i, 'ios') || '') : '';
+          if (isAos && verA) aosVerMap[verA] = (aosVerMap[verA] || 0) + 1;
+          if (isIos && verI) iosVerMap[verI] = (iosVerMap[verI] || 0) + 1;
+        });
+
+        const aosPct = Math.round((aosCount / totalAos) * 100);
+        const iosPct = Math.round((iosCount / totalIos) * 100);
+        const targetAos = getTargetRelease('android');
+        const targetIos = getTargetRelease('ios');
+
+        // Circular ring helper
+        function makeRing(pct, color, size, stroke) {
+          const radius = (size - stroke) / 2;
+          const circum = 2 * Math.PI * radius;
+          const offset = circum - (pct / 100) * circum;
+          return `
+            <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform: rotate(-90deg); flex-shrink: 0;">
+              <circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="var(--bg-subtle)" stroke-width="${stroke}" />
+              <circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${circum}" stroke-dashoffset="${offset}" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease;" />
+            </svg>
+          `;
+        }
+
+        // Top 4 Versions list across AOS and iOS
+        const allVers = Array.from(new Set([...Object.keys(aosVerMap), ...Object.keys(iosVerMap)])).filter(Boolean);
+        allVers.sort((a, b) => ((aosVerMap[b] || 0) + (iosVerMap[b] || 0)) - ((aosVerMap[a] || 0) + (iosVerMap[a] || 0)));
+        const topVers = allVers.slice(0, 4);
+        const maxVerCount = Math.max(1, ...topVers.map(v => Math.max(aosVerMap[v] || 0, iosVerMap[v] || 0)));
+
+        let versHtml = '';
+        if (topVers.length > 0) {
+          versHtml = `
+            <div style="width:100%; margin-top:14px; padding-top:12px; border-top:1px solid var(--border-subtle);">
+              <div style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                <span>${isKo ? '주요 릴리즈 버전별 배포 현황 (Top 4)' : 'Deployment by Top Release Versions'}</span>
+                <span>🤖 AOS / 🍎 iOS</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+          `;
+          topVers.forEach(v => {
+            const cntA = aosVerMap[v] || 0;
+            const cntI = iosVerMap[v] || 0;
+            const pctA = Math.round((cntA / maxVerCount) * 100);
+            const pctI = Math.round((cntI / maxVerCount) * 100);
+            versHtml += `
+              <div style="display:flex; flex-direction:column; gap:3px; cursor:pointer; padding:3px 6px; border-radius:6px; transition:background 0.15s;"
+                   onmouseover="this.style.background='var(--bg-hover)'"
+                   onmouseout="this.style.background='transparent'"
+                   onclick="window.setAnalyticsFilter('deploy_ver', '${v}')"
+                   title="${isKo ? '클릭 시 ' + v + ' 버전 배포 이슈 필터링' : 'Click to filter issues in version ' + v}">
+                <div style="display:flex; justify-content:space-between; font-size:11.5px;">
+                  <span style="font-weight:700; color:var(--text-primary); font-family:var(--font-mono);">🏷️ ${v}</span>
+                  <div style="display:flex; gap:8px; font-weight:800; font-size:11px; font-family:var(--font-mono);">
+                    <span style="color:#2B8A3E;">🤖 ${cntA}</span>
+                    <span style="color:#228BE6;">🍎 ${cntI}</span>
+                  </div>
+                </div>
+                <div style="display:flex; gap:4px; height:6px;">
+                  <div style="flex:1; background:var(--bg-subtle); border-radius:999px; overflow:hidden;">
+                    <div style="width:${pctA}%; height:100%; background:#2B8A3E; border-radius:999px;"></div>
+                  </div>
+                  <div style="flex:1; background:var(--bg-subtle); border-radius:999px; overflow:hidden;">
+                    <div style="width:${pctI}%; height:100%; background:#228BE6; border-radius:999px;"></div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          versHtml += `
+              </div>
+            </div>
+          `;
+        }
+
+        stage.innerHTML = `
+          <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
+            ${scopeBadgeHtml}
+            <!-- Dual Ring Gauges -->
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; width:100%;">
+              
+              <!-- AOS Card -->
+              <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; cursor:pointer; position:relative; overflow:hidden; transition:transform 0.15s ease, box-shadow 0.15s ease;"
+                   onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)'"
+                   onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+                   onclick="window.setAnalyticsFilter('deploy', 'deployed_aos')">
+                <div style="position:relative; width:56px; height:56px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  ${makeRing(aosPct, '#2B8A3E', 56, 6)}
+                  <span style="position:absolute; font-size:12px; font-weight:900; color:var(--text-primary); font-family:var(--font-mono);">${aosPct}%</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px; min-width:0; flex:1;">
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <span style="font-size:13px; font-weight:800; color:var(--text-primary); white-space:nowrap;">🤖 Google Play</span>
+                  </div>
+                  <div style="font-size:11px; color:var(--text-secondary); font-weight:600;">
+                    ${aosCount} / ${totalAos} ${isKo ? '반영' : 'deployed'}
+                    ${naAosCount > 0 ? `<span style="font-size:9.5px; color:var(--text-muted); font-weight:500;">(${naAosCount}건 N/A 제외)</span>` : ''}
+                  </div>
+                  <div style="font-size:10px; font-weight:700; color:#2B8A3E; background:rgba(43,138,62,0.1); padding:1px 6px; border-radius:4px; width:fit-content; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    🎯 ${targetAos}
+                  </div>
+                </div>
+              </div>
+
+              <!-- iOS Card -->
+              <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; cursor:pointer; position:relative; overflow:hidden; transition:transform 0.15s ease, box-shadow 0.15s ease;"
+                   onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)'"
+                   onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+                   onclick="window.setAnalyticsFilter('deploy', 'deployed_ios')">
+                <div style="position:relative; width:56px; height:56px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  ${makeRing(iosPct, '#228BE6', 56, 6)}
+                  <span style="position:absolute; font-size:12px; font-weight:900; color:var(--text-primary); font-family:var(--font-mono);">${iosPct}%</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px; min-width:0; flex:1;">
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <span style="font-size:13px; font-weight:800; color:var(--text-primary); white-space:nowrap;">🍎 App Store</span>
+                  </div>
+                  <div style="font-size:11px; color:var(--text-secondary); font-weight:600;">
+                    ${iosCount} / ${totalIos} ${isKo ? '반영' : 'deployed'}
+                    ${naIosCount > 0 ? `<span style="font-size:9.5px; color:var(--text-muted); font-weight:500;">(${naIosCount}건 N/A 제외)</span>` : ''}
+                  </div>
+                  <div style="font-size:10px; font-weight:700; color:#228BE6; background:rgba(34,139,230,0.1); padding:1px 6px; border-radius:4px; width:fit-content; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    🎯 ${targetIos}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Parity Metric Pills -->
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; width:100%;">
+              <button type="button" class="legend-chip" style="justify-content:center; padding:6px 4px; font-size:11px;"
+                      onclick="window.setAnalyticsFilter('deploy', 'deployed_both')"
+                      title="${isKo ? 'AOS와 iOS 양대 OS에 모두 배포 완료된 이슈' : 'Issues deployed to both AOS and iOS'}">
+                <span style="color:#0CA678; font-weight:900;">🚀 ${isKo ? '양대 배포' : 'Both'}</span>
+                <span style="font-weight:800; color:var(--text-primary);">${bothCount}</span>
+              </button>
+
+              <button type="button" class="legend-chip" style="justify-content:center; padding:6px 4px; font-size:11px;"
+                      onclick="window.setAnalyticsFilter('deploy', 'aos_only')"
+                      title="${isKo ? 'Android에만 배포되고 iOS에는 미반영된 이슈' : 'Issues deployed on AOS only'}">
+                <span style="color:#2B8A3E; font-weight:900;">🤖 ${isKo ? 'AOS 전용' : 'AOS only'}</span>
+                <span style="font-weight:800; color:var(--text-primary);">${aosOnlyCount}</span>
+              </button>
+
+              <button type="button" class="legend-chip" style="justify-content:center; padding:6px 4px; font-size:11px;"
+                      onclick="window.setAnalyticsFilter('deploy', 'ios_only')"
+                      title="${isKo ? 'iOS에만 배포되고 Android에는 미반영된 이슈' : 'Issues deployed on iOS only'}">
+                <span style="color:#228BE6; font-weight:900;">🍎 ${isKo ? 'iOS 전용' : 'iOS only'}</span>
+                <span style="font-weight:800; color:var(--text-primary);">${iosOnlyCount}</span>
+              </button>
+
+              <button type="button" class="legend-chip" style="justify-content:center; padding:6px 4px; font-size:11px;"
+                      onclick="window.setAnalyticsFilter('deploy', 'pending')"
+                      title="${isKo ? '양대 플랫폼 모두 미배포 상태인 이슈' : 'Issues not deployed on either platform'}">
+                <span style="color:var(--ios-orange); font-weight:900;">⏳ ${isKo ? '미배포' : 'Pending'}</span>
+                <span style="font-weight:800; color:var(--text-primary);">${pendingCount}</span>
+              </button>
+            </div>
+
+            <!-- Version Breakdown Bars -->
+            ${versHtml}
+          </div>
+        `;
+      }
+
+      /* ----------------------------------------------------
+       * 8. Quality Domain Deployment & Pending Risk (HTML/CSS & SVG)
+       * ---------------------------------------------------- */
+      function renderDomainDeployChart() {
+        const stage = document.getElementById('domainDeployStage');
+        if (!stage) return;
+
+        const isKo = window.QA_I18N && window.QA_I18N.getLang() === 'ko';
+        const isPreRelease = (currentTrackId === 'phase1' || currentTrackId === 'phase2' || currentTrackId === 'feedback');
+
+        if (isPreRelease) {
+          stage.innerHTML = `
+            <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:14px; padding:28px 22px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; width:100%; box-sizing:border-box;">
+              <div style="width:48px; height:48px; border-radius:12px; background:rgba(52, 199, 89, 0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">
+                🛡️
+              </div>
+              <div style="font-size:14.5px; font-weight:800; color:var(--text-primary);">
+                ${isKo ? '출시 게이트키퍼 평가 제외 트랙' : 'Exempt from Release Gatekeeper'}
+              </div>
+              <div style="font-size:12px; color:var(--text-secondary); line-height:1.55; max-width:440px;">
+                ${isKo
+                  ? '현재 조회 중인 트랙은 정식 런칭 이전 빌드로 <strong>미배포 차단 경보(BLOCKS) 대상이 아닙니다.</strong> 실시간 프로덕션 출시 게이트키퍼는 <strong>Phase 3 정식 운영 트랙</strong>에서 엄격히 가동됩니다.'
+                  : 'Pre-release tracks are exempt from release gatekeeper block alerts. Active gatekeeper runs on Phase 3 production operations.'}
+              </div>
+              <button type="button" class="action-pill-btn" style="background:var(--bg-subtle); color:var(--text-primary); border:1px solid var(--border); font-weight:700; margin-top:6px; cursor:pointer;" onclick="window.switchAnalyticsPhase('phase3')">
+                🛡️ ${isKo ? 'Phase 3 릴리즈 게이트키퍼 확인 ➔' : 'Check Phase 3 Gatekeeper ➔'}
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        let targetIssues = activeIssues;
+        let scopeBadgeHtml = '';
+        if (currentTrackId === 'all') {
+          targetIssues = activeIssues.filter(i => i.phase === 'phase3');
+          if (targetIssues.length === 0 && window.MODO_QA_PHASE3) {
+            targetIssues = window.MODO_QA_PHASE3;
+          }
+          scopeBadgeHtml = `
+            <div style="font-size:11px; font-weight:800; color:var(--ios-blue); background:rgba(0,122,255,0.08); padding:3px 8px; border-radius:6px; margin-bottom:8px; display:inline-flex; align-items:center; gap:4px; width:fit-content;">
+              💎 ${isKo ? 'Phase 3 정식 운영 대상 (총 43건: AOS 35건 / iOS 39건, N/A 제외 집계)' : 'Phase 3 Scope (43 items: AOS 35 / iOS 39, N/A excluded)'}
+            </div>
+          `;
+        }
+
+        const categories = ['ui', 'core', 'reliability', 'perf', 'auth', 'monetization', 'media', 'db'];
+        const domainStats = {};
+        categories.forEach(c => {
+          domainStats[c] = { total: 0, totalAos: 0, totalIos: 0, aos: 0, ios: 0, unDeployedS1S2: 0 };
+        });
+
+        let totalUnDeployedS1S2 = 0;
+
+        targetIssues.forEach(i => {
+          const cat = normalizeCategory(i.category);
+          if (!domainStats[cat]) domainStats[cat] = { total: 0, totalAos: 0, totalIos: 0, aos: 0, ios: 0, unDeployedS1S2: 0 };
+
+          domainStats[cat].total++;
+          const aosApp = isPlatformApplicable(i, 'android');
+          const iosApp = isPlatformApplicable(i, 'ios');
+          const isAos = isItemDeployed(i, 'android');
+          const isIos = isItemDeployed(i, 'ios');
+
+          if (aosApp) {
+            domainStats[cat].totalAos++;
+            if (isAos) domainStats[cat].aos++;
+          }
+          if (iosApp) {
+            domainStats[cat].totalIos++;
+            if (isIos) domainStats[cat].ios++;
+          }
+
+          const isCritical = i.severity === 'S1' || i.severity === 'S2';
+          const aosBlocked = aosApp && !isAos;
+          const iosBlocked = iosApp && !isIos;
+          if (isCritical && (aosBlocked || iosBlocked)) {
+            domainStats[cat].unDeployedS1S2++;
+            totalUnDeployedS1S2++;
+          }
+        });
+
+        // Gatekeeper Alert Banner
+        let alertHtml = '';
+        if (totalUnDeployedS1S2 === 0) {
+          alertHtml = `
+            <div style="background:rgba(52, 199, 89, 0.08); border:1px solid rgba(52, 199, 89, 0.25); border-radius:10px; padding:9px 12px; display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-primary); margin-bottom:12px;">
+              <span style="font-size:16px;">🛡️</span>
+              <div style="flex:1;">
+                <strong>${isKo ? 'Zero Defect Gatekeeper 통과' : 'Zero Defect Gatekeeper Passed'}</strong>: 
+                <span style="color:var(--text-secondary);">${isKo ? '치명적 결함(S1/S2)이 양대 OS 배포 파이프라인에 100% 정상 반영되었습니다.' : 'All S1/S2 critical bugs are 100% deployed to applicable OS pipelines.'}</span>
+              </div>
+              <span style="font-weight:800; color:var(--ios-green); font-size:11px; white-space:nowrap;">PASS</span>
+            </div>
+          `;
+        } else {
+          alertHtml = `
+            <div style="background:rgba(255, 59, 48, 0.08); border:1px solid rgba(255, 59, 48, 0.25); border-radius:10px; padding:9px 12px; display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-primary); margin-bottom:12px; cursor:pointer;"
+                 onclick="window.setAnalyticsFilter('deploy', 'pending_s1s2')"
+                 title="${isKo ? '클릭 시 미배포 S1/S2 결함 목록 필터링' : 'Click to view un-deployed S1/S2 bugs'}">
+              <span style="font-size:16px;">🚨</span>
+              <div style="flex:1;">
+                <strong style="color:var(--ios-red);">${isKo ? '릴리즈 게이트키퍼 경보' : 'Release Gatekeeper Alert'}</strong>: 
+                <span style="color:var(--text-secondary);">${isKo ? '미배포된 S1/S2 핵심 결함 ' + totalUnDeployedS1S2 + '건 감지! 릴리즈 빌드 전 승인 확인 요망.' : totalUnDeployedS1S2 + ' un-deployed S1/S2 critical issues detected! Verification required before release.'}</span>
+              </div>
+              <span style="font-weight:800; color:var(--ios-red); font-size:11px; white-space:nowrap;">⚠️ ${totalUnDeployedS1S2} BLOCKS</span>
+            </div>
+          `;
+        }
+
+        // Domain rows
+        let rowsHtml = '<div style="display:flex; flex-direction:column; gap:8px; max-height:270px; overflow-y:auto; padding-right:4px;">';
+        categories.forEach(cat => {
+          const s = domainStats[cat];
+          const total = s.total || 0;
+          if (total === 0) return;
+
+          const totalAos = s.totalAos || 0;
+          const totalIos = s.totalIos || 0;
+          const aosPct = totalAos ? Math.round((s.aos / totalAos) * 100) : 100;
+          const iosPct = totalIos ? Math.round((s.ios / totalIos) * 100) : 100;
+          const avgPct = Math.round((aosPct + iosPct) / 2);
+
+          rowsHtml += `
+            <div style="display:flex; flex-direction:column; gap:3px; padding:5px 8px; border-radius:8px; background:var(--bg-card); border:1px solid var(--border-subtle); cursor:pointer; transition:background 0.15s ease;"
+                 onmouseover="this.style.background='var(--bg-hover)'"
+                 onmouseout="this.style.background='var(--bg-card)'"
+                 onclick="window.setAnalyticsFilter('deploy_cat', '${cat}')"
+                 title="${isKo ? CAT_LABELS[cat] + ' 도메인 배포 상세 보기' : 'View deployment details for ' + CAT_LABELS[cat]}">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="width:9px; height:9px; border-radius:3px; background:${CAT_COLORS[cat]}; flex-shrink:0;"></span>
+                  <span style="font-weight:700; color:var(--text-primary);">${CAT_LABELS[cat]}</span>
+                  <span style="font-size:10.5px; color:var(--text-muted);">(${total}건)</span>
+                  ${s.unDeployedS1S2 > 0 ? `<span style="font-size:10px; font-weight:800; color:var(--ios-red); background:rgba(255,59,48,0.1); padding:1px 5px; border-radius:3px;">🚨 S1/S2 ${s.unDeployedS1S2}건 미반영</span>` : ''}
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11px;">
+                  <span style="color:#2B8A3E; font-weight:700;" title="AOS: ${s.aos}/${totalAos}">🤖 ${s.aos}/${totalAos}</span>
+                  <span style="color:#228BE6; font-weight:700;" title="iOS: ${s.ios}/${totalIos}">🍎 ${s.ios}/${totalIos}</span>
+                  <span style="font-weight:800; color:var(--text-primary); min-width:32px; text-align:right;">${avgPct}%</span>
+                </div>
+              </div>
+              <div style="display:flex; gap:4px; height:5px; margin-top:2px;">
+                <div style="flex:1; background:var(--bg-subtle); border-radius:999px; overflow:hidden;" title="AOS: ${s.aos}/${totalAos} (${aosPct}%)">
+                  <div style="width:${aosPct}%; height:100%; background:#2B8A3E; border-radius:999px;"></div>
+                </div>
+                <div style="flex:1; background:var(--bg-subtle); border-radius:999px; overflow:hidden;" title="iOS: ${s.ios}/${totalIos} (${iosPct}%)">
+                  <div style="width:${iosPct}%; height:100%; background:#228BE6; border-radius:999px;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        rowsHtml += '</div>';
+
+        stage.innerHTML = `
+          <div style="width:100%; display:flex; flex-direction:column;">
+            ${scopeBadgeHtml}
+            ${alertHtml}
+            ${rowsHtml}
+          </div>
+        `;
+      }
+
+      /* ----------------------------------------------------
        * Interactive Drilldown Inspector
        * ---------------------------------------------------- */
       window.setAnalyticsFilter = function (type, val) {
@@ -3039,6 +3594,48 @@
         } else if (selectedFilter.type === 'file') {
           filtered = filtered.filter(i => (i.files || []).some(f => f.includes(selectedFilter.value)));
           tag.textContent = `${isKo ? '파일명' : 'File'}: ${selectedFilter.value} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'deploy') {
+          if (currentTrackId === 'all') {
+            filtered = filtered.filter(i => i.phase === 'phase3');
+          }
+          if (selectedFilter.value === 'deployed_aos') {
+            filtered = filtered.filter(i => isPlatformApplicable(i, 'android') && isItemDeployed(i, 'android'));
+            tag.textContent = isKo ? `🤖 AOS 배포 완료 (${filtered.length}${unit})` : `🤖 AOS Deployed (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'deployed_ios') {
+            filtered = filtered.filter(i => isPlatformApplicable(i, 'ios') && isItemDeployed(i, 'ios'));
+            tag.textContent = isKo ? `🍎 iOS 배포 완료 (${filtered.length}${unit})` : `🍎 iOS Deployed (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'deployed_both') {
+            filtered = filtered.filter(i => isPlatformApplicable(i, 'android') && isItemDeployed(i, 'android') && isPlatformApplicable(i, 'ios') && isItemDeployed(i, 'ios'));
+            tag.textContent = isKo ? `🚀 양대 OS 배포 완료 (${filtered.length}${unit})` : `🚀 Both Deployed (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'aos_only') {
+            filtered = filtered.filter(i => isPlatformApplicable(i, 'android') && isItemDeployed(i, 'android') && (!isPlatformApplicable(i, 'ios') || !isItemDeployed(i, 'ios')));
+            tag.textContent = isKo ? `🤖 AOS 단독 배포 (${filtered.length}${unit})` : `🤖 AOS Only Deployed (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'ios_only') {
+            filtered = filtered.filter(i => isPlatformApplicable(i, 'ios') && isItemDeployed(i, 'ios') && (!isPlatformApplicable(i, 'android') || !isItemDeployed(i, 'android')));
+            tag.textContent = isKo ? `🍎 iOS 단독 배포 (${filtered.length}${unit})` : `🍎 iOS Only Deployed (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'pending') {
+            filtered = filtered.filter(i => !isItemDeployed(i, 'android') && !isItemDeployed(i, 'ios') && (isPlatformApplicable(i, 'android') || isPlatformApplicable(i, 'ios')));
+            tag.textContent = isKo ? `⏳ 미배포 이슈 (${filtered.length}${unit})` : `⏳ Pending Deployment (${filtered.length}${unit})`;
+          } else if (selectedFilter.value === 'pending_s1s2') {
+            filtered = filtered.filter(i => (i.severity === 'S1' || i.severity === 'S2') && ((isPlatformApplicable(i, 'android') && !isItemDeployed(i, 'android')) || (isPlatformApplicable(i, 'ios') && !isItemDeployed(i, 'ios'))));
+            tag.textContent = isKo ? `🚨 미배포 S1/S2 치명 결함 (${filtered.length}${unit})` : `🚨 Un-deployed S1/S2 Critical Defect (${filtered.length}${unit})`;
+          } else {
+            tag.textContent = isKo ? `배포 필터: ${selectedFilter.value} (${filtered.length}${unit})` : `Deploy: ${selectedFilter.value} (${filtered.length}${unit})`;
+          }
+        } else if (selectedFilter.type === 'deploy_ver') {
+          if (currentTrackId === 'all') {
+            filtered = filtered.filter(i => i.phase === 'phase3');
+          }
+          const ver = selectedFilter.value;
+          filtered = filtered.filter(i => (isItemDeployed(i, 'android') && getDeployVersion(i, 'android') === ver) || (isItemDeployed(i, 'ios') && getDeployVersion(i, 'ios') === ver));
+          tag.textContent = isKo ? `🏷️ 릴리즈 버전: ${ver} (${filtered.length}${unit})` : `🏷️ Release: ${ver} (${filtered.length}${unit})`;
+        } else if (selectedFilter.type === 'deploy_cat') {
+          if (currentTrackId === 'all') {
+            filtered = filtered.filter(i => i.phase === 'phase3');
+          }
+          const cat = selectedFilter.value;
+          filtered = filtered.filter(i => normalizeCategory(i.category) === cat);
+          tag.textContent = isKo ? `📦 도메인 배포: ${CAT_LABELS[cat]} (${filtered.length}${unit})` : `📦 Domain Deploy: ${CAT_LABELS[cat]} (${filtered.length}${unit})`;
         } else {
           tag.textContent = isKo ? `전체 이슈 (${filtered.length}건)` : `All Issues (${filtered.length} items)`;
         }
@@ -3052,13 +3649,30 @@
         const cardsHtml = filtered.slice(0, 30).map(i => {
           const cat = normalizeCategory(i.category);
           const sev = i.severity || 'S3';
+          const aosApp = isPlatformApplicable(i, 'android');
+          const iosApp = isPlatformApplicable(i, 'ios');
+          const depAos = isItemDeployed(i, 'android');
+          const depIos = isItemDeployed(i, 'ios');
+          const verAos = getDeployVersion(i, 'android');
+          const verIos = getDeployVersion(i, 'ios');
+
+          const aosChipLabel = !aosApp ? '🤖 AOS N/A' : (depAos ? `🤖 AOS ${verAos || '✓'}` : '🤖 AOS 미배포');
+          const aosChipColor = !aosApp ? 'var(--text-muted)' : (depAos ? '#2B8A3E' : 'var(--text-secondary)');
+          const aosChipBg = !aosApp ? 'var(--bg-subtle)' : (depAos ? 'rgba(43,138,62,0.1)' : 'var(--bg-subtle)');
+
+          const iosChipLabel = !iosApp ? '🍎 iOS N/A' : (depIos ? `🍎 iOS ${verIos || '✓'}` : '🍎 iOS 미배포');
+          const iosChipColor = !iosApp ? 'var(--text-muted)' : (depIos ? '#228BE6' : 'var(--text-secondary)');
+          const iosChipBg = !iosApp ? 'var(--bg-subtle)' : (depIos ? 'rgba(34,139,230,0.1)' : 'var(--bg-subtle)');
+
           return `
             <div class="issue-mini-card">
               <div class="issue-mini-top">
                 <span class="issue-badge-id">#${i.id}</span>
                 <span class="issue-cat-chip" style="color:${SEV_COLORS[sev]}; background:rgba(255,59,48,0.08); font-weight:800;">${i.severityLabel || SEV_LABELS[sev]}</span>
                 <span class="issue-cat-chip" style="color:${CAT_COLORS[cat]}; background:rgba(0,122,255,0.08);">${i.categoryLabel || CAT_LABELS[cat]}</span>
-                <span style="color:var(--text-muted); font-size:11px;">${i.date || ''}</span>
+                <span class="issue-cat-chip" style="color:${aosChipColor}; background:${aosChipBg}; font-size:10.5px;">${aosChipLabel}</span>
+                <span class="issue-cat-chip" style="color:${iosChipColor}; background:${iosChipBg}; font-size:10.5px;">${iosChipLabel}</span>
+                <span style="color:var(--text-muted); font-size:11px; margin-left:auto;">${i.date || ''}</span>
               </div>
               <div class="issue-mini-title">${i.title}</div>
               <div class="issue-mini-solution">${i.solution || i.problem || ''}</div>

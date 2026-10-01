@@ -206,22 +206,26 @@ The QA system features an interactive Visual Analytics Studio (`qa_analytics_das
 7. **Floating Sticky Scratchpad Widget (`📝 Scratchpad / 메모`)**:
    - Universal floating, draggable post-it memo modal accessible via top-left navigation button (`navMemo`) across all portals.
    - Supports bold formatting (`Ctrl+B`), 4-color highlighter pens (Yellow, Green, Blue, Pink), checklist tasks (`☑️`), 5 background themes, multi-tab switching, and cross-portal `localStorage` auto-persistence.
-8. **Manual Deployment Control & Reactive Release Notes Generator**:
-   - iOS-style mini toggle switches next to issue IDs in `qa_spreadsheet.html` for granular tracking of deployed vs. pending releases with `localStorage` persistence (`MODO_QA_DEPLOY_STATUS_V1`).
-   - **Strict Default State (OFF/False)**: By default, issue deployment status is strictly `false` (OFF). State is turned `true` only when the user explicitly switches it ON, which is then persisted in `localStorage`.
+8. **Dual-OS Deployment Control (🤖 AOS & 🍎 iOS) & Smart N/A**:
+   - Independent dual columns (`🤖 AOS 배포 ↕` and `🍎 iOS 배포 ↕`) in `qa_spreadsheet.html` with separate toggle switches and `localStorage` persistence (`MODO_QA_DEPLOY_STATUS_V2` with lossless V1 migration).
+   - **Smart N/A Disabling**: OS-exclusive issues (`platform === 'ios'` or `platform === 'android'`) automatically render non-clickable `- (N/A)` badges on the other platform's deployment column, preventing accidental cross-deployment mistakes.
+   - **Top Navigation Dual KPI Badges**: Real-time independent progress counters (`🤖 AOS: X/Y`, `🍎 iOS: A/B`) and dedicated 5-state deploy filters (`[All] [🤖 AOS 배포] [🍎 iOS 배포] [🚀 양대 배포] [⏳ Pending]`).
+   - **Tailored Dual-OS Release Notes Generator**: Dedicated 1-click generators for Google Play Store (`[📢 AOS 최신 복사]`, `[📜 AOS 전체]`) and Apple App Store (`[🍎 iOS 최신 복사]`, `[📜 iOS 전체]`), grouping deployed issues by target release version or master history across 8 ISO quality domains.
    - **Persistent Track & Milestone Restoration**: Selecting a phase tab (e.g., Phase 1, Phase 2, Phase 3, VOC) automatically synchronizes with both `localStorage` (`modo_qa_active_track`) and browser URL query parameters (`?track=...`) via `history.replaceState`. Reloading or refreshing the page faithfully restores the exact selected phase track.
    - **Composite Key Identification (`getItemKey`)**: Issues are identified internally via `${phase}_${id}` composite keys, guaranteeing zero ID collision in the **All Tracks** master view even when multiple phases increment independently starting from `#1`.
-   - Top navigation real-time deploy percentage badge (`🚀 Deployed: X/Y (Z%)`) and dedicated deploy filters (`[All] [🚀 Deployed] [⏳ Pending]`).
-   - One-click store release notes auto-generator (`📢 릴리즈 노트`) that dynamically includes only deployed (`ON`) items and instantly excludes toggled-off items in real time.
 9. **Target Files Floating Popover & 1-Click Clipboard**:
    - The spreadsheet `Files` column features high-density compact badges (`📁 N files`) to eliminate cell overflow. Hovering or clicking reveals an Apple-style frosted floating popover (`qa-files-popover`).
    - Supports 1-click clipboard copy (`📋 Copy All` or single-file copy with visual checkmark feedback) and one-touch navigation to the Inspector Drawer (`🔍 View in Inspector Panel ↗`).
-10. **Target Release Auto-Stamping & Version Modal**:
-    - Top toolbar target release manager (`🏷️ Release:`) with auto-persistence in `localStorage` (`modo_qa_target_release`).
-    - Clicking any deployment version tag (`qa-deploy-ver-tag`) opens an interactive modal to edit or auto-stamp release bundle versions (e.g., `69 (1.1.2)`).
-11. **OS Quick Filter Chip Bar (`🍎 iOS`, `🤖 Android`, `🌐 Universal`)**:
-    - Instantaneous OS platform filter chips embedded in the top control toolbar, allowing 1-click filtering by target platform across individual milestone tracks or the unified All Tracks view.
-12. **Mobile Release Lifecycle 1:1 Matching Model**:
+10. **Dual-OS Target Release Auto-Stamping & Version Modals**:
+    - Independent target release inputs (`🤖 AOS: 71 (1.1.5)`, `🍎 iOS: 45 (1.1.5)`) in the toolbar with separate auto-stamping and OS-specific modal dialogs.
+    - Clicking any deployment version tag (`qa-deploy-ver-tag`) opens an interactive modal to edit or auto-stamp release bundle versions for that specific operating system.
+11. **2-Tier Modular Filter Toolbar & Collapsible Detail Drawer**:
+    - **Tier 1 (Core Focus Toolbar)**: Real-time search (`Ctrl+F`), OS platform chips (`🍎 iOS`, `🤖 Android`, `🌐 Universal`), 5-state deployment filter chips, status tags, `[⚙️ Detail Filters ▾]` toggle button with active filter counter badge, and `[↺ Reset]` 1-click reset button.
+    - **Tier 2 (Collapsible Secondary Drawer)**: Date dropdown, Severity 5-tier filter tags (S1-S5), Category 8-domain filter tags, and Dual Release Action subgroups.
+    - **State Persistence**: Drawer open/closed state is automatically saved to `localStorage` (`modo_qa_detail_filter_open`) across page reloads.
+12. **Sticky Spreadsheet Header (`th`)**:
+    - Table header columns stay seamlessly pinned directly beneath the 48px global navigation bar (`position: sticky; top: 48px; z-index: 90;`) during deep vertical scrolling, providing continuous context across large issue backlogs.
+13. **Mobile Release Lifecycle 1:1 Matching Model**:
     - Milestone track architecture follows the enterprise mobile release standard:
       - `Phase 1`: `🔒 Android Closed Testing` (Google Play closed beta verification)
       - `Phase 2`: `🍎 iOS TestFlight Testing` (Apple ecosystem, TestFlight & iOS native permissions)

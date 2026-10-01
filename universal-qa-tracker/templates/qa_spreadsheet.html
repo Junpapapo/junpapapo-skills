@@ -510,8 +510,8 @@
     }
 
     .sheet-wrapper {
-      padding: 16px 20px;
-      overflow-x: auto;
+      padding: 12px 16px;
+      overflow: visible;
       overflow-anchor: none;
     }
     .sheet-table {
@@ -522,21 +522,28 @@
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       overflow-anchor: none;
     }
     .sheet-table th {
+      position: sticky;
+      top: 48px;
+      z-index: 90;
       background: var(--bg-subtle);
       color: var(--text-secondary);
       font-size: 12px;
       font-weight: 700;
       padding: 8px 10px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
       border-right: 1px solid var(--border-subtle);
       text-align: left;
       user-select: none;
       cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] .sheet-table th {
+      background: var(--bg-subtle);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .sheet-table th:last-child { border-right: none; }
     .sheet-table td {
@@ -657,8 +664,20 @@
     .qa-deploy-switch input:checked + .qa-deploy-slider {
       background-color: #2B8A3E;
     }
+    .qa-deploy-switch input:checked + .qa-deploy-slider.slider-aos {
+      background-color: #2B8A3E;
+    }
+    .qa-deploy-switch input:checked + .qa-deploy-slider.slider-ios {
+      background-color: #228BE6;
+    }
     [data-theme="dark"] .qa-deploy-switch input:checked + .qa-deploy-slider {
       background-color: #51CF66;
+    }
+    [data-theme="dark"] .qa-deploy-switch input:checked + .qa-deploy-slider.slider-aos {
+      background-color: #51CF66;
+    }
+    [data-theme="dark"] .qa-deploy-switch input:checked + .qa-deploy-slider.slider-ios {
+      background-color: #339AF0;
     }
     .qa-deploy-switch input:checked + .qa-deploy-slider:before {
       transform: translateX(14px);
@@ -693,6 +712,18 @@
       width: 100%;
       box-sizing: border-box;
     }
+    .qa-deploy-na {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      display: inline-block;
+      user-select: none;
+      line-height: 1.35;
+    }
     .qa-deploy-ver-tag {
       font-size: 10px;
       font-weight: 700;
@@ -709,7 +740,7 @@
       align-items: center;
       justify-content: center;
       gap: 2px;
-      max-width: 86px;
+      max-width: 82px;
       overflow: hidden;
       text-overflow: ellipsis;
       box-sizing: border-box;
@@ -719,6 +750,16 @@
       border-color: #2B8A3E;
       transform: translateY(-1px);
     }
+    .qa-deploy-ver-tag.ver-aos {
+      color: #2B8A3E;
+      background: rgba(43, 138, 62, 0.12);
+      border-color: rgba(43, 138, 62, 0.28);
+    }
+    .qa-deploy-ver-tag.ver-ios {
+      color: #228BE6;
+      background: rgba(34, 139, 230, 0.12);
+      border-color: rgba(34, 139, 230, 0.28);
+    }
     [data-theme="dark"] .qa-deploy-ver-tag {
       color: #51CF66;
       background: rgba(81, 207, 102, 0.15);
@@ -727,6 +768,170 @@
     [data-theme="dark"] .qa-deploy-ver-tag:hover {
       background: rgba(81, 207, 102, 0.28);
       border-color: #51CF66;
+    }
+    [data-theme="dark"] .qa-deploy-ver-tag.ver-aos {
+      color: #51CF66;
+      background: rgba(81, 207, 102, 0.15);
+      border-color: rgba(81, 207, 102, 0.35);
+    }
+    [data-theme="dark"] .qa-deploy-ver-tag.ver-ios {
+      color: #339AF0;
+      background: rgba(51, 154, 240, 0.15);
+      border-color: rgba(51, 154, 240, 0.35);
+    }
+
+    /* Collapsible Drawer & Filter Action Styles */
+    .btn-toggle-drawer {
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .btn-toggle-drawer:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    .btn-toggle-drawer.active {
+      background: var(--bg-surface);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      box-shadow: 0 1px 3px rgba(34, 139, 230, 0.15);
+    }
+    .drawer-chevron {
+      font-size: 9px;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .btn-toggle-drawer.active .drawer-chevron {
+      transform: rotate(180deg);
+    }
+    .detail-filter-active-badge {
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 0 5px;
+      border-radius: 999px;
+      min-width: 14px;
+      text-align: center;
+      line-height: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-reset-filters {
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+    .btn-reset-filters:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(224, 83, 60, 0.08);
+    }
+    .detail-filters-drawer {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease, padding 0.18s ease;
+      padding: 0 0;
+      border-top: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .detail-filters-drawer.open {
+      max-height: 280px;
+      opacity: 1;
+      padding-top: 6px;
+      border-top-color: var(--border-subtle);
+    }
+    .release-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: var(--bg-subtle);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+    }
+    .release-subgroup {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .btn-release-aos {
+      padding: 2.5px 7px;
+      font-size: 10.5px;
+      background: rgba(43, 138, 62, 0.12);
+      color: #2B8A3E;
+      border: 1px solid rgba(43, 138, 62, 0.28);
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.12s ease;
+    }
+    .btn-release-aos:hover {
+      background: rgba(43, 138, 62, 0.22);
+    }
+    .btn-release-ios {
+      padding: 2.5px 7px;
+      font-size: 10.5px;
+      background: rgba(34, 139, 230, 0.12);
+      color: #228BE6;
+      border: 1px solid rgba(34, 139, 230, 0.28);
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.12s ease;
+    }
+    .btn-release-ios:hover {
+      background: rgba(34, 139, 230, 0.22);
+    }
+    .btn-release-subtle {
+      padding: 2.5px 6px;
+      font-size: 10.5px;
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.12s ease;
+    }
+    .btn-release-subtle:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
     }
 
     .col-id { font-family: var(--font-mono); font-weight: 700; width: 80px; }
@@ -1518,14 +1723,16 @@
   </style>
 
   <!-- Load Data and Modules -->
-  <script src="data/qa_config.js?v=2.5"></script>
+  <script src="data/qa_config.js?v=2.6"></script>
   <script src="data/phase1_closed_testing.js?v=2.4"></script>
   <script src="data/phase2_open_beta.js?v=2.4"></script>
-  <script src="data/phase3_v1_1_backlog.js?v=2.4"></script>
-  <script src="data/feedback_manifest.js?v=2.4"></script>
-  <script src="data/qa_manifest.js?v=2.4"></script>
+  <script src="data/phase3_v1_1_backlog.js?v=2.6"></script>
+  <script src="data/feedback_manifest.js?v=2.6"></script>
+  <script src="data/qa_deploy_registry.js?v=1.0"></script>
+  <script src="data/qa_manifest.js?v=2.6"></script>
   <script src="js/qa_i18n.js?v=2.4"></script>
-  <script src="js/qa_engine.js?v=2.5"></script>
+  <script src="js/qa_dialog.js?v=1.0"></script>
+  <script src="js/qa_engine.js?v=2.7"></script>
   <script src="js/qa_memo.js?v=1.0"></script>
 </head>
 <body>
@@ -1543,7 +1750,8 @@
         <span class="stat-badge"><span data-i18n="statTotal">Total: </span><b id="statTotal">-</b></span>
         <span class="stat-badge" style="color: var(--status-resolved-text);"><span data-i18n="statResolved">Resolved: </span><b id="statResolved">-</b></span>
         <span class="stat-badge" style="color: var(--status-pending-text);"><span data-i18n="statPending">Pending: </span><b id="statPending">-</b></span>
-        <span class="stat-badge" id="badgeStatDeployed" style="color: #2B8A3E;" title="배포 완료 / 배포 대상"><span data-i18n="statDeployed">🚀 Deployed: </span><b id="statDeployed">0/0</b></span>
+        <span class="stat-badge" id="badgeStatDeployedAos" style="color: #2B8A3E;" title="Android 배포 완료 / 대상"><img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:3px;" alt="AOS" /><span data-i18n="statDeployedAos">AOS: </span><b id="statDeployedAos">0/0</b></span>
+        <span class="stat-badge" id="badgeStatDeployedIos" style="color: #228BE6;" title="iOS 배포 완료 / 대상"><img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:3px;" alt="iOS" /><span data-i18n="statDeployedIos">iOS: </span><b id="statDeployedIos">0/0</b></span>
       </div>
     </div>
 
@@ -1552,10 +1760,12 @@
       <a href="index.html" class="nav-view-tab">🏠 Hub</a>
       <a href="qa_analytics_dashboard.html" class="nav-view-tab" data-i18n="dashboardView">📊 비주얼 대시보드</a>
       <a href="qa_spreadsheet.html" class="nav-view-tab active" data-i18n="spreadsheetView">📋 스프레드시트</a>
+      <a href="ops_release_dashboard.html" class="nav-view-tab" style="color:var(--ios-orange);">🚀 릴리즈 관제</a>
       <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC Studio</a>
     </nav>
 
     <div class="nav-right">
+      <button class="nav-btn-action" id="btnSaveDeployRegistry" onclick="window.MODO_QA ? window.MODO_QA.openDeploySaveModal() : null" title="브라우저에서 수정한 배포 정보를 영구 파일(qa_deploy_registry.js/json)로 저장"><span id="badgeDeployUnsaved" style="display:none; width:7px; height:7px; background:#FF684D; border-radius:50%; margin-right:4px;"></span>💾 <span data-i18n="btnSaveDeploy">배포 영구 저장</span></button>
       <button class="nav-btn-action nav-btn-sync" id="btnSyncGoogleSheet" onclick="window.MODO_QA ? window.MODO_QA.openSyncModal() : null" title="Sync with Google Sheets"><img src="assets/icons/icon_cloud_sync.webp" style="width:14px; height:14px; object-fit:contain; vertical-align:-2px; margin-right:4px;" alt="Sync" /> <span data-i18n="btnSyncSheet">시트 동기화</span></button>
       <button class="nav-btn-action" onclick="window.MODO_QA ? window.MODO_QA.toggleSeverityGuideModal(true) : null" id="btnHelpGuide" data-i18n="helpGuideBtn" title="도움말 &amp; 결함 표준 가이드">❓ 도움말</button>
       
@@ -1614,9 +1824,9 @@
   <!-- Track Scope Tabs Bar -->
   <div class="track-tabs-bar" id="trackTabsBar"></div>
 
-  <!-- 2-Row Dense Apple Filter Card Container -->
+  <!-- 2-Tier Modular Apple Filter Card Container -->
   <div class="toolbar-container">
-    <!-- Line 1: Search, Date, Status, Platform, and Item Count -->
+    <!-- Line 1: Primary Controls (Search, OS, Deploy, Status, Drawer Toggle, Reset, Count) -->
     <div class="toolbar-row">
       <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
         <!-- Search Box with Icon -->
@@ -1625,12 +1835,25 @@
           <input type="text" class="search-input" id="searchInput" placeholder="Search (issue, root cause, file, OS, #ID)..." data-i18n-placeholder="searchPlaceholder" />
         </div>
 
-        <!-- Date Filter Dropdown -->
-        <div class="filter-group">
-          <span class="filter-label" data-i18n="filterDateLabel">📅 Date:</span>
-          <select class="select-dropdown" id="dateFilterSelect">
-            <option value="all">All Dates</option>
-          </select>
+        <!-- Platform (OS) Filters -->
+        <div class="filter-group" id="platformFilters">
+          <span class="filter-label" data-i18n="filterPlatformLabel">📱 OS:</span>
+          <span class="filter-tag active" data-platform="all" data-i18n="platformAll">All OS</span>
+          <span class="filter-tag" data-platform="ios" data-label-base="iOS"><img src="assets/icons/logo_apple_official.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="Apple" /> iOS</span>
+          <span class="filter-tag" data-platform="android" data-label-base="Android"><img src="assets/icons/logo_android_official.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="Android" /> Android</span>
+          <span class="filter-tag" data-platform="all_common" data-label-base="Universal">🌐 Universal</span>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- Deploy Filters (Dual-OS Aware) -->
+        <div class="filter-group" id="deployFilters">
+          <span class="filter-label" data-i18n="filterDeployLabel">🚀 Deploy:</span>
+          <span class="filter-tag active" data-deploy="all" data-i18n="filterDeployAll">All</span>
+          <span class="filter-tag" data-deploy="deployed_aos" data-i18n="filterDeployAos"><img src="assets/icons/logo_android_official.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="AOS" /> AOS 배포</span>
+          <span class="filter-tag" data-deploy="deployed_ios" data-i18n="filterDeployIos"><img src="assets/icons/logo_apple_official.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="iOS" /> iOS 배포</span>
+          <span class="filter-tag" data-deploy="deployed_both" data-i18n="filterDeployBoth"><img src="assets/icons/logo_android_official.svg" style="width:10px; height:10px; vertical-align:-1px; margin-right:1px;" alt="AOS" /><img src="assets/icons/logo_apple_official.svg" style="width:10px; height:10px; vertical-align:-1px; margin-right:3px;" alt="iOS" /> 양대 배포</span>
+          <span class="filter-tag" data-deploy="pending" data-i18n="filterNotDeployed">⏳ Pending</span>
         </div>
 
         <div class="filter-divider"></div>
@@ -1647,57 +1870,56 @@
 
         <div class="filter-divider"></div>
 
-        <!-- Platform (OS) Filters -->
-        <div class="filter-group" id="platformFilters">
-          <span class="filter-label" data-i18n="filterPlatformLabel">📱 OS:</span>
-          <span class="filter-tag active" data-platform="all" data-i18n="platformAll">All OS</span>
-          <span class="filter-tag" data-platform="ios" data-label-base="🍎 iOS">🍎 iOS</span>
-          <span class="filter-tag" data-platform="android" data-label-base="🤖 Android">🤖 Android</span>
-          <span class="filter-tag" data-platform="all_common" data-label-base="🌐 Universal">🌐 Universal</span>
-        </div>
+        <!-- Collapsible Detail Filter Button with Badge -->
+        <button type="button" class="btn-toggle-drawer" id="btnToggleDetailFilters" onclick="window.MODO_QA && window.MODO_QA.toggleDetailFilters ? window.MODO_QA.toggleDetailFilters() : null">
+          <span>⚙️</span>
+          <span data-i18n="btnDetailFilters">상세 필터</span>
+          <span class="drawer-chevron" id="detailFilterChevron">▾</span>
+          <span class="detail-filter-active-badge" id="detailFilterActiveBadge" style="display: none;">0</span>
+        </button>
 
-        <div class="filter-divider"></div>
+        <!-- Reset Button -->
+        <button type="button" class="btn-reset-filters" id="btnResetFilters" onclick="window.MODO_QA && window.MODO_QA.resetAllFilters ? window.MODO_QA.resetAllFilters() : null" title="모든 검색 및 필터 초기화">
+          <span>↺</span>
+          <span data-i18n="btnResetFilters">초기화</span>
+        </button>
 
-        <!-- Deploy Filters (Phase 3 Release Tracking) -->
-        <div class="filter-group" id="deployFilters">
-          <span class="filter-label" data-i18n="filterDeployLabel">🚀 Deploy:</span>
-          <span class="filter-tag active" data-deploy="all" data-i18n="filterDeployAll">All</span>
-          <span class="filter-tag" data-deploy="deployed" data-i18n="filterDeployed">🚀 Deployed</span>
-          <span class="filter-tag" data-deploy="pending" data-i18n="filterNotDeployed">⏳ Pending</span>
-        </div>
-
-        <!-- Target Release Version Input -->
-        <div class="filter-group" id="targetReleaseGroup" style="display: inline-flex; align-items: center; gap: 4px;" title="배포 ON 시 자동 스탬프될 기본 릴리즈 버전">
-          <span class="filter-label" data-i18n="targetReleaseLabel" style="font-size: 11px;">🏷️ Release:</span>
-          <input type="text" id="targetReleaseInput" class="select-dropdown" style="width: 82px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #2B8A3E;" value="69 (1.1.2)" data-i18n-placeholder="targetReleasePlaceholder" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease(this.value) : null" />
-        </div>
-
-        <!-- Release Notes Export Action Button -->
-        <button type="button" class="nav-btn-action" id="btnReleaseNotes" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes() : null" style="padding: 3px 8px; font-size: 11px; background: rgba(43, 138, 62, 0.1); color: #2B8A3E; border: 1px solid rgba(43, 138, 62, 0.28); font-weight: 700; border-radius: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 3px;" title="현재 배포 완료(ON)된 항목들만 스토어 릴리즈 노트로 클립보드 복사"><span data-i18n="btnCopyReleaseNotes">📢 릴리즈 노트</span></button>
-      </div>
-
-      <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);" id="tableCountLabel">
-        Showing: 0 / 0 items
+        <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-left: 6px; padding-left: 8px; border-left: 1px solid var(--border); white-space: nowrap; display: inline-flex; align-items: center;" id="tableCountLabel">
+          Showing: 0 / 0 items
+        </span>
       </div>
     </div>
 
-    <!-- Line 2: Severity & Quality Category Dimensions -->
-    <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 5px;">
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <!-- Severity Filters (IEEE 1044 / ISTQB) -->
-        <div class="filter-group" id="severityFilters">
-          <span class="filter-label" data-i18n="filterSeverityLabel">Severity:</span>
-          <span class="filter-tag active" data-sev="all" data-i18n="sevAll">All Severity</span>
-          <span class="filter-tag" data-sev="S1" data-label-base="🚨 S1 Blocker">🚨 S1 Blocker</span>
-          <span class="filter-tag" data-sev="S2" data-label-base="🔥 S2 Critical">🔥 S2 Critical</span>
-          <span class="filter-tag" data-sev="S3" data-label-base="⚡ S3 Major">⚡ S3 Major</span>
-          <span class="filter-tag" data-sev="S4" data-label-base="🌱 S4 Minor">🌱 S4 Minor</span>
-          <span class="filter-tag" data-sev="S5" data-label-base="☕ S5 Trivial">☕ S5 Trivial</span>
+    <!-- Line 2: Expandable Detail Filters Drawer -->
+    <div class="detail-filters-drawer" id="detailFiltersDrawer">
+      <!-- Sub-row 1: Date & Severity Filters -->
+      <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 5px;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <!-- Date Filter Dropdown -->
+          <div class="filter-group">
+            <span class="filter-label" data-i18n="filterDateLabel">📅 Date:</span>
+            <select class="select-dropdown" id="dateFilterSelect">
+              <option value="all">All Dates</option>
+            </select>
+          </div>
+
+          <div class="filter-divider"></div>
+
+          <!-- Severity Filters (IEEE 1044 / ISTQB) -->
+          <div class="filter-group" id="severityFilters">
+            <span class="filter-label" data-i18n="filterSeverityLabel">Severity:</span>
+            <span class="filter-tag active" data-sev="all" data-i18n="sevAll">All Severity</span>
+            <span class="filter-tag" data-sev="S1" data-label-base="🚨 S1 Blocker">🚨 S1 Blocker</span>
+            <span class="filter-tag" data-sev="S2" data-label-base="🔥 S2 Critical">🔥 S2 Critical</span>
+            <span class="filter-tag" data-sev="S3" data-label-base="⚡ S3 Major">⚡ S3 Major</span>
+            <span class="filter-tag" data-sev="S4" data-label-base="🌱 S4 Minor">🌱 S4 Minor</span>
+            <span class="filter-tag" data-sev="S5" data-label-base="☕ S5 Trivial">☕ S5 Trivial</span>
+          </div>
         </div>
+      </div>
 
-        <div class="filter-divider"></div>
-
-        <!-- Category Filters (ISO/IEC 25010 8 Domains) -->
+      <!-- Sub-row 2: Category Filters (ISO/IEC 25010 8 Domains) -->
+      <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 5px;">
         <div class="filter-group" id="categoryFilters">
           <span class="filter-label" data-i18n="filterCategoryLabel">Category:</span>
           <span class="filter-tag active" data-cat="all" data-i18n="catAll">All Categories</span>
@@ -1711,6 +1933,29 @@
           <span class="filter-tag" data-cat="db" data-label-base="💾 Database">💾 Database</span>
         </div>
       </div>
+
+      <!-- Sub-row 3: Dual OS Target Releases & Release Notes Actions -->
+      <div class="toolbar-row" style="border-top: 1px solid var(--border-subtle); padding-top: 5px;" id="targetReleaseRow">
+        <div class="release-actions-group">
+          <!-- Android Release Subgroup -->
+          <div class="release-subgroup" id="releaseSubgroupAos">
+            <span class="filter-label" style="color: #2B8A3E;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="AOS" /> <span data-i18n="targetReleaseAosLabel">AOS 릴리즈:</span></span>
+            <input type="text" id="targetReleaseAosInput" class="select-dropdown" style="width: 86px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #2B8A3E;" value="79 (1.1.12)" data-i18n-placeholder="targetReleaseAosPlaceholder" title="Android 배포 ON 시 자동 스탬프될 기본 릴리즈 버전" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease('android', this.value) : null" />
+            <button type="button" class="btn-release-aos" id="btnReleaseNotesAosLatest" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('android', 'latest') : null" title="현재 지정된 AOS 릴리즈 버전 항목만 Google Play용 릴리즈 노트로 클립보드 복사"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="AOS" /> <span data-i18n="btnCopyReleaseNotesAosLatest">AOS 최신 복사</span></button>
+            <button type="button" class="btn-release-subtle" id="btnReleaseNotesAosAll" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('android', 'all') : null" title="모든 버전별 Android 릴리즈 히스토리를 버전별 섹션으로 나누어 클립보드 복사"><span data-i18n="btnCopyReleaseNotesAosAll">AOS 전체</span></button>
+          </div>
+
+          <div class="filter-divider"></div>
+
+          <!-- iOS Release Subgroup -->
+          <div class="release-subgroup" id="releaseSubgroupIos">
+            <span class="filter-label" style="color: #228BE6;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="iOS" /> <span data-i18n="targetReleaseIosLabel">iOS 릴리즈:</span></span>
+            <input type="text" id="targetReleaseIosInput" class="select-dropdown" style="width: 86px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #228BE6;" value="85 (1.1.16)" data-i18n-placeholder="targetReleaseIosPlaceholder" title="iOS 배포 ON 시 자동 스탬프될 기본 릴리즈 버전" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease('ios', this.value) : null" />
+            <button type="button" class="btn-release-ios" id="btnReleaseNotesIosLatest" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('ios', 'latest') : null" title="현재 지정된 iOS 릴리즈 버전 항목만 App Store용 릴리즈 노트로 클립보드 복사"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="iOS" /> <span data-i18n="btnCopyReleaseNotesIosLatest">iOS 최신 복사</span></button>
+            <button type="button" class="btn-release-subtle" id="btnReleaseNotesIosAll" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('ios', 'all') : null" title="모든 버전별 iOS 릴리즈 히스토리를 버전별 섹션으로 나누어 클립보드 복사"><span data-i18n="btnCopyReleaseNotesIosAll">iOS 전체</span></button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1719,16 +1964,18 @@
     <table class="sheet-table" id="qaTable">
       <thead>
         <tr>
-          <th style="width: 90px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed')" data-i18n="thDeploy">배포 ↕</th>
-          <th style="width: 70px;" onclick="window.MODO_QA.sortTable('id')" data-i18n="thId">ID ↕</th>
-          <th style="width: 90px;" onclick="window.MODO_QA.sortTable('date')" data-i18n="thDate">Date ↕</th>
-          <th style="width: 95px;" onclick="window.MODO_QA.sortTable('platform')" data-i18n="thPlatform">Platform ↕</th>
-          <th style="width: 95px;" onclick="window.MODO_QA.sortTable('category')" data-i18n="thCategory">Category ↕</th>
-          <th style="min-width: 220px;" onclick="window.MODO_QA.sortTable('title')" data-i18n="thTitle">Issue Summary ↕</th>
-          <th style="min-width: 240px;" data-i18n="thCause">Root Cause Analysis</th>
-          <th style="min-width: 260px;" data-i18n="thSolution">Resolution & Action Items</th>
-          <th style="width: 60px; text-align: center;" data-i18n="thFiles">Files</th>
-          <th style="width: 80px; text-align: center;" onclick="window.MODO_QA.sortTable('status')" data-i18n="thStatus">Status ↕</th>
+          <th id="thDeployAos" style="width: 84px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed_android')"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="AOS" /> <span data-i18n="thDeployAos">AOS 배포 ↕</span></th>
+          <th id="thDeployIos" style="width: 84px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed_ios')"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="iOS" /> <span data-i18n="thDeployIos">iOS 배포 ↕</span></th>
+          <th style="width: 68px;" onclick="window.MODO_QA.sortTable('id')" data-i18n="thId">ID ↕</th>
+          <th style="width: 100px;" onclick="window.MODO_QA.sortTable('severity')" data-i18n="thSeverity">Severity ↕</th>
+          <th style="width: 82px;" onclick="window.MODO_QA.sortTable('date')" data-i18n="thDate">Date ↕</th>
+          <th style="width: 80px;" onclick="window.MODO_QA.sortTable('platform')" data-i18n="thPlatform">Platform ↕</th>
+          <th style="width: 110px;" onclick="window.MODO_QA.sortTable('category')" data-i18n="thCategory">Category ↕</th>
+          <th style="width: 21%;" onclick="window.MODO_QA.sortTable('title')" data-i18n="thTitle">Issue Summary ↕</th>
+          <th style="width: 22%;" data-i18n="thCause">Root Cause Analysis</th>
+          <th style="width: 24%;" data-i18n="thSolution">Resolution & Action Items</th>
+          <th style="width: 56px; text-align: center;" data-i18n="thFiles">Files</th>
+          <th style="width: 72px; text-align: center;" onclick="window.MODO_QA.sortTable('status')" data-i18n="thStatus">Status ↕</th>
         </tr>
       </thead>
 
@@ -2042,7 +2289,8 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 7px;">
           <span style="font-size: 16px;">🚀</span>
-          <h3 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0;" data-i18n="modalEditDeployTitle">배포 릴리즈 버전 수정</h3>
+          <h3 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0;" id="editDeployModalTitle" data-i18n="modalEditDeployTitle">배포 릴리즈 버전 수정</h3>
+          <span id="editDeployOsBadge" style="font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 4px; display: inline-block;"></span>
         </div>
         <button style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;" onclick="window.MODO_QA.closeEditDeployModal()">&times;</button>
       </div>
@@ -2050,7 +2298,7 @@
       
       <div style="margin-bottom: 12px;">
         <label style="display: block; font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 5px;" data-i18n="targetReleaseLabel">🏷️ 릴리즈 버전:</label>
-        <input type="text" id="editDeployVersionInput" class="select-dropdown" style="width: 100%; padding: 7px 10px; font-size: 13px; font-weight: 700; border-radius: 6px; box-sizing: border-box; color: #2B8A3E;" placeholder="예: 69 (1.1.2)" />
+        <input type="text" id="editDeployVersionInput" class="select-dropdown" style="width: 100%; padding: 7px 10px; font-size: 13px; font-weight: 700; border-radius: 6px; box-sizing: border-box; color: #2B8A3E;" placeholder="예: 77 (1.1.10)" />
       </div>
 
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 16px;">
@@ -2060,7 +2308,67 @@
 
       <div style="display: flex; justify-content: flex-end; gap: 8px;">
         <button style="padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.MODO_QA.closeEditDeployModal()" data-i18n="btnCancel">취소</button>
-        <button style="padding: 6px 16px; border: none; border-radius: 6px; background: #2B8A3E; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700;" onclick="window.MODO_QA.saveDeployVersion()" data-i18n="btnSaveRelease">저장</button>
+        <button style="padding: 6px 16px; border: none; border-radius: 6px; background: #2B8A3E; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700;" id="btnSaveDeployVersion" onclick="window.MODO_QA.saveDeployVersion()" data-i18n="btnSaveRelease">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Permanent Deploy Registry Save Modal -->
+  <div id="deploySaveModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.68); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; width: 92%; max-width: 620px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(0,0,0,0.3); overflow: hidden;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg-subtle);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">💾</span>
+          <h3 style="font-size: 15px; font-weight: 800; color: var(--text-primary); margin: 0;">안건별 배포 정보 영구 파일 기록</h3>
+        </div>
+        <button style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;" onclick="window.MODO_QA.closeDeploySaveModal()">&times;</button>
+      </div>
+
+      <div style="padding: 18px 20px; overflow-y: auto; flex: 1;">
+        <p id="deploySaveModalInfo" style="font-size: 12.5px; color: var(--text-primary); margin-bottom: 12px; line-height: 1.5; background: var(--bg-subtle); padding: 10px 14px; border-radius: 8px; border-left: 3px solid var(--accent-blue);">
+          현재 브라우저에 기록된 안건별 배포 정보(AOS/iOS 배포 여부, 버전, 일자)를 로컬 소스 파일에 영구 기록합니다.
+        </p>
+
+        <div style="margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 11.5px; font-weight: 700; color: var(--text-secondary);">📁 영구 대상 파일:</label>
+            <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">docs/02_Guides/internal_qa_issue_tracker/data/qa_deploy_registry.js</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" style="flex: 1; min-width: 170px; padding: 10px 12px; border-radius: 8px; border: none; background: #2B8A3E; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 6px rgba(43,138,62,0.3);" onclick="window.MODO_QA.saveDeployRegistryDirectly()" title="크롬 File System Access API를 통해 qa_deploy_registry.js 파일에 즉시 쓰기">
+              <span>⚡</span> <span>소스 파일로 즉시 저장</span>
+            </button>
+            <button type="button" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--text-primary); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="window.MODO_QA.downloadDeployRegistryJs()" title="qa_deploy_registry.js 파일로 직접 다운로드">
+              <span>💾</span> <span>JS 다운로드</span>
+            </button>
+            <button type="button" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--text-primary); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="window.MODO_QA.downloadDeployRegistryJson()" title="qa_deploy_registry.json 파일로 다운로드">
+              <span>📄</span> <span>JSON 다운로드</span>
+            </button>
+            <button type="button" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--accent-blue); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="window.MODO_QA.copyDeployRegistrySnippet()" title="JS 코드 클립보드 복사">
+              <span>📋</span> <span>스니펫 복사</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; padding: 12px 14px; background: var(--bg-subtle); border-radius: 8px; border: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 11.5px; font-weight: 800; color: var(--text-primary);">🚀 소스 코드(Backlog & Manifest) 일괄 자동 동기화</span>
+            <button type="button" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-surface); color: var(--accent-blue); font-weight: 700; cursor: pointer;" onclick="window.MODO_QA.copyDeploySyncCli()">명령어 복사</button>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.4;">
+            아래 명령어를 터미널에서 실행하면 영구 기록된 배포 정보가 <code style="font-family:var(--font-mono); color:var(--accent-blue);">phase3_v1_1_backlog.js</code>와 <code style="font-family:var(--font-mono); color:var(--accent-blue);">qa_manifest.js</code>에 100% 완전 고정됩니다:
+          </p>
+          <pre style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: var(--font-mono); font-size: 11px; color: var(--accent-green); overflow-x: auto; margin: 0;">node docs/02_Guides/internal_qa_issue_tracker/scripts/sync_deploy_status.js</pre>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label style="display:block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 5px;">현재 저장될 배포 맵 미리보기 (JSON Preview):</label>
+          <pre id="deploySaveModalPreview" style="height: 120px; overflow-y: auto; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-secondary); margin: 0;"></pre>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border); background: var(--bg-subtle);">
+        <button style="padding: 7px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.MODO_QA.closeDeploySaveModal()">닫기</button>
       </div>
     </div>
   </div>

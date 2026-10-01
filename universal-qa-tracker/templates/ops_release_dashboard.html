@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modo — Production Release &amp; Version Cadence Studio</title>
+
+  <!-- Shared QA Tracker Data & Scripts -->
+  <script src="data/qa_config.js"></script>
+  <script src="data/phase1_closed_testing.js"></script>
+  <script src="data/phase2_open_beta.js"></script>
+  <script src="data/phase3_v1_1_backlog.js"></script>
+  <script src="data/qa_deploy_registry.js"></script>
+  <script src="data/qa_manifest.js"></script>
+  <script src="js/qa_i18n.js"></script>
+  <script src="js/qa_dialog.js"></script>
+  <script src="js/qa_memo.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #F2F2F7;
+      --bg-surface: #FFFFFF;
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --bg-subtle: #E5E5EA;
+      --bg-hover: #E9E9EE;
+      --text-primary: #1C1C1E;
+      --text-secondary: #48484A;
+      --text-muted: #8E8E93;
+      --border: rgba(60, 60, 67, 0.12);
+      --border-subtle: rgba(60, 60, 67, 0.06);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      --card-hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+      /* iOS & Platform Colors */
+      --ios-blue: #007AFF;
+      --ios-purple: #5856D6;
+      --ios-indigo: #5E5CE6;
+      --ios-teal: #30B0C7;
+      --ios-mint: #00C7BE;
+      --ios-green: #34C759;
+      --ios-orange: #FF9500;
+      --ios-red: #FF3B30;
+      --ios-pink: #FF2D55;
+      --ios-amber: #FFCC00;
+
+      --aos-green: #2B8A3E;
+      --ios-apple-blue: #007AFF;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "SF Pro Display", Roboto, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #000000;
+      --bg-surface: #1C1C1E;
+      --bg-card: rgba(28, 28, 30, 0.88);
+      --bg-subtle: #2C2C2E;
+      --bg-hover: #3A3A3C;
+      --text-primary: #FFFFFF;
+      --text-secondary: #EBEBF5;
+      --text-muted: #8E8E93;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --card-hover-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+
+      --ios-blue: #0A84FF;
+      --ios-purple: #5E5CE6;
+      --ios-indigo: #6D6BFF;
+      --ios-teal: #40C8E0;
+      --ios-mint: #63E6E2;
+      --ios-green: #30D158;
+      --ios-orange: #FF9F0A;
+      --ios-red: #FF453A;
+      --ios-pink: #FF375F;
+      --ios-amber: #FFD60A;
+
+      --aos-green: #40C057;
+      --ios-apple-blue: #4DABF7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.45;
+      padding-bottom: 60px;
+    }
+
+    /* Custom 5px Slim Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(142, 142, 147, 0.35); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(142, 142, 147, 0.6); }
+
+    /* Apple HIG Global Navigation Bar */
+    .apple-global-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+    }
+    [data-theme="dark"] .apple-global-nav {
+      background: rgba(28, 28, 30, 0.85);
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-brand-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--ios-orange) 0%, var(--ios-red) 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .nav-brand-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: var(--text-primary);
+    }
+    .nav-hub-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-hub-badge:hover {
+      background: var(--bg-hover);
+      color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    .nav-view-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .nav-view-tab {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .nav-view-tab:hover {
+      color: var(--text-primary);
+    }
+    .nav-view-tab.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .nav-btn-action {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .nav-btn-action:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Container */
+    .dashboard-container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 16px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Subheader & Multi-level Filter Controls Bar */
+    .subhead-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+    }
+    .subhead-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .subhead-title-wrap h1 {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .subhead-title-wrap p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .subhead-controls-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .track-filter-chips {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-subtle);
+      padding: 3px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+    }
+    .track-chip {
+      padding: 4px 11px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .track-chip.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* Platform Segmented Chip Active Colors */
+    .track-chip.active.plat-all {
+      color: var(--ios-purple);
+    }
+    .track-chip.active.plat-android {
+      color: var(--aos-green);
+    }
+    .track-chip.active.plat-ios {
+      color: var(--ios-apple-blue);
+    }
+
+    /* Telemetry KPI Strip */
+    .telemetry-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-hover-shadow);
+    }
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+    .kpi-val {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .kpi-sub {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      font-weight: 600;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .kpi-icon-bubble {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    /* Grid Layouts for Charts */
+    .charts-grid-top {
+      display: grid;
+      grid-template-columns: 1.45fr 1.15fr;
+      gap: 14px;
+    }
+    .charts-grid-mid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 1120px) {
+      .charts-grid-top, .charts-grid-mid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Chart Panel Container */
+    .chart-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+    .panel-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title-icon {
+      font-size: 16px;
+    }
+    .panel-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+    }
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .panel-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    .chart-stage {
+      width: 100%;
+      min-height: 290px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Tooltip */
+    #chartTooltip {
+      position: absolute;
+      background: rgba(28, 28, 30, 0.94);
+      color: #FFFFFF;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    [data-theme="light"] #chartTooltip {
+      background: rgba(255, 255, 255, 0.94);
+      color: #1C1C1E;
+      border-color: rgba(60, 60, 67, 0.16);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    /* Legend Chips Strip */
+    .chart-legend-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+      width: 100%;
+      justify-content: center;
+    }
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .legend-chip:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .legend-indicator {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Heatmap Grid */
+    .heatmap-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+      padding: 8px 0;
+    }
+    .heatmap-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .heatmap-row-label {
+      width: 48px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: right;
+      padding-right: 6px;
+      flex-shrink: 0;
+    }
+    .heatmap-cell {
+      flex: 1;
+      height: 38px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 10px;
+      position: relative;
+    }
+    .heatmap-cell:hover {
+      transform: scale(1.04);
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-color: var(--ios-orange);
+    }
+    .heatmap-cell.active-release {
+      background: rgba(255, 149, 0, 0.18);
+      border-color: rgba(255, 149, 0, 0.5);
+      color: var(--ios-orange);
+      font-weight: 800;
+    }
+    .heatmap-cell.aos-only {
+      background: rgba(43, 138, 62, 0.16);
+      border-color: rgba(43, 138, 62, 0.5);
+      color: var(--aos-green);
+      font-weight: 800;
+    }
+    .heatmap-cell.ios-only {
+      background: rgba(0, 122, 255, 0.16);
+      border-color: rgba(0, 122, 255, 0.5);
+      color: var(--ios-apple-blue);
+      font-weight: 800;
+    }
+    .heatmap-cell.dual-release {
+      background: rgba(255, 149, 0, 0.22);
+      border-color: rgba(255, 149, 0, 0.6);
+      color: var(--ios-orange);
+      font-weight: 900;
+    }
+
+    /* Changelog & Issue Drilldown Drawer */
+    .changelog-drawer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .drawer-top-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .drawer-version-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      flex-wrap: wrap;
+    }
+    .drawer-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .release-meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      padding: 8px 12px;
+      border-radius: 8px;
+      align-items: center;
+    }
+    .drawer-platform-chips {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .drawer-filter-btn {
+      padding: 2.5px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .drawer-filter-btn.active {
+      background: var(--ios-blue);
+      color: #fff;
+      border-color: var(--ios-blue);
+    }
+    .drawer-filter-btn.active.filter-aos {
+      background: var(--aos-green);
+      border-color: var(--aos-green);
+    }
+    .drawer-filter-btn.active.filter-ios {
+      background: var(--ios-apple-blue);
+      border-color: var(--ios-apple-blue);
+    }
+
+    .issues-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+      align-items: start;
+      grid-auto-rows: min-content;
+    }
+    .issue-ticket-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .issue-ticket-card:hover {
+      border-color: var(--ios-blue);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+    .issue-ticket-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+    .ticket-id {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+    .ticket-chip {
+      padding: 1.5px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 10px;
+    }
+    .ticket-chip-plat {
+      font-weight: 800;
+      font-size: 10px;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+    }
+    .ticket-title {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+    .ticket-solution {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .ticket-files {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tooltip Element -->
+  <div id="chartTooltip"></div>
+
+  <!-- Apple Global Navigation Bar -->
+  <header class="apple-global-nav">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand-link">
+        <div class="nav-brand-icon">M</div>
+        <span class="nav-brand-title">Modo QA Studio</span>
+      </a>
+      <a href="index.html" class="nav-hub-badge">Hub ↗</a>
+      
+      <!-- Cross-Platform View Switcher -->
+      <nav class="nav-view-switcher">
+        <a href="index.html" class="nav-view-tab">🏠 Hub</a>
+        <a href="qa_spreadsheet.html" class="nav-view-tab">📋 시트</a>
+        <a href="qa_analytics_dashboard.html" class="nav-view-tab">📊 분석</a>
+        <a href="ops_release_dashboard.html" class="nav-view-tab active" style="color:var(--ios-orange);">🚀 릴리즈</a>
+        <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC</a>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <button type="button" class="nav-btn-action" onclick="window.QA_MEMO ? window.QA_MEMO.toggle() : null" title="임시 메모장 (Scratchpad)">
+        📝 <span>메모</span>
+      </button>
+      <button type="button" class="nav-btn-action" onclick="toggleTheme()" id="themeBtn" title="라이트/다크 테마 토글">
+        🌓 <span>테마</span>
+      </button>
+      <button type="button" class="nav-btn-action" onclick="window.QA_I18N ? window.QA_I18N.toggleLang() : null" title="Language Switcher">
+        🌐 <span id="langBtnText">EN</span>
+      </button>
+      <button type="button" class="nav-btn-action" onclick="exportReleaseReportJSON()" title="릴리즈 데이터 JSON 내보내기">
+        💾 <span>JSON</span>
+      </button>
+      <button type="button" class="nav-btn-action" onclick="window.print()" title="2x Retina 인쇄 및 PDF 저장">
+        🖨️ <span>인쇄</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Studio Dashboard -->
+  <main class="dashboard-container">
+
+    <!-- Subheader & Multi-level Controls Bar -->
+    <section class="subhead-bar">
+      <div class="subhead-left">
+        <div class="subhead-title-wrap">
+          <h1>
+            <span>🚀 Android &amp; iOS 릴리즈 &amp; 버전업 인텔리전스</span>
+            <span class="panel-badge" style="background:rgba(255,149,0,0.12); color:var(--ios-orange); border-color:var(--ios-orange);">Live Cadence</span>
+          </h1>
+          <p>Google Play(AOS)와 App Store(iOS)의 버전별 처리 건수, 일자별 계단식 추이, 월별 릴리즈 빈도 종합 비교</p>
+        </div>
+      </div>
+
+      <div class="subhead-controls-wrap">
+        <!-- 1. OS Platform Switcher -->
+        <div class="track-filter-chips" title="플랫폼별 관제 모드 선택">
+          <button type="button" class="track-chip active plat-all" id="btnPlatAll" onclick="setPlatformMode('all')">
+            🌐 양대 OS 통합
+          </button>
+          <button type="button" class="track-chip plat-android" id="btnPlatAos" onclick="setPlatformMode('android')">
+            <img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:4px;" alt="AOS" />Android
+          </button>
+          <button type="button" class="track-chip plat-ios" id="btnPlatIos" onclick="setPlatformMode('ios')">
+            <img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:4px;" alt="iOS" />iOS
+          </button>
+        </div>
+
+        <!-- 2. Phase Track Scope Switcher -->
+        <div class="track-filter-chips">
+          <button type="button" class="track-chip active" id="chipPhase3" onclick="setReleaseScope('phase3')">
+            💎 Phase 3 정식운영
+          </button>
+          <button type="button" class="track-chip" id="chipAll" onclick="setReleaseScope('all')">
+            전체 (v1.0+)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telemetry KPI Strip -->
+    <section class="telemetry-strip" id="kpiStrip">
+      <!-- KPI 1: Total Releases -->
+      <div class="kpi-card" onclick="focusChangelog('latest')">
+        <div>
+          <div class="kpi-label">총 릴리즈 횟수</div>
+          <div class="kpi-val" style="color:var(--ios-orange);" id="kpiTotalReleases">11회</div>
+          <div class="kpi-sub" id="kpiReleaseSub">
+            <span style="color:var(--aos-green);"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="AOS" />AOS 11회</span>
+            <span>·</span>
+            <span style="color:var(--ios-apple-blue);"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="iOS" />iOS 10회</span>
+          </div>
+        </div>
+        <div class="kpi-icon-bubble" style="background:rgba(255, 149, 0, 0.12); color:var(--ios-orange);">🚀</div>
+      </div>
+
+      <!-- KPI 2: Total Issues Deployed -->
+      <div class="kpi-card" onclick="focusChangelog('all')">
+        <div>
+          <div class="kpi-label">해결 결함 &amp; 기능 총량</div>
+          <div class="kpi-val" style="color:var(--ios-blue);" id="kpiTotalIssues">48건</div>
+          <div class="kpi-sub" id="kpiIssuesSub">
+            <span style="color:var(--aos-green);"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="AOS" />AOS 37건</span>
+            <span>·</span>
+            <span style="color:var(--ios-apple-blue);"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="iOS" />iOS 44건</span>
+          </div>
+        </div>
+        <div class="kpi-icon-bubble" style="background:rgba(0, 122, 255, 0.12); color:var(--ios-blue);">📊</div>
+      </div>
+
+      <!-- KPI 3: Avg Release Cadence -->
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">평균 릴리즈 주기 (Lead Time)</div>
+          <div class="kpi-val" style="color:var(--ios-green);" id="kpiAvgCadence">1.5일</div>
+          <div class="kpi-sub" id="kpiCadenceSub">AOS 1.4일 · iOS 1.5일 (초고속 피드백)</div>
+        </div>
+        <div class="kpi-icon-bubble" style="background:rgba(52, 199, 89, 0.12); color:var(--ios-green);">⚡</div>
+      </div>
+
+      <!-- KPI 4: Target Live Version (Double Target: AOS vs iOS) -->
+      <div class="kpi-card" style="padding: 10px 14px; cursor: default;">
+        <div style="width: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="kpi-label" style="margin-bottom: 0;">운영 배포 타겟 (더블 타겟)</div>
+            <span style="font-size: 9.5px; font-weight: 800; color: var(--ios-purple); background: rgba(88,86,214,0.1); padding: 1.5px 5px; border-radius: 4px;">DUAL TARGET</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <!-- AOS Target Box -->
+            <div style="background: rgba(43,138,62,0.06); border: 1px solid rgba(43,138,62,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_AOS_VER || 'v1.1.12')" title="Android 최신 배포 체인지로그 보기">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 10px; font-weight: 800; color: var(--aos-green); display: flex; align-items: center; gap: 3px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="AOS" />Android</span>
+                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiAosBuild">b79</span>
+              </div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--aos-green); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetAos">v1.1.12</div>
+              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiAosDate">Play Store · 10-02</div>
+            </div>
+            <!-- iOS Target Box -->
+            <div style="background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_IOS_VER || 'v1.1.16')" title="iOS 최신 배포 체인지로그 보기">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 10px; font-weight: 800; color: var(--ios-apple-blue); display: flex; align-items: center; gap: 3px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="iOS" />iOS</span>
+                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiIosBuild">b85</span>
+              </div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--ios-apple-blue); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetIos">v1.1.16</div>
+              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiIosDate">App Store · 10-02</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 1: Version Volume & Stepped Progression -->
+    <section class="charts-grid-top">
+
+      <!-- Chart 1: Independent OS Release Tracks (Dual Lanes for AOS & iOS) -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-title-icon">📊</span>
+            <div>
+              <div class="panel-title" id="versionChartTitle">OS별 독립 릴리즈 트랙 및 버전별 처리 건수 (Independent OS Release Tracks)</div>
+              <div class="panel-subtitle">Android(Google Play)와 iOS(App Store)의 서로 다른 배포 버전·빌드 시퀀스를 OS별 독립 레인으로 분리 관제</div>
+            </div>
+          </div>
+          <span class="panel-badge" id="versionCountBadge">Independent Lanes</span>
+        </div>
+        <div class="chart-stage" id="versionVolumeStage" style="min-height: 320px;"></div>
+      </div>
+
+      <!-- Chart 2: Stepped Version Progression Timeline (Dual Curves) -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-title-icon">📈</span>
+            <div>
+              <div class="panel-title" id="timelineChartTitle">일자별 버전업 계단식 추이: <img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:2px;" alt="AOS"/> Android &amp; <img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:2px;" alt="iOS"/> iOS 듀얼 궤적</div>
+              <div class="panel-subtitle">X축(일자) 흐름에 따른 양대 OS 버전업 상승 곡선과 배포 간격(리드타임) 비교</div>
+            </div>
+          </div>
+          <span class="panel-badge" id="timelineBadge">Dual Step-Line</span>
+        </div>
+        <div class="chart-stage" id="stepProgressionStage"></div>
+      </div>
+
+    </section>
+
+    <!-- Charts Row 2: Monthly Cadence & Calendar Sprint Heatmap -->
+    <section class="charts-grid-mid">
+
+      <!-- Chart 3: Monthly Release Cadence (AOS vs iOS) -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-title-icon">🗓️</span>
+            <div>
+              <div class="panel-title">월별 릴리즈 빈도: Android vs iOS 배포 횟수</div>
+              <div class="panel-subtitle">월별 플랫폼 배포 빈도 및 9월 피크 구간(AOS 12회 / iOS 3회) 분석</div>
+            </div>
+          </div>
+          <span class="panel-badge" style="color:var(--ios-orange); background:rgba(255,149,0,0.1);">🔥 9월 집중 피크</span>
+        </div>
+        <div class="chart-stage" id="monthlyCadenceStage"></div>
+      </div>
+
+      <!-- Chart 4: Sprint Release Heatmap Matrix -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-title-icon">🔥</span>
+            <div>
+              <div class="panel-title">릴리즈 집중 시기 캘린더 매트릭스 (OS Platform Badges)</div>
+              <div class="panel-subtitle">일자별 <img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="AOS"/> AOS / <img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:2px;" alt="iOS"/> iOS / 🌐 양대 릴리즈 발생 여부 실시간 히트맵</div>
+            </div>
+          </div>
+          <span class="panel-badge">Platform Matrix</span>
+        </div>
+        <div class="chart-stage" id="releaseHeatmapStage"></div>
+      </div>
+
+    </section>
+
+    <!-- Interactive Changelog & Issue Drilldown Drawer -->
+    <section class="changelog-drawer" id="changelogDrawer">
+      <div class="drawer-top-banner">
+        <div class="drawer-version-title" id="drawerTitle">
+          <span>🏷️ v1.1.4 (Build 71)</span>
+          <span class="panel-badge" id="drawerPlatTag" style="background:rgba(88,86,214,0.12); color:var(--ios-purple);">🌐 양대 OS 반영</span>
+          <span class="panel-badge" id="drawerDateTag" style="background:var(--bg-subtle);">AOS: 09-23 / iOS: 09-24</span>
+        </div>
+        <div class="drawer-actions">
+          <button type="button" class="nav-btn-action" onclick="openSpreadsheetForCurrentVersion()">
+            📋 스프레드시트에서 열기 ↗
+          </button>
+        </div>
+      </div>
+
+      <div class="release-meta-strip" id="drawerMetaStrip">
+        <span>📦 총 처리: <strong id="drawerTotalCount">29건</strong></span>
+        <span style="display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="Google Play" /> AOS 반영: <strong id="drawerAosCount" style="color:var(--aos-green);">25건</strong></span>
+        <span style="display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="App Store" /> iOS 반영: <strong id="drawerIosCount" style="color:var(--ios-apple-blue);">27건</strong></span>
+        
+        <!-- Platform filter inside drawer -->
+        <div class="drawer-platform-chips" style="margin-left:auto;">
+          <span style="font-size:11px; font-weight:700; color:var(--text-muted); margin-right:4px;">OS 필터:</span>
+          <button type="button" class="drawer-filter-btn active" id="btnFilterPlatAll" onclick="filterDrawerIssues('all')">전체</button>
+          <button type="button" class="drawer-filter-btn filter-aos" id="btnFilterPlatAos" onclick="filterDrawerIssues('android')" style="display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="Google Play" /> Android</button>
+          <button type="button" class="drawer-filter-btn filter-ios" id="btnFilterPlatIos" onclick="filterDrawerIssues('ios')" style="display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="App Store" /> iOS</button>
+        </div>
+      </div>
+
+      <div class="issues-list-grid" id="drawerIssuesList"></div>
+    </section>
+
+  </main>
+
+  <!-- Logic Script -->
+  <script>
+    (function () {
+      'use strict';
+
+      let currentScope = 'phase3'; // 'phase3' or 'all'
+      let currentPlatform = 'all';  // 'all', 'android', 'ios'
+      let selectedVersion = 'v1.1.4'; // active selected version for drilldown
+      let drawerPlatformFilter = 'all'; // filter inside changelog drawer
+
+      const CAT_COLORS = {
+        core: '#007AFF',
+        media: '#FF2D55',
+        ui: '#5856D6',
+        perf: '#FF9500',
+        reliability: '#34C759',
+        auth: '#AF52DE',
+        storage: '#5E5CE6',
+        widget: '#00C7BE',
+        notification: '#FF3B30',
+        monetization: '#FFCC00',
+        other: '#8E8E93'
+      };
+
+      const SEV_COLORS = {
+        S1: '#FF3B30',
+        S2: '#FF9500',
+        S3: '#FFCC00',
+        S4: '#34C759',
+        S5: '#8E8E93'
+      };
+
+      // Tooltip helpers
+      const tooltip = document.getElementById('chartTooltip');
+      function showTooltip(evt, html) {
+        tooltip.innerHTML = html;
+        tooltip.style.opacity = '1';
+        tooltip.style.left = `${evt.pageX + 12}px`;
+        tooltip.style.top = `${evt.pageY - 28}px`;
+      }
+      function hideTooltip() {
+        tooltip.style.opacity = '0';
+      }
+      window.showTooltip = showTooltip;
+      window.hideTooltip = hideTooltip;
+
+      window.showLaneTooltip = function (evt, os, version, build, count, date) {
+        const isAos = os === 'android';
+        const logo = isAos ? '<img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px; vertical-align:-1px; margin-right:3px;"/>' : '<img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px; vertical-align:-1px; margin-right:3px;"/>';
+        const label = isAos ? 'Android (Play Store)' : 'iOS (App Store)';
+        const html = `<b>${logo}${label} ${version}</b> (Build ${build})<br/>반영 안건: <b>${count}건</b><br/><span style="font-size:10px; color:var(--text-muted);">배포일: ${date}</span>`;
+        showTooltip(evt, html);
+      };
+
+      // Theme Management
+      window.toggleTheme = function () {
+        const cur = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('modo_sheet_theme', next);
+        renderAll();
+      };
+
+      function initTheme() {
+        const saved = localStorage.getItem('modo_sheet_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+
+      // Scope Switcher
+      window.setReleaseScope = function (scope) {
+        currentScope = scope;
+        document.getElementById('chipPhase3').classList.toggle('active', scope === 'phase3');
+        document.getElementById('chipAll').classList.toggle('active', scope === 'all');
+        
+        selectedVersion = scope === 'phase3' ? 'v1.1.4' : 'v1.1.12';
+        renderAll();
+      };
+
+      // Platform Mode Switcher (All vs Android vs iOS)
+      window.setPlatformMode = function (plat) {
+        currentPlatform = plat;
+        document.getElementById('btnPlatAll').classList.toggle('active', plat === 'all');
+        document.getElementById('btnPlatAos').classList.toggle('active', plat === 'android');
+        document.getElementById('btnPlatIos').classList.toggle('active', plat === 'ios');
+
+        // Update titles
+        const vTitle = document.getElementById('versionChartTitle');
+        const tTitle = document.getElementById('timelineChartTitle');
+        if (plat === 'all') {
+          if (vTitle) vTitle.innerHTML = 'OS별 독립 릴리즈 트랙 및 버전별 처리 건수 (상하 2단 독립 관제)';
+          if (tTitle) tTitle.innerHTML = '일자별 버전업 계단식 추이: <img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:2px;"/> Android &amp; <img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-2px; margin-right:2px;"/> iOS 듀얼 궤적';
+        } else if (plat === 'android') {
+          if (vTitle) vTitle.innerHTML = '<img src="assets/icons/logo_google_play.svg" style="width:14px; height:14px; vertical-align:-2px; margin-right:4px;"/>Android (Google Play) 독립 릴리즈 트랙 및 버전별 처리 건수';
+          if (tTitle) tTitle.innerHTML = '<img src="assets/icons/logo_google_play.svg" style="width:14px; height:14px; vertical-align:-2px; margin-right:4px;"/>Android (Google Play) 일자별 버전업 계단식 상승 추이';
+        } else {
+          if (vTitle) vTitle.innerHTML = '<img src="assets/icons/logo_app_store.svg" style="width:14px; height:14px; vertical-align:-2px; margin-right:4px;"/>iOS (Apple App Store) 독립 릴리즈 트랙 및 버전별 처리 건수';
+          if (tTitle) tTitle.innerHTML = '<img src="assets/icons/logo_app_store.svg" style="width:14px; height:14px; vertical-align:-2px; margin-right:4px;"/>iOS (Apple App Store) 일자별 버전업 계단식 상승 추이';
+        }
+
+        drawerPlatformFilter = plat;
+        renderAll();
+      };
+
+      // Get Active Releases
+      function getActiveReleases() {
+        const list = window.MODO_RELEASE_REGISTRY || [];
+        let filtered = list;
+        if (currentScope === 'phase3') {
+          filtered = filtered.filter(r => r.phase === 'phase3');
+        }
+        if (currentPlatform === 'android') {
+          filtered = filtered.filter(r => r.platform === 'all' || r.platform === 'android');
+        } else if (currentPlatform === 'ios') {
+          filtered = filtered.filter(r => r.platform === 'all' || r.platform === 'ios');
+        }
+        return filtered;
+      }
+
+      function normalizeVersion(vStr) {
+        if (!vStr) return '';
+        const m = vStr.match(/1\.\d+\.\d+/);
+        return m ? 'v' + m[0] : (vStr.startsWith('v') ? vStr : 'v' + vStr);
+      }
+
+      function isItemApplicableToOs(item, os) {
+        if (!item) return false;
+        const plat = (item.platform || 'all').toLowerCase();
+        if (os === 'android') return plat === 'all' || plat === 'android' || plat === 'cross';
+        if (os === 'ios') return plat === 'all' || plat === 'ios' || plat === 'cross';
+        return true;
+      }
+
+      // Map Phase 3 issues to versions with OS filtering (using real OS-specific version tags)
+      function getIssuesForVersion(verStr, osFilter = 'all') {
+        const p3 = window.MODO_QA_PHASE3 || [];
+        const normTarget = normalizeVersion(verStr);
+        const rawTarget = normTarget.replace('v', '');
+
+        return p3.filter(i => {
+          if (osFilter === 'android') {
+            if (!i.deployedAos) return false;
+            const aosVer = normalizeVersion(i.deployedVersionAos);
+            return aosVer === normTarget || (i.deployedVersionAos || '').includes(rawTarget);
+          }
+          if (osFilter === 'ios') {
+            if (!i.deployedIos) return false;
+            const iosVer = normalizeVersion(i.deployedVersionIos);
+            return iosVer === normTarget || (i.deployedVersionIos || '').includes(rawTarget);
+          }
+          // All
+          const matchAos = i.deployedAos && (normalizeVersion(i.deployedVersionAos) === normTarget || (i.deployedVersionAos || '').includes(rawTarget));
+          const matchIos = i.deployedIos && (normalizeVersion(i.deployedVersionIos) === normTarget || (i.deployedVersionIos || '').includes(rawTarget));
+          return matchAos || matchIos || (i.deployedVersion || '').includes(rawTarget);
+        });
+      }
+
+      // 1. Render Telemetry KPIs
+      function renderKPIs() {
+        const releases = getActiveReleases();
+        const totalReleases = releases.length;
+        const p3 = window.MODO_QA_PHASE3 || [];
+
+        let aosCount = 0, iosCount = 0;
+        p3.forEach(i => {
+          if (isItemApplicableToOs(i, 'android')) aosCount++;
+          if (isItemApplicableToOs(i, 'ios')) iosCount++;
+        });
+
+        const aosReleases = releases.filter(r => r.platform === 'all' || r.platform === 'android');
+        const iosReleases = releases.filter(r => r.platform === 'all' || r.platform === 'ios');
+
+        document.getElementById('kpiTotalReleases').textContent = `${totalReleases}회`;
+        document.getElementById('kpiTotalIssues').textContent = `${p3.length}건`;
+
+        document.getElementById('kpiReleaseSub').innerHTML = `
+          <span style="color:var(--aos-green);"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="AOS" />AOS ${aosReleases.length}회</span>
+          <span>·</span>
+          <span style="color:var(--ios-apple-blue);"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="iOS" />iOS ${iosReleases.length}회</span>
+        `;
+
+        document.getElementById('kpiIssuesSub').innerHTML = `
+          <span style="color:var(--aos-green);"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="AOS" />AOS ${aosCount}건</span>
+          <span>·</span>
+          <span style="color:var(--ios-apple-blue);"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="iOS" />iOS ${iosCount}건</span>
+        `;
+
+        // Calculate Independent Cadence per OS
+        let aosAvg = '1.5', iosAvg = '1.5';
+        if (aosReleases.length >= 2) {
+          const d1 = new Date(aosReleases[0].aosDate || aosReleases[0].date);
+          const d2 = new Date(aosReleases[aosReleases.length - 1].aosDate || aosReleases[aosReleases.length - 1].date);
+          aosAvg = (Math.max(1, Math.round((d2 - d1) / (86400000))) / (aosReleases.length - 1)).toFixed(1);
+        }
+        if (iosReleases.length >= 2) {
+          const d1 = new Date(iosReleases[0].iosDate || iosReleases[0].date);
+          const d2 = new Date(iosReleases[iosReleases.length - 1].iosDate || iosReleases[iosReleases.length - 1].date);
+          iosAvg = (Math.max(1, Math.round((d2 - d1) / (86400000))) / (iosReleases.length - 1)).toFixed(1);
+        }
+
+        document.getElementById('kpiAvgCadence').textContent = `${((parseFloat(aosAvg) + parseFloat(iosAvg)) / 2).toFixed(1)}일`;
+        document.getElementById('kpiCadenceSub').innerHTML = `
+          <span style="color:var(--aos-green);"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="AOS" />AOS ${aosAvg}일</span>
+          <span>·</span>
+          <span style="color:var(--ios-apple-blue);"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="iOS" />iOS ${iosAvg}일</span>
+        `;
+
+        // Double Target Data Injection
+        const latestAos = aosReleases.length > 0 ? aosReleases[aosReleases.length - 1] : null;
+        const latestIos = iosReleases.length > 0 ? iosReleases[iosReleases.length - 1] : null;
+
+        if (latestAos) {
+          window.LATEST_AOS_VER = latestAos.version;
+          const elVer = document.getElementById('kpiTargetAos');
+          const elBld = document.getElementById('kpiAosBuild');
+          const elDt = document.getElementById('kpiAosDate');
+          if (elVer) elVer.textContent = latestAos.version;
+          if (elBld) elBld.textContent = `b${latestAos.aosBuild || latestAos.build || '87'}`;
+          if (elDt) elDt.textContent = `Play Store · ${(latestAos.aosDate || latestAos.date).slice(5)}`;
+        }
+        if (latestIos) {
+          window.LATEST_IOS_VER = latestIos.version;
+          const elVer = document.getElementById('kpiTargetIos');
+          const elBld = document.getElementById('kpiIosBuild');
+          const elDt = document.getElementById('kpiIosDate');
+          if (elVer) elVer.textContent = latestIos.version;
+          if (elBld) elBld.textContent = `b${latestIos.iosBuild || latestIos.build || '87'}`;
+          if (elDt) elDt.textContent = `App Store · ${(latestIos.iosDate || latestIos.date).slice(5)}`;
+        }
+      }
+
+      // 2. Render Version Volume Chart (Dual Bars for AOS vs iOS or Stacked)
+      // Helper: Render Single OS Release Lane SVG
+      function renderSingleOsLaneSvg(os, releasesData, w, h, isSelectedVer) {
+        const isAos = os === 'android';
+        const color = isAos ? 'var(--aos-green)' : 'var(--ios-apple-blue)';
+        const padL = 36, padR = 20, padT = 22, padB = 42;
+        const plotW = Math.max(w - padL - padR, 100);
+        const plotH = Math.max(h - padT - padB, 40);
+
+        const maxCount = Math.max(...releasesData.map(d => d.count), 5);
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Horizontal Grid lines (3 levels)
+        for (let i = 0; i <= 3; i++) {
+          const y = padT + (plotH / 3) * i;
+          const val = Math.round((maxCount * (3 - i)) / 3);
+          svg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
+          svg += `<text x="${padL - 6}" y="${y + 3}" font-size="9" font-weight="600" fill="var(--text-muted)" text-anchor="end">${val}</text>`;
+        }
+
+        const slotW = plotW / Math.max(releasesData.length, 1);
+        const barW = Math.min(Math.max(slotW * 0.44, 16), 34);
+
+        releasesData.forEach((item, idx) => {
+          const cx = padL + slotW * (idx + 0.5);
+          const bx = cx - barW / 2;
+          const isSelected = item.version === isSelectedVer;
+
+          const barH = (item.count / maxCount) * plotH;
+          const y = padT + plotH - barH;
+
+          // Bar
+          svg += `
+            <rect x="${bx.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
+              fill="${color}" opacity="${isSelected ? 1.0 : 0.86}" rx="3.5" style="cursor:pointer; transition:all 0.15s ease;"
+              onmouseover="window.showLaneTooltip(event, '${os}', '${item.version}', '${item.build}', ${item.count}, '${item.date}')"
+              onmouseout="hideTooltip()"
+              onclick="window.focusChangelog('${item.version}', '${os}')"
+            />
+            <text x="${cx.toFixed(1)}" y="${(y - 4).toFixed(1)}" font-size="10" font-weight="800" fill="${color}" text-anchor="middle">${item.count}</text>
+          `;
+
+          // X Label: Version and Build/Date
+          const shortVer = item.version.replace('v', '');
+          svg += `<text x="${cx.toFixed(1)}" y="${h - 22}" font-size="10.5" font-weight="${isSelected ? '900' : '700'}" fill="${isSelected ? 'var(--ios-orange)' : 'var(--text-primary)'}" text-anchor="middle" style="cursor:pointer;" onclick="window.focusChangelog('${item.version}', '${os}')">${shortVer}</text>`;
+          svg += `<text x="${cx.toFixed(1)}" y="${h - 8}" font-size="9" font-weight="600" font-family="var(--font-mono)" fill="var(--text-muted)" text-anchor="middle">b${item.build} · ${item.date.slice(5)}</text>`;
+        });
+
+        svg += '</svg>';
+        return svg;
+      }
+
+      // 2. Render Independent OS Release Tracks Chart (Dual Lanes for AOS & iOS)
+      function renderVersionVolumeChart() {
+        const stage = document.getElementById('versionVolumeStage');
+        if (!stage) return;
+
+        const w = stage.clientWidth || 780;
+        const allReleases = (window.MODO_RELEASE_REGISTRY || []).filter(r => currentScope === 'all' || r.phase === currentScope);
+
+        // Android Independent Track Dataset
+        const aosReleases = allReleases.filter(r => r.platform === 'all' || r.platform === 'android').map(r => {
+          const issues = getIssuesForVersion(r.version, 'android');
+          const count = issues.length > 0 ? issues.length : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2))));
+          return {
+            version: r.version,
+            build: r.aosBuild || r.build || '87',
+            date: r.aosDate || r.date,
+            count: count,
+            label: r.label,
+            description: r.description
+          };
+        });
+
+        // iOS Independent Track Dataset
+        const iosReleases = allReleases.filter(r => r.platform === 'all' || r.platform === 'ios').map(r => {
+          const issues = getIssuesForVersion(r.version, 'ios');
+          const count = issues.length > 0 ? issues.length : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2))));
+          return {
+            version: r.version,
+            build: r.iosBuild || r.build || '87',
+            date: r.iosDate || r.date,
+            count: count,
+            label: r.label,
+            description: r.description
+          };
+        });
+
+        const totalAosIssues = aosReleases.reduce((acc, r) => acc + r.count, 0);
+        const totalIosIssues = iosReleases.reduce((acc, r) => acc + r.count, 0);
+
+        let html = '';
+
+        if (currentPlatform === 'all') {
+          // Dual Lanes: Upper Android Lane + Lower iOS Lane
+          const laneH = 145;
+          const svgAos = renderSingleOsLaneSvg('android', aosReleases, w, laneH, selectedVersion);
+          const svgIos = renderSingleOsLaneSvg('ios', iosReleases, w, laneH, selectedVersion);
+
+          html = `
+            <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
+              <!-- Lane 1: Android Track -->
+              <div style="background:var(--bg-surface); border:1px solid rgba(43,138,62,0.2); border-radius:10px; padding:10px 12px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:12px; font-weight:800; color:var(--aos-green); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:14px; height:14px;" alt="AOS" />Android (Google Play) 배포 트랙</span>
+                    <span style="font-size:10px; font-weight:700; color:var(--aos-green); background:rgba(43,138,62,0.1); padding:1.5px 6px; border-radius:4px;">${aosReleases.length}개 버전 · ${totalAosIssues}건 반영</span>
+                  </div>
+                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.12'} (b${aosReleases[aosReleases.length - 1]?.build || '87'})</span>
+                </div>
+                ${svgAos}
+              </div>
+
+              <!-- Lane 2: iOS Track -->
+              <div style="background:var(--bg-surface); border:1px solid rgba(0,122,255,0.2); border-radius:10px; padding:10px 12px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:12px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:14px; height:14px;" alt="iOS" />iOS (Apple App Store) 배포 트랙</span>
+                    <span style="font-size:10px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:1.5px 6px; border-radius:4px;">${iosReleases.length}개 버전 · ${totalIosIssues}건 반영</span>
+                  </div>
+                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
+                </div>
+                ${svgIos}
+              </div>
+            </div>
+          `;
+          document.getElementById('versionCountBadge').textContent = `AOS ${aosReleases.length} / iOS ${iosReleases.length} Releases`;
+        } else if (currentPlatform === 'android') {
+          // Single Android Expanded Lane
+          const laneH = 265;
+          const svgAos = renderSingleOsLaneSvg('android', aosReleases, w, laneH, selectedVersion);
+          html = `
+            <div style="background:var(--bg-surface); border:1px solid rgba(43,138,62,0.25); border-radius:10px; padding:12px 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:13px; font-weight:800; color:var(--aos-green); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:15px; height:15px;" alt="AOS" />Android (Google Play) 단독 배포 트랙</span>
+                  <span style="font-size:11px; font-weight:700; color:var(--aos-green); background:rgba(43,138,62,0.1); padding:2px 8px; border-radius:5px;">총 ${aosReleases.length}개 버전 · ${totalAosIssues}건 해결</span>
+                </div>
+                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Play Console 최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.12'} (b${aosReleases[aosReleases.length - 1]?.build || '87'})</span>
+              </div>
+              ${svgAos}
+            </div>
+          `;
+          document.getElementById('versionCountBadge').textContent = `Android ${aosReleases.length} Releases`;
+        } else {
+          // Single iOS Expanded Lane
+          const laneH = 265;
+          const svgIos = renderSingleOsLaneSvg('ios', iosReleases, w, laneH, selectedVersion);
+          html = `
+            <div style="background:var(--bg-surface); border:1px solid rgba(0,122,255,0.25); border-radius:10px; padding:12px 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:13px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:15px; height:15px;" alt="iOS" />iOS (Apple App Store) 단독 배포 트랙</span>
+                  <span style="font-size:11px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:2px 8px; border-radius:5px;">총 ${iosReleases.length}개 버전 · ${totalIosIssues}건 해결</span>
+                </div>
+                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">App Store Connect 최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
+              </div>
+              ${svgIos}
+            </div>
+          `;
+          document.getElementById('versionCountBadge').textContent = `iOS ${iosReleases.length} Releases`;
+        }
+
+        stage.innerHTML = html;
+      }
+
+      // 3. Render Stepped Progression Timeline (Dual Lines for AOS vs iOS)
+      function renderSteppedTimelineChart() {
+        const stage = document.getElementById('stepProgressionStage');
+        if (!stage) return;
+
+        const releases = getActiveReleases();
+        const w = stage.clientWidth || 540;
+        const h = 290;
+        const padL = 50, padR = 24, padT = 28, padB = 40;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+
+        const totalSteps = releases.length;
+        if (totalSteps < 2) return;
+
+        const isDual = currentPlatform === 'all';
+
+        // Calculate Y positions for versions
+        const coords = releases.map((r, idx) => {
+          const y = padT + plotH - (plotH / (totalSteps - 1)) * idx;
+          const xAos = padL + (plotW / (totalSteps - 1)) * idx;
+          // iOS slight shift if review gap occurred
+          const reviewGap = (r.aosDate !== r.iosDate) ? 8 : 0;
+          const xIos = xAos + reviewGap;
+
+          return { ...r, idx, y, xAos, xIos };
+        });
+
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Horizontal Grid lines & version labels
+        coords.forEach(c => {
+          svg += `<line x1="${padL}" y1="${c.y.toFixed(1)}" x2="${w - padR}" y2="${c.y.toFixed(1)}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
+          svg += `<text x="${padL - 6}" y="${(c.y + 3).toFixed(1)}" font-size="9.5" font-weight="700" fill="var(--text-muted)" text-anchor="end">${c.version}</text>`;
+        });
+
+        // Helper to build stepped SVG path
+        function makeStepPath(pts, xKey) {
+          let p = `M ${pts[0][xKey].toFixed(1)} ${pts[0].y.toFixed(1)}`;
+          for (let i = 1; i < pts.length; i++) {
+            const prev = pts[i - 1];
+            const cur = pts[i];
+            p += ` L ${cur[xKey].toFixed(1)} ${prev.y.toFixed(1)} L ${cur[xKey].toFixed(1)} ${cur.y.toFixed(1)}`;
+          }
+          return p;
+        }
+
+        if (isDual || currentPlatform === 'android') {
+          // Android Stepped Line (Green)
+          const aosPts = coords.filter(c => c.platform === 'all' || c.platform === 'android');
+          if (aosPts.length >= 2) {
+            const aosPath = makeStepPath(aosPts, 'xAos');
+            svg += `<path d="${aosPath}" fill="none" stroke="var(--aos-green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+            aosPts.forEach(c => {
+              const isSelected = c.version === selectedVersion;
+              svg += `
+                <circle cx="${c.xAos.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
+                  fill="${isSelected ? 'var(--aos-green)' : 'var(--bg-surface)'}"
+                  stroke="var(--aos-green)" stroke-width="2" style="cursor:pointer;"
+                  onmouseover="showTooltip(event, '<img src=\\'assets/icons/logo_google_play.svg\\' style=\\'width:12px; height:12px; vertical-align:-1px; margin-right:3px;\\'/>Android ${c.version} | 빌드 ${c.aosBuild || c.build} (${c.aosDate || c.date})')"
+                  onmouseout="hideTooltip()"
+                  onclick="window.focusChangelog('${c.version}')"
+                />
+              `;
+            });
+          }
+        }
+
+        if (isDual || currentPlatform === 'ios') {
+          // iOS Stepped Line (Blue)
+          const iosPts = coords.filter(c => c.platform === 'all' || c.platform === 'ios');
+          if (iosPts.length >= 2) {
+            const iosPath = makeStepPath(iosPts, 'xIos');
+            svg += `<path d="${iosPath}" fill="none" stroke="var(--ios-apple-blue)" stroke-width="2.6" stroke-dasharray="${isDual ? '4,2' : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+            iosPts.forEach(c => {
+              const isSelected = c.version === selectedVersion;
+              svg += `
+                <circle cx="${c.xIos.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
+                  fill="${isSelected ? 'var(--ios-apple-blue)' : 'var(--bg-surface)'}"
+                  stroke="var(--ios-apple-blue)" stroke-width="2" style="cursor:pointer;"
+                  onmouseover="showTooltip(event, '<img src=\\'assets/icons/logo_app_store.svg\\' style=\\'width:12px; height:12px; vertical-align:-1px; margin-right:3px;\\'/>iOS ${c.version} | 빌드 ${c.iosBuild || c.build} (${c.iosDate || c.date}) ${c.aosDate !== c.iosDate ? '⚠️ 심사 시차 발생' : ''}')"
+                  onmouseout="hideTooltip()"
+                  onclick="window.focusChangelog('${c.version}')"
+                />
+              `;
+            });
+          }
+        }
+
+        // X Axis Date labels
+        coords.forEach((c, idx) => {
+          if (idx % 2 === 0 || idx === coords.length - 1) {
+            svg += `<text x="${c.xAos.toFixed(1)}" y="${h - 10}" font-size="9" font-weight="600" fill="var(--text-secondary)" text-anchor="middle">${c.date.slice(5)}</text>`;
+          }
+        });
+
+        svg += '</svg>';
+
+        let legend = '<div class="chart-legend-wrap">';
+        if (isDual) {
+          legend += `
+            <div class="legend-chip"><img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="Google Play"/><span>Android 실선 (Google Play)</span></div>
+            <div class="legend-chip"><img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="App Store"/><span>iOS 점선 (App Store)</span></div>
+            <div class="legend-chip"><span class="legend-indicator" style="background:var(--ios-orange);"></span><span>노드 클릭 시 드릴다운</span></div>
+          `;
+        } else {
+          const logo = currentPlatform === 'android' ? '<img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="Google Play"/>' : '<img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="App Store"/>';
+          const name = currentPlatform === 'android' ? 'Android 버전업 계단식 궤적' : 'iOS 버전업 계단식 궤적';
+          legend += `<div class="legend-chip">${logo}<span>${name}</span></div>`;
+        }
+        legend += '</div>';
+
+        stage.innerHTML = svg + legend;
+        document.getElementById('timelineBadge').textContent = isDual ? 'Dual Curves' : (currentPlatform === 'android' ? 'Android Curve' : 'iOS Curve');
+      }
+
+      // 4. Render Monthly Cadence Chart (Dual Bars for AOS vs iOS)
+      function renderMonthlyCadenceChart() {
+        const stage = document.getElementById('monthlyCadenceStage');
+        if (!stage) return;
+
+        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const monthMap = {};
+        releases.forEach(r => {
+          const m = r.date.slice(0, 7);
+          if (!monthMap[m]) monthMap[m] = { total: 0, aos: 0, ios: 0 };
+          monthMap[m].total++;
+          if (r.platform === 'all' || r.platform === 'android') monthMap[m].aos++;
+          if (r.platform === 'all' || r.platform === 'ios') monthMap[m].ios++;
+        });
+
+        const months = Object.keys(monthMap).sort();
+        const w = stage.clientWidth || 540;
+        const h = 260;
+        const padL = 36, padR = 24, padT = 24, padB = 40;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+
+        const maxVal = Math.max(...months.map(m => Math.max(monthMap[m].aos, monthMap[m].ios)), 6);
+        const slotW = plotW / months.length;
+
+        let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+
+        // Horizontal Grid lines
+        for (let i = 0; i <= 3; i++) {
+          const y = padT + (plotH / 3) * i;
+          const val = Math.round((maxVal * (3 - i)) / 3);
+          svg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
+          svg += `<text x="${padL - 6}" y="${y + 3}" font-size="10" font-weight="600" fill="var(--text-muted)" text-anchor="end">${val}회</text>`;
+        }
+
+        months.forEach((m, idx) => {
+          const stat = monthMap[m];
+          const cx = padL + slotW * (idx + 0.5);
+
+          const subW = Math.min(slotW * 0.35, 26);
+          const bxAos = cx - subW - 2;
+          const bxIos = cx + 2;
+
+          const hAos = (stat.aos / maxVal) * plotH;
+          const yAos = padT + plotH - hAos;
+          const hIos = (stat.ios / maxVal) * plotH;
+          const yIos = padT + plotH - hIos;
+
+          // AOS Bar
+          svg += `
+            <rect x="${bxAos.toFixed(1)}" y="${yAos.toFixed(1)}" width="${subW.toFixed(1)}" height="${hAos.toFixed(1)}"
+              fill="var(--aos-green)" rx="3" opacity="0.9" style="cursor:pointer;"
+              onmouseover="showTooltip(event, '${m} Android: ${stat.aos}회 배포')"
+              onmouseout="hideTooltip()"
+            />
+            <text x="${(bxAos + subW / 2).toFixed(1)}" y="${(yAos - 5).toFixed(1)}" font-size="10" font-weight="900" fill="var(--aos-green)" text-anchor="middle">${stat.aos}</text>
+          `;
+
+          // iOS Bar
+          svg += `
+            <rect x="${bxIos.toFixed(1)}" y="${yIos.toFixed(1)}" width="${subW.toFixed(1)}" height="${hIos.toFixed(1)}"
+              fill="var(--ios-apple-blue)" rx="3" opacity="0.9" style="cursor:pointer;"
+              onmouseover="showTooltip(event, '${m} iOS: ${stat.ios}회 배포')"
+              onmouseout="hideTooltip()"
+            />
+            <text x="${(bxIos + subW / 2).toFixed(1)}" y="${(yIos - 5).toFixed(1)}" font-size="10" font-weight="900" fill="var(--ios-apple-blue)" text-anchor="middle">${stat.ios}</text>
+          `;
+
+          const mLabel = m === '2026-08' ? '8월 (런칭)' : (m === '2026-09' ? '9월 (피크)' : '10월 (진행중)');
+          svg += `<text x="${cx.toFixed(1)}" y="${h - 12}" font-size="11" font-weight="700" fill="var(--text-primary)" text-anchor="middle">${mLabel}</text>`;
+        });
+
+        svg += '</svg>';
+
+        const legend = `
+          <div class="chart-legend-wrap">
+            <div class="legend-chip"><img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="Google Play"/><span>Android 월별 릴리즈</span></div>
+            <div class="legend-chip"><img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="App Store"/><span>iOS 월별 릴리즈</span></div>
+            <span style="font-size:10.5px; color:var(--text-muted); margin-left:8px;">🔥 9월 피크: AOS 12회 / iOS 3회 배포</span>
+          </div>
+        `;
+
+        stage.innerHTML = svg + legend;
+      }
+
+      // 5. Render Sprint Heatmap with Platform Badges
+      function renderReleaseHeatmap() {
+        const stage = document.getElementById('releaseHeatmapStage');
+        if (!stage) return;
+
+        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const dateMap = {};
+        releases.forEach(r => {
+          dateMap[r.date] = r;
+          if (r.aosDate) dateMap[r.aosDate] = r;
+          if (r.iosDate) dateMap[r.iosDate] = r;
+        });
+
+        const weeks = [
+          { label: '9월 1주 (01~06)', days: ['2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04', '2026-09-05', '2026-09-06'] },
+          { label: '9월 2주 (07~13)', days: ['2026-09-07', '2026-09-08', '2026-09-09', '2026-09-10', '2026-09-11', '2026-09-12', '2026-09-13'] },
+          { label: '9월 3주 (14~20)', days: ['2026-09-14', '2026-09-15', '2026-09-16', '2026-09-17', '2026-09-18', '2026-09-19', '2026-09-20'] },
+          { label: '9월 4주 (21~27)', days: ['2026-09-21', '2026-09-22', '2026-09-23', '2026-09-24', '2026-09-25', '2026-09-26', '2026-09-27'] },
+          { label: '9월 5주+10월', days: ['2026-09-28', '2026-09-29', '2026-09-30', '2026-10-01', '2026-10-02'] }
+        ];
+
+        let html = '<div class="heatmap-grid">';
+        weeks.forEach(w => {
+          html += `<div class="heatmap-row"><div class="heatmap-row-label">${w.label.slice(0, 5)}</div>`;
+          w.days.forEach(d => {
+            const rel = dateMap[d];
+            const hasRel = !!rel;
+
+            let cellClass = 'heatmap-cell';
+            let platLogo = '';
+            let platName = '';
+            if (hasRel) {
+              if (rel.platform === 'android') {
+                cellClass += ' aos-only';
+                platLogo = '<img src="assets/icons/logo_google_play.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="AOS"/>';
+                platName = '[AOS]';
+              } else if (rel.platform === 'ios') {
+                cellClass += ' ios-only';
+                platLogo = '<img src="assets/icons/logo_app_store.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="iOS"/>';
+                platName = '[iOS]';
+              } else {
+                cellClass += ' dual-release';
+                platLogo = '<span style="font-size:8.5px; margin-right:1px;">🌐</span>';
+                platName = '[양대OS]';
+              }
+            }
+
+            const dayNum = d.slice(8);
+            const tipText = hasRel ? `${d}: ${platName} ${rel.version} (${rel.label})` : `${d}: 배포 없음`;
+
+            html += `
+              <div class="${cellClass}"
+                onmouseover="showTooltip(event, '${tipText}')"
+                onmouseout="hideTooltip()"
+                onclick="${hasRel ? `window.focusChangelog('${rel.version}')` : ''}"
+              >
+                <span>${dayNum}</span>
+                ${hasRel ? `<span style="font-size:8.5px; font-weight:800; font-family:var(--font-mono); display:inline-flex; align-items:center;">${platLogo}${rel.version.replace('v', '')}</span>` : ''}
+              </div>
+            `;
+          });
+          html += '</div>';
+        });
+        html += '</div>';
+
+        const legend = `
+          <div class="chart-legend-wrap" style="margin-top:6px;">
+            <div class="legend-chip"><img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="Google Play"/><span>AOS 전용</span></div>
+            <div class="legend-chip"><img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px;" alt="App Store"/><span>iOS 전용</span></div>
+            <div class="legend-chip"><span style="font-size:12px; vertical-align:middle; margin-right:4px;">🌐</span><span>양대 동시 배포</span></div>
+          </div>
+        `;
+
+        stage.innerHTML = html + legend;
+      }
+
+      // 6. Focus Changelog Drawer for a Specific Version
+      window.focusChangelog = function (verStr, targetOs) {
+        if (verStr === 'latest') verStr = 'v1.1.12';
+        if (verStr === 'all') verStr = 'v1.1.4';
+
+        selectedVersion = normalizeVersion(verStr);
+        if (targetOs) {
+          drawerPlatformFilter = targetOs;
+          const btnAll = document.getElementById('btnFilterPlatAll');
+          const btnAos = document.getElementById('btnFilterPlatAos');
+          const btnIos = document.getElementById('btnFilterPlatIos');
+          if (btnAll) btnAll.classList.toggle('active', targetOs === 'all');
+          if (btnAos) btnAos.classList.toggle('active', targetOs === 'android');
+          if (btnIos) btnIos.classList.toggle('active', targetOs === 'ios');
+        }
+        renderChangelogDrawer();
+
+        const drawer = document.getElementById('changelogDrawer');
+        if (drawer) {
+          drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      };
+
+      // Filter inside changelog drawer (All vs AOS vs iOS)
+      window.filterDrawerIssues = function (os) {
+        drawerPlatformFilter = os;
+        document.getElementById('btnFilterPlatAll').classList.toggle('active', os === 'all');
+        document.getElementById('btnFilterPlatAos').classList.toggle('active', os === 'android');
+        document.getElementById('btnFilterPlatIos').classList.toggle('active', os === 'ios');
+        renderChangelogDrawer();
+      };
+
+      function renderChangelogDrawer() {
+        const drawerTitle = document.getElementById('drawerTitle');
+        const drawerPlatTag = document.getElementById('drawerPlatTag');
+        const drawerDateTag = document.getElementById('drawerDateTag');
+        const drawerTotalCount = document.getElementById('drawerTotalCount');
+        const drawerAosCount = document.getElementById('drawerAosCount');
+        const drawerIosCount = document.getElementById('drawerIosCount');
+        const drawerIssuesList = document.getElementById('drawerIssuesList');
+
+        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const currentRel = releases.find(r => r.version === selectedVersion) || releases[releases.length - 1];
+
+        const allIssuesInVersion = getIssuesForVersion(currentRel.version, 'all');
+
+        let aosCount = 0, iosCount = 0;
+        allIssuesInVersion.forEach(i => {
+          if (isItemApplicableToOs(i, 'android')) aosCount++;
+          if (isItemApplicableToOs(i, 'ios')) iosCount++;
+        });
+
+        // Filter by drawerPlatformFilter
+        let filteredIssues = allIssuesInVersion;
+        if (drawerPlatformFilter === 'android') {
+          filteredIssues = filteredIssues.filter(i => isItemApplicableToOs(i, 'android'));
+        } else if (drawerPlatformFilter === 'ios') {
+          filteredIssues = filteredIssues.filter(i => isItemApplicableToOs(i, 'ios'));
+        }
+
+        const platLabel = currentRel.platform === 'android' 
+          ? '<span style="display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="Google Play"/>Android 전용 배포</span>' 
+          : (currentRel.platform === 'ios' 
+              ? '<span style="display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="App Store"/>iOS 전용 배포</span>' 
+              : '🌐 양대 OS 동시 배포');
+        const platBg = currentRel.platform === 'android' ? 'rgba(43,138,62,0.12)' : (currentRel.platform === 'ios' ? 'rgba(0,122,255,0.12)' : 'rgba(88,86,214,0.12)');
+        const platColor = currentRel.platform === 'android' ? 'var(--aos-green)' : (currentRel.platform === 'ios' ? 'var(--ios-apple-blue)' : 'var(--ios-purple)');
+
+        drawerTitle.innerHTML = `
+          <span>🏷️ ${currentRel.version} (AOS: ${currentRel.aosBuild || currentRel.build} / iOS: ${currentRel.iosBuild || currentRel.build})</span>
+          <span class="panel-badge" style="background:${platBg}; color:${platColor}; font-size:11px;">${platLabel}</span>
+          <span class="panel-badge" style="background:var(--bg-subtle);">AOS: ${currentRel.aosDate || currentRel.date} | iOS: ${currentRel.iosDate || currentRel.date}</span>
+        `;
+
+        drawerTotalCount.textContent = `${allIssuesInVersion.length || currentRel.highlights.length}건`;
+        drawerAosCount.textContent = `${aosCount}건`;
+        drawerIosCount.textContent = `${iosCount}건`;
+
+        if (allIssuesInVersion.length === 0) {
+          drawerIssuesList.innerHTML = currentRel.highlights.map((h, idx) => `
+            <div class="issue-ticket-card">
+              <div class="issue-ticket-header">
+                <span class="ticket-id">#FEATURE-${idx + 1}</span>
+                <span class="ticket-chip" style="background:rgba(52,199,89,0.1); color:var(--ios-green);">반영 완료</span>
+                <span class="ticket-chip-plat" style="background:${platBg}; color:${platColor};">${platLabel}</span>
+                <span style="margin-left:auto; color:var(--text-muted); font-size:10px;">${currentRel.date}</span>
+              </div>
+              <div class="ticket-title">${h}</div>
+              <div class="ticket-solution">${currentRel.description}</div>
+            </div>
+          `).join('');
+          return;
+        }
+
+        if (filteredIssues.length === 0) {
+          drawerIssuesList.innerHTML = `<div style="grid-column:1/-1; padding:24px; text-align:center; color:var(--text-muted);">해당 OS 필터 조건에 일치하는 이슈가 없습니다.</div>`;
+          return;
+        }
+
+        function escapeHtml(str) {
+          if (!str) return '';
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        }
+
+        drawerIssuesList.innerHTML = filteredIssues.map(i => {
+          const sev = i.severity || 'S3';
+          const sevColor = SEV_COLORS[sev] || 'var(--ios-blue)';
+          const cat = (i.category || 'core').toLowerCase();
+          const catColor = CAT_COLORS[cat] || 'var(--ios-blue)';
+          const files = (i.files || []).join(', ');
+
+          const isAosOnly = (i.platform || '').toLowerCase() === 'android';
+          const isIosOnly = (i.platform || '').toLowerCase() === 'ios';
+          const platBadge = isAosOnly 
+            ? `<span class="ticket-chip-plat" style="background:rgba(43,138,62,0.12); color:var(--aos-green); display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Google Play"/>AOS 전용</span>`
+            : (isIosOnly 
+                ? `<span class="ticket-chip-plat" style="background:rgba(0,122,255,0.12); color:var(--ios-apple-blue); display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="App Store"/>iOS 전용</span>`
+                : `<span class="ticket-chip-plat" style="background:rgba(88,86,214,0.12); color:var(--ios-purple);">🌐 양대 OS</span>`);
+
+          const safeTitle = escapeHtml(i.title);
+          const safeSolution = escapeHtml(i.solution || i.problem || '');
+          const safeFiles = escapeHtml(files);
+
+          return `
+            <div class="issue-ticket-card">
+              <div class="issue-ticket-header">
+                <span class="ticket-id">#${i.id}</span>
+                <span class="ticket-chip" style="background:rgba(255,59,48,0.1); color:${sevColor};">${i.severityLabel || sev}</span>
+                <span class="ticket-chip" style="background:rgba(0,122,255,0.1); color:${catColor};">${i.categoryLabel || cat}</span>
+                ${platBadge}
+                <span style="margin-left:auto; color:var(--text-muted); font-size:10px;">${i.date}</span>
+              </div>
+              <div class="ticket-title">${safeTitle}</div>
+              <div class="ticket-solution">${safeSolution}</div>
+              ${safeFiles ? `<div class="ticket-files" title="${safeFiles}">📁 ${safeFiles}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.openSpreadsheetForCurrentVersion = function () {
+        const ver = selectedVersion.replace('v', '');
+        window.location.href = `qa_spreadsheet.html?q=${ver}`;
+      };
+
+      window.exportReleaseReportJSON = function () {
+        const payload = {
+          metadata: {
+            title: "Modo Production Release & Version Cadence Intelligence",
+            exportedAt: new Date().toISOString(),
+            currentLiveVersion: "v1.1.12",
+            targetScope: currentScope,
+            currentPlatform: currentPlatform
+          },
+          releases: window.MODO_RELEASE_REGISTRY || [],
+          phase3IssuesCount: (window.MODO_QA_PHASE3 || []).length
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Modo_Release_Cadence_${Date.now()}.json`;
+        a.click();
+      };
+
+      function renderAll() {
+        renderKPIs();
+        renderVersionVolumeChart();
+        renderSteppedTimelineChart();
+        renderMonthlyCadenceChart();
+        renderReleaseHeatmap();
+        renderChangelogDrawer();
+      }
+
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(renderAll, 100);
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        renderAll();
+      });
+
+    })();
+  </script>
+
+</body>
+</html>

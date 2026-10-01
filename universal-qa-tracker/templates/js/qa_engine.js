@@ -22,110 +22,205 @@
   const STORAGE_KEY_HIGHLIGHTS = 'modo_qa_highlighted_ids';
   const STORAGE_KEY_THEME = 'modo_sheet_theme';
   const STORAGE_KEY_TRACK = 'modo_qa_active_track';
-  const STORAGE_KEY_DEPLOY_STATUS = 'MODO_QA_DEPLOY_STATUS_V1';
-  const STORAGE_KEY_TARGET_RELEASE = 'modo_qa_target_release';
+  const STORAGE_KEY_DEPLOY_STATUS = 'MODO_QA_DEPLOY_STATUS_V2';
+  const STORAGE_KEY_DEPLOY_STATUS_V1 = 'MODO_QA_DEPLOY_STATUS_V1';
+  const STORAGE_KEY_TARGET_RELEASE_AOS = 'modo_qa_target_release_aos';
+  const STORAGE_KEY_TARGET_RELEASE_IOS = 'modo_qa_target_release_ios';
+  const STORAGE_KEY_DETAIL_FILTER_OPEN = 'modo_qa_detail_filter_open';
+  const DEFAULT_TARGET_RELEASE_AOS = '77 (1.1.10)';
+  const DEFAULT_TARGET_RELEASE_IOS = '84 (1.1.5)';
 
   let currentEditingDeployKey = null;
+  let currentEditingDeployOs = 'android';
+  let isDetailFilterOpen = false;
 
-  function getTargetRelease() {
+  function getTargetRelease(os = 'android') {
     try {
-      return localStorage.getItem(STORAGE_KEY_TARGET_RELEASE) || '69 (1.1.2)';
+      if (os === 'ios') {
+        return localStorage.getItem(STORAGE_KEY_TARGET_RELEASE_IOS) || DEFAULT_TARGET_RELEASE_IOS;
+      }
+      return localStorage.getItem(STORAGE_KEY_TARGET_RELEASE_AOS) || localStorage.getItem('modo_qa_target_release') || DEFAULT_TARGET_RELEASE_AOS;
     } catch {
-      return '69 (1.1.2)';
+      return os === 'ios' ? DEFAULT_TARGET_RELEASE_IOS : DEFAULT_TARGET_RELEASE_AOS;
     }
   }
 
-  function setTargetRelease(val) {
+  function setTargetRelease(os = 'android', val) {
     const clean = (val || '').trim();
     if (!clean) return;
     try {
-      localStorage.setItem(STORAGE_KEY_TARGET_RELEASE, clean);
+      if (os === 'ios') {
+        localStorage.setItem(STORAGE_KEY_TARGET_RELEASE_IOS, clean);
+      } else {
+        localStorage.setItem(STORAGE_KEY_TARGET_RELEASE_AOS, clean);
+      }
     } catch (e) {
       console.warn('Failed to save target release:', e);
     }
-    const input = document.getElementById('targetReleaseInput');
+    const inputId = os === 'ios' ? 'targetReleaseIosInput' : 'targetReleaseAosInput';
+    const input = document.getElementById(inputId);
     if (input && input.value !== clean) {
       input.value = clean;
     }
   }
 
+  function getOsLogoSvg(os = 'android', size = 13, extraStyle = '') {
+    if (os === 'ios') {
+      return `<svg class="qa-os-logo qa-ios-logo" viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor" style="vertical-align: -2px; display: inline-block; flex-shrink: 0; ${extraStyle}" aria-hidden="true"><title>Apple</title><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`;
+    }
+    return `<svg class="qa-os-logo qa-aos-logo" viewBox="0 0 24 24" width="${size}" height="${size}" fill="#3DDC84" style="vertical-align: -2px; display: inline-block; flex-shrink: 0; ${extraStyle}" aria-hidden="true"><title>Android</title><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></svg>`;
+  }
+
   function getDeployMap() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY_DEPLOY_STATUS) || '{}');
-    } catch {
-      return {};
+      let localMap = {};
+      const v2Raw = localStorage.getItem(STORAGE_KEY_DEPLOY_STATUS);
+      if (v2Raw) {
+        localMap = JSON.parse(v2Raw);
+      } else {
+        // Migrate from V1 if available
+        const v1Raw = localStorage.getItem(STORAGE_KEY_DEPLOY_STATUS_V1);
+        if (v1Raw) {
+          const v1Map = JSON.parse(v1Raw);
+          Object.keys(v1Map).forEach(key => {
+            const val = v1Map[key];
+            const isDep = typeof val === 'object' ? !!val.deployed : !!val;
+            const ver = (typeof val === 'object' && val.version) ? val.version : '';
+            const at = (typeof val === 'object' && val.deployedAt) ? val.deployedAt : '';
+            localMap[key] = {
+              android: { deployed: isDep, version: ver, deployedAt: at },
+              ios: { deployed: isDep, version: ver, deployedAt: at }
+            };
+          });
+          localStorage.setItem(STORAGE_KEY_DEPLOY_STATUS, JSON.stringify(localMap));
+        }
+      }
+
+      // Merge with permanent registry from qa_deploy_registry.js
+      const registry = window.MODO_QA_DEPLOY_REGISTRY || {};
+      const merged = JSON.parse(JSON.stringify(registry));
+      Object.keys(localMap).forEach(key => {
+        if (!merged[key]) merged[key] = {};
+        if (localMap[key].android) {
+          merged[key].android = { ...(merged[key].android || {}), ...localMap[key].android };
+        }
+        if (localMap[key].ios) {
+          merged[key].ios = { ...(merged[key].ios || {}), ...localMap[key].ios };
+        }
+      });
+      return merged;
+    } catch (e) {
+      console.warn('Failed to load deploy map:', e);
+      return window.MODO_QA_DEPLOY_REGISTRY || {};
     }
+  }
+
+  function isPlatformApplicable(item, os = 'android') {
+    if (!item) return false;
+    const plat = (item.platform || 'all').toLowerCase();
+    if (os === 'android') return plat !== 'ios';
+    if (os === 'ios') return plat !== 'android';
+    return true;
   }
 
   function getItemKey(item) {
     if (!item) return '';
     if (item._uid) return item._uid;
-    const phase = item.phase || (String(item.id).startsWith('FB-') ? 'feedback' : 'phase1');
+    const phase = item.phase || item.track || (String(item.id).startsWith('FB-') ? 'feedback' : (currentTrackId && currentTrackId !== 'all' ? currentTrackId : 'phase3'));
     return `${phase}_${item.id}`;
   }
 
-  function isItemDeployed(item) {
+  function isItemDeployed(item, os = 'android') {
     if (!item) return false;
     const map = getDeployMap();
     const key = getItemKey(item);
-    if (map[key] !== undefined) {
-      return typeof map[key] === 'object' ? !!map[key].deployed : !!map[key];
-    }
     const idStr = String(item.id);
-    if (map[idStr] !== undefined) {
-      return typeof map[idStr] === 'object' ? !!map[idStr].deployed : !!map[idStr];
+    const record = map[key] || map[`phase3_${item.id}`] || map[`phase1_${item.id}`] || map[idStr];
+
+    if (record) {
+      if (record[os] !== undefined) {
+        return typeof record[os] === 'object' ? !!record[os].deployed : !!record[os];
+      }
+      // Fallback if record was old flat object { deployed: true, ... }
+      if (record.deployed !== undefined) {
+        return !!record.deployed;
+      }
     }
-    // Fallback: check static item.deployed
+
+    // Static fallback on item definition
+    if (os === 'android') {
+      if (item.deployedAos !== undefined) return !!item.deployedAos;
+      if ((item.platform || '').toLowerCase() === 'ios') return false;
+      return !!item.deployed;
+    }
+    if (os === 'ios') {
+      if (item.deployedIos !== undefined) return !!item.deployedIos;
+      if ((item.platform || '').toLowerCase() === 'android') return false;
+      return !!item.deployed;
+    }
     return !!item.deployed;
   }
 
-  function getDeployTimestamp(item) {
+  function getDeployTimestamp(item, os = 'android') {
     if (!item) return '';
     const map = getDeployMap();
     const key = getItemKey(item);
     const idStr = String(item.id);
-    if (map[key] && typeof map[key] === 'object' && map[key].deployedAt) {
-      return map[key].deployedAt;
+    const record = map[key] || map[`phase3_${item.id}`] || map[`phase1_${item.id}`] || map[idStr];
+
+    if (record && record[os] && typeof record[os] === 'object' && record[os].deployedAt) {
+      return record[os].deployedAt;
     }
-    if (map[idStr] && typeof map[idStr] === 'object' && map[idStr].deployedAt) {
-      return map[idStr].deployedAt;
+    if (record && typeof record === 'object' && record.deployedAt) {
+      return record.deployedAt;
     }
     return item.deployedDate || '';
   }
 
-  function getDeployVersion(item) {
+  function getDeployVersion(item, os = 'android') {
     if (!item) return '';
     const map = getDeployMap();
     const key = getItemKey(item);
     const idStr = String(item.id);
-    if (map[key] && typeof map[key] === 'object' && map[key].version) {
-      return map[key].version;
+    const record = map[key] || map[`phase3_${item.id}`] || map[`phase1_${item.id}`] || map[idStr];
+
+    if (record && record[os] && typeof record[os] === 'object' && record[os].version) {
+      return record[os].version;
     }
-    if (map[idStr] && typeof map[idStr] === 'object' && map[idStr].version) {
-      return map[idStr].version;
+    if (record && typeof record === 'object' && record.version) {
+      return record.version;
     }
+    if (os === 'android' && item.deployedVersionAos) return item.deployedVersionAos;
+    if (os === 'ios' && item.deployedVersionIos) return item.deployedVersionIos;
     return item.deployedVersion || item.release || '';
   }
 
-  function toggleDeploy(targetKey, checked, event) {
+  function toggleDeploy(targetKey, os = 'android', checked, event) {
     if (event) event.stopPropagation();
     const map = getDeployMap();
     const keyStr = String(targetKey);
     const now = new Date();
     const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    
-    // Determine release version: keep existing if set, otherwise auto-stamp current target release
-    let ver = '';
-    if (checked) {
-      const existingVer = (map[keyStr] && typeof map[keyStr] === 'object' && map[keyStr].version) ? map[keyStr].version : '';
-      ver = (existingVer || getTargetRelease()).replace(/^🚀\s*/, '').trim();
+
+    if (!map[keyStr] || typeof map[keyStr] !== 'object') {
+      map[keyStr] = {};
+    }
+    if (!map[keyStr][os] || typeof map[keyStr][os] !== 'object') {
+      map[keyStr][os] = {};
     }
 
-    map[keyStr] = {
+    let ver = '';
+    if (checked) {
+      const existingVer = map[keyStr][os].version;
+      ver = (existingVer || getTargetRelease(os)).replace(/^🚀\s*/, '').trim();
+    }
+
+    map[keyStr][os] = {
       deployed: !!checked,
       deployedAt: checked ? dateStr : '',
       version: ver
     };
+
     try {
       localStorage.setItem(STORAGE_KEY_DEPLOY_STATUS, JSON.stringify(map));
     } catch (e) {
@@ -133,11 +228,13 @@
     }
     updateDeployBadges();
     renderTable();
+    markDeployUnsavedChange();
   }
 
-  function openEditDeployVersionModal(targetKey, event) {
+  function openEditDeployVersionModal(targetKey, os = 'android', event) {
     if (event) event.stopPropagation();
     currentEditingDeployKey = String(targetKey);
+    currentEditingDeployOs = os || 'android';
     const modal = document.getElementById('editDeployModal');
     if (!modal) return;
 
@@ -147,15 +244,44 @@
       descEl.textContent = `#${item.id} - ${item.title || item.problem || ''}`;
     }
 
-    const currentVer = String(item ? getDeployVersion(item) : getTargetRelease()).replace(/^🚀\s*/, '').trim();
+    const titleEl = document.getElementById('editDeployModalTitle');
+    if (titleEl) {
+      const logo = getOsLogoSvg(currentEditingDeployOs, 16, 'margin-right:5px;');
+      titleEl.innerHTML = currentEditingDeployOs === 'ios'
+        ? `${logo} iOS 배포 릴리즈 버전 수정`
+        : `${logo} Android 배포 릴리즈 버전 수정`;
+    }
+
+    const osBadgeEl = document.getElementById('editDeployOsBadge');
+    if (osBadgeEl) {
+      if (currentEditingDeployOs === 'ios') {
+        osBadgeEl.innerHTML = `${getOsLogoSvg('ios', 12, 'margin-right:3px;')} iOS`;
+        osBadgeEl.style.background = 'rgba(34, 139, 230, 0.14)';
+        osBadgeEl.style.color = '#228BE6';
+        osBadgeEl.style.border = '1px solid rgba(34, 139, 230, 0.28)';
+      } else {
+        osBadgeEl.innerHTML = `${getOsLogoSvg('android', 12, 'margin-right:3px;')} Android`;
+        osBadgeEl.style.background = 'rgba(43, 138, 62, 0.14)';
+        osBadgeEl.style.color = '#2B8A3E';
+        osBadgeEl.style.border = '1px solid rgba(43, 138, 62, 0.28)';
+      }
+    }
+
+    const currentVer = String(item ? getDeployVersion(item, currentEditingDeployOs) : getTargetRelease(currentEditingDeployOs)).replace(/^🚀\s*/, '').trim();
     const input = document.getElementById('editDeployVersionInput');
     if (input) {
-      input.value = currentVer || getTargetRelease().replace(/^🚀\s*/, '').trim();
+      input.value = currentVer || getTargetRelease(currentEditingDeployOs).replace(/^🚀\s*/, '').trim();
+      input.style.color = currentEditingDeployOs === 'ios' ? '#228BE6' : '#2B8A3E';
     }
 
     const quickBtn = document.getElementById('btnQuickCurrentRelease');
     if (quickBtn) {
-      quickBtn.textContent = getTargetRelease().replace(/^🚀\s*/, '').trim();
+      quickBtn.textContent = getTargetRelease(currentEditingDeployOs).replace(/^🚀\s*/, '').trim();
+    }
+
+    const saveBtn = document.getElementById('btnSaveDeployVersion');
+    if (saveBtn) {
+      saveBtn.style.background = currentEditingDeployOs === 'ios' ? '#228BE6' : '#2B8A3E';
     }
 
     modal.style.display = 'flex';
@@ -166,12 +292,13 @@
     const modal = document.getElementById('editDeployModal');
     if (modal) modal.style.display = 'none';
     currentEditingDeployKey = null;
+    currentEditingDeployOs = 'android';
   }
 
   function applyQuickTargetRelease() {
     const input = document.getElementById('editDeployVersionInput');
     if (input) {
-      input.value = getTargetRelease().replace(/^🚀\s*/, '').trim();
+      input.value = getTargetRelease(currentEditingDeployOs).replace(/^🚀\s*/, '').trim();
     }
   }
 
@@ -182,16 +309,20 @@
 
     const map = getDeployMap();
     const keyStr = currentEditingDeployKey;
+    const os = currentEditingDeployOs || 'android';
     const now = new Date();
     const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
     if (!map[keyStr] || typeof map[keyStr] !== 'object') {
-      map[keyStr] = { deployed: true, deployedAt: dateStr, version: newVer };
-    } else {
-      map[keyStr].deployed = true;
-      map[keyStr].version = newVer;
-      if (!map[keyStr].deployedAt) map[keyStr].deployedAt = dateStr;
+      map[keyStr] = {};
     }
+    if (!map[keyStr][os] || typeof map[keyStr][os] !== 'object') {
+      map[keyStr][os] = {};
+    }
+
+    map[keyStr][os].deployed = true;
+    map[keyStr][os].version = newVer;
+    if (!map[keyStr][os].deployedAt) map[keyStr][os].deployedAt = dateStr;
 
     try {
       localStorage.setItem(STORAGE_KEY_DEPLOY_STATUS, JSON.stringify(map));
@@ -202,7 +333,141 @@
     closeEditDeployModal();
     updateDeployBadges();
     renderTable();
-    showToast(`🚀 배포 버전이 '${newVer}'(으)로 갱신되었습니다.`);
+    markDeployUnsavedChange();
+    const osPrefix = os === 'ios' ? 'iOS' : 'Android';
+    showToast(`🚀 ${osPrefix} 배포 버전이 '${newVer}'(으)로 갱신되었습니다.`);
+  }
+
+  let hasUnsavedDeployChanges = false;
+  function markDeployUnsavedChange() {
+    hasUnsavedDeployChanges = true;
+    const badge = document.getElementById('badgeDeployUnsaved');
+    if (badge) {
+      badge.style.display = 'inline-block';
+    }
+    const btn = document.getElementById('btnSaveDeployRegistry');
+    if (btn) {
+      btn.classList.add('has-unsaved');
+    }
+  }
+
+  function openDeploySaveModal() {
+    const modal = document.getElementById('deploySaveModal');
+    if (!modal) {
+      showToast('⚠️ 배포 저장 모달 요소를 찾을 수 없습니다.');
+      return;
+    }
+    const map = getDeployMap();
+    const keys = Object.keys(map);
+    let aosCount = 0;
+    let iosCount = 0;
+    keys.forEach(k => {
+      if (map[k]?.android?.deployed) aosCount++;
+      if (map[k]?.ios?.deployed) iosCount++;
+    });
+
+    const infoEl = document.getElementById('deploySaveModalInfo');
+    if (infoEl) {
+      infoEl.innerHTML = `현재 브라우저에 기록된 총 <b>${keys.length}</b>개 안건 중 <b>Android: ${aosCount}건</b>, <b>iOS: ${iosCount}건</b>이 배포 상태로 설정되어 있습니다.`;
+    }
+
+    const codePreview = document.getElementById('deploySaveModalPreview');
+    if (codePreview) {
+      codePreview.textContent = JSON.stringify(map, null, 2);
+    }
+
+    modal.style.display = 'flex';
+    showToast(`💾 배포 정보 저장 창이 열렸습니다 (AOS: ${aosCount}건 / iOS: ${iosCount}건)`);
+  }
+
+  function closeDeploySaveModal() {
+    const modal = document.getElementById('deploySaveModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  async function saveDeployRegistryDirectly() {
+    const map = getDeployMap();
+    const jsContent = `/**\n * Modo QA Master - Deploy Registry (Permanent Record)\n * Auto-generated & synced with User Deploy Actions\n */\nwindow.MODO_QA_DEPLOY_REGISTRY = ${JSON.stringify(map, null, 2)};\n`;
+
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: 'qa_deploy_registry.js',
+          types: [{
+            description: 'JavaScript File',
+            accept: { 'text/javascript': ['.js'] }
+          }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(jsContent);
+        await writable.close();
+        hasUnsavedDeployChanges = false;
+        const badge = document.getElementById('badgeDeployUnsaved');
+        if (badge) badge.style.display = 'none';
+        const btn = document.getElementById('btnSaveDeployRegistry');
+        if (btn) btn.classList.remove('has-unsaved');
+        showToast('💾 qa_deploy_registry.js 파일에 배포 정보가 영구 저장되었습니다!');
+        closeDeploySaveModal();
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.warn('showSaveFilePicker error, falling back to download:', err);
+      }
+    }
+    // Fallback to instant download
+    downloadDeployRegistryJs();
+  }
+
+  function downloadDeployRegistryJs() {
+    const map = getDeployMap();
+    const jsContent = `/**\n * Modo QA Master - Deploy Registry (Permanent Record)\n * Auto-generated & synced with User Deploy Actions\n */\nwindow.MODO_QA_DEPLOY_REGISTRY = ${JSON.stringify(map, null, 2)};\n`;
+    const blob = new Blob([jsContent], { type: 'text/javascript;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qa_deploy_registry.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    hasUnsavedDeployChanges = false;
+    const badge = document.getElementById('badgeDeployUnsaved');
+    if (badge) badge.style.display = 'none';
+    const btn = document.getElementById('btnSaveDeployRegistry');
+    if (btn) btn.classList.remove('has-unsaved');
+    showToast('💾 qa_deploy_registry.js 파일이 다운로드되었습니다. data/ 폴더에 저장하세요.');
+    closeDeploySaveModal();
+  }
+
+  function downloadDeployRegistryJson() {
+    const map = getDeployMap();
+    const jsonContent = JSON.stringify(map, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qa_deploy_registry.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('💾 qa_deploy_registry.json 파일이 다운로드되었습니다.');
+    closeDeploySaveModal();
+  }
+
+  function copyDeployRegistrySnippet() {
+    const map = getDeployMap();
+    const jsContent = `window.MODO_QA_DEPLOY_REGISTRY = ${JSON.stringify(map, null, 2)};`;
+    navigator.clipboard?.writeText(jsContent).then(() => {
+      showToast('📋 배포 레지스트리 JS 코드가 클립보드에 복사되었습니다!');
+    });
+  }
+
+  function copyDeploySyncCli() {
+    const cli = 'node docs/02_Guides/internal_qa_issue_tracker/scripts/sync_deploy_status.js';
+    navigator.clipboard?.writeText(cli).then(() => {
+      showToast('📋 영구 동기화 CLI 명령어가 복사되었습니다: ' + cli);
+    });
   }
 
 
@@ -369,6 +634,20 @@
       const label = getTrackLabel(track);
       const unit = t('trackCountUnit');
       const trackColor = track.color || 'var(--ios-blue)';
+
+      let iconHtml = '';
+      if (track.id === 'phase1') {
+        iconHtml = '<img src="assets/icons/logo_google_play.svg" alt="Google Play" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px; display:inline-block;" />';
+      } else if (track.id === 'phase2') {
+        iconHtml = '<img src="assets/icons/logo_app_store.svg" alt="App Store" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px; display:inline-block;" />';
+      } else if (track.id === 'all') {
+        iconHtml = '<span style="font-size:12px; margin-right:4px;">🚀</span>';
+      } else if (track.id === 'phase3') {
+        iconHtml = '<span style="font-size:12px; margin-right:4px;">💎</span>';
+      } else if (track.id === 'feedback') {
+        iconHtml = '<span style="font-size:12px; margin-right:4px;">💬</span>';
+      }
+
       return `
         <button 
           type="button"
@@ -376,7 +655,7 @@
           onclick="window.MODO_QA.switchTrack('${track.id}')"
           style="${isActive ? `--active-track-color:${trackColor};` : ''}"
         >
-          <span class="track-tab-label">${label}</span>
+          <span class="track-tab-label" style="display:inline-flex; align-items:center;">${iconHtml}${label}</span>
           <span class="track-tab-count" style="${isActive ? `background:${trackColor}; color:#FFFFFF;` : ''}">
             ${count} ${unit}
           </span>
@@ -467,11 +746,13 @@
         tag.textContent = t('platformAll');
       } else if (platCounts[plat] !== undefined) {
         tag.classList.toggle('active', currentPlatform === plat);
-        let baseLabel = tag.getAttribute('data-label-base');
-        if (plat === 'ios') baseLabel = t('platformIos');
-        else if (plat === 'android') baseLabel = t('platformAndroid');
-        else if (plat === 'all_common') baseLabel = t('platformCommon');
-        tag.textContent = `${baseLabel} (${platCounts[plat]})`;
+        if (plat === 'ios') {
+          tag.innerHTML = `${getOsLogoSvg('ios', 13, 'margin-right:4px;')} iOS (${platCounts.ios})`;
+        } else if (plat === 'android') {
+          tag.innerHTML = `${getOsLogoSvg('android', 13, 'margin-right:4px;')} Android (${platCounts.android})`;
+        } else if (plat === 'all_common') {
+          tag.textContent = `${t('platformCommon')} (${platCounts.all_common})`;
+        }
       }
     });
   }
@@ -587,39 +868,136 @@
   }
 
   function updateDeployBadges() {
-    const isFeedback = currentTrackId === 'feedback';
+    const isPreRelease = (currentTrackId === 'phase1' || currentTrackId === 'phase2' || currentTrackId === 'feedback');
     const deployGroup = document.getElementById('deployFilters');
-    const releaseBtn = document.getElementById('btnReleaseNotes');
-    const badgeDeployed = document.getElementById('badgeStatDeployed');
+    const targetReleaseRow = document.getElementById('targetReleaseRow');
+    const badgeDeployedAos = document.getElementById('badgeStatDeployedAos');
+    const badgeDeployedIos = document.getElementById('badgeStatDeployedIos');
+    const thDeployAos = document.getElementById('thDeployAos');
+    const thDeployIos = document.getElementById('thDeployIos');
 
-    if (deployGroup) deployGroup.style.display = isFeedback ? 'none' : 'flex';
-    if (releaseBtn) releaseBtn.style.display = isFeedback ? 'none' : 'inline-flex';
-    if (badgeDeployed) badgeDeployed.style.display = isFeedback ? 'none' : 'inline-block';
+    if (deployGroup) deployGroup.style.display = isPreRelease ? 'none' : 'flex';
+    if (targetReleaseRow) targetReleaseRow.style.display = isPreRelease ? 'none' : 'flex';
+    if (badgeDeployedAos) badgeDeployedAos.style.display = isPreRelease ? 'none' : 'inline-block';
+    if (badgeDeployedIos) badgeDeployedIos.style.display = isPreRelease ? 'none' : 'inline-block';
+    if (thDeployAos) thDeployAos.style.display = isPreRelease ? 'none' : '';
+    if (thDeployIos) thDeployIos.style.display = isPreRelease ? 'none' : '';
 
-    if (isFeedback) return;
+    if (isPreRelease) return;
 
-    const targetIssues = activeIssues.filter(i => !String(i.id).startsWith('FB-'));
-    const deployedCount = targetIssues.filter(i => isItemDeployed(i)).length;
-    const pendingCount = targetIssues.length - deployedCount;
+    let targetIssues = activeIssues.filter(i => !String(i.id).startsWith('FB-'));
+    if (currentTrackId === 'all') {
+      targetIssues = targetIssues.filter(i => i.phase === 'phase3');
+    }
+    const targetAosIssues = targetIssues.filter(i => isPlatformApplicable(i, 'android'));
+    const deployedAosCount = targetAosIssues.filter(i => isItemDeployed(i, 'android')).length;
+
+    const targetIosIssues = targetIssues.filter(i => isPlatformApplicable(i, 'ios'));
+    const deployedIosCount = targetIosIssues.filter(i => isItemDeployed(i, 'ios')).length;
+
+    const deployedBothCount = targetIssues.filter(i => isPlatformApplicable(i, 'android') && isPlatformApplicable(i, 'ios') && isItemDeployed(i, 'android') && isItemDeployed(i, 'ios')).length;
+    const pendingCount = targetIssues.filter(i => {
+      const aosApp = isPlatformApplicable(i, 'android');
+      const iosApp = isPlatformApplicable(i, 'ios');
+      const isAos = isItemDeployed(i, 'android');
+      const isIos = isItemDeployed(i, 'ios');
+      if (aosApp && iosApp) return !isAos && !isIos;
+      if (aosApp) return !isAos;
+      if (iosApp) return !isIos;
+      return false;
+    }).length;
 
     document.querySelectorAll('#deployFilters .filter-tag').forEach(tag => {
       const dep = tag.getAttribute('data-deploy');
       if (dep === 'all') {
         tag.classList.toggle('active', currentDeployFilter === 'all');
         tag.textContent = `${t('filterDeployAll')} (${targetIssues.length})`;
-      } else if (dep === 'deployed') {
-        tag.classList.toggle('active', currentDeployFilter === 'deployed');
-        tag.textContent = `${t('filterDeployed')} (${deployedCount})`;
+      } else if (dep === 'deployed_aos') {
+        tag.classList.toggle('active', currentDeployFilter === 'deployed_aos');
+        tag.innerHTML = `${getOsLogoSvg('android', 13, 'margin-right:4px;')} AOS 배포 (${deployedAosCount})`;
+      } else if (dep === 'deployed_ios') {
+        tag.classList.toggle('active', currentDeployFilter === 'deployed_ios');
+        tag.innerHTML = `${getOsLogoSvg('ios', 13, 'margin-right:4px;')} iOS 배포 (${deployedIosCount})`;
+      } else if (dep === 'deployed_both') {
+        tag.classList.toggle('active', currentDeployFilter === 'deployed_both');
+        tag.innerHTML = `${getOsLogoSvg('android', 11, 'margin-right:2px;')}${getOsLogoSvg('ios', 11, 'margin-right:4px;')} 양대 배포 (${deployedBothCount})`;
       } else if (dep === 'pending') {
         tag.classList.toggle('active', currentDeployFilter === 'pending');
         tag.textContent = `${t('filterNotDeployed')} (${pendingCount})`;
       }
     });
 
-    const elStatDeployed = document.getElementById('statDeployed');
-    if (elStatDeployed) {
-      elStatDeployed.textContent = `${deployedCount}/${targetIssues.length}`;
+    const elStatAos = document.getElementById('statDeployedAos');
+    if (elStatAos) {
+      elStatAos.textContent = `${deployedAosCount}/${targetAosIssues.length}`;
     }
+    const elStatIos = document.getElementById('statDeployedIos');
+    if (elStatIos) {
+      elStatIos.textContent = `${deployedIosCount}/${targetIosIssues.length}`;
+    }
+
+    const inputAos = document.getElementById('targetReleaseAosInput');
+    if (inputAos && inputAos.value !== getTargetRelease('android')) {
+      inputAos.value = getTargetRelease('android');
+    }
+    const inputIos = document.getElementById('targetReleaseIosInput');
+    if (inputIos && inputIos.value !== getTargetRelease('ios')) {
+      inputIos.value = getTargetRelease('ios');
+    }
+  }
+
+  function toggleDetailFilters(force) {
+    const drawer = document.getElementById('detailFiltersDrawer');
+    const btn = document.getElementById('btnToggleDetailFilters');
+    if (!drawer || !btn) return;
+    isDetailFilterOpen = (typeof force === 'boolean') ? force : !isDetailFilterOpen;
+    drawer.classList.toggle('open', isDetailFilterOpen);
+    btn.classList.toggle('active', isDetailFilterOpen);
+    try {
+      localStorage.setItem(STORAGE_KEY_DETAIL_FILTER_OPEN, isDetailFilterOpen ? 'true' : 'false');
+    } catch {}
+    updateDetailFilterActiveBadge();
+  }
+
+  function updateDetailFilterActiveBadge() {
+    const badge = document.getElementById('detailFilterActiveBadge');
+    if (!badge) return;
+    let activeCount = 0;
+    if (currentDate !== 'all') activeCount++;
+    if (currentSeverity !== 'all') activeCount++;
+    if (currentCategory !== 'all') activeCount++;
+
+    if (activeCount > 0) {
+      badge.textContent = String(activeCount);
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  function resetAllFilters() {
+    currentDate = 'all';
+    currentPlatform = 'all';
+    currentCategory = 'all';
+    currentStatus = 'all';
+    currentSeverity = 'all';
+    currentDeployFilter = 'all';
+    searchQuery = '';
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
+
+    const dateSelect = document.getElementById('dateFilterSelect');
+    if (dateSelect) dateSelect.value = 'all';
+
+    updateStatusBadges();
+    updatePlatformBadges();
+    updateCategoryBadges();
+    updateSeverityBadges();
+    updateDeployBadges();
+    updateDetailFilterActiveBadge();
+    renderTable();
+    showToast('↺ 모든 검색 및 필터가 초기화되었습니다.');
   }
 
   function getFilteredIssues() {
@@ -653,8 +1031,30 @@
       }
 
       let matchDeploy = true;
-      if (currentDeployFilter === 'deployed') matchDeploy = isItemDeployed(item);
-      else if (currentDeployFilter === 'pending') matchDeploy = !isItemDeployed(item);
+      if (currentDeployFilter !== 'all') {
+        if (currentTrackId === 'all' && (item.phase === 'phase1' || item.phase === 'phase2')) {
+          matchDeploy = (currentDeployFilter === 'deployed' || currentDeployFilter === 'deployed_both');
+        } else {
+          if (currentDeployFilter === 'deployed_aos') {
+            matchDeploy = isPlatformApplicable(item, 'android') && isItemDeployed(item, 'android');
+          } else if (currentDeployFilter === 'deployed_ios') {
+            matchDeploy = isPlatformApplicable(item, 'ios') && isItemDeployed(item, 'ios');
+          } else if (currentDeployFilter === 'deployed_both') {
+            matchDeploy = isPlatformApplicable(item, 'android') && isPlatformApplicable(item, 'ios') && isItemDeployed(item, 'android') && isItemDeployed(item, 'ios');
+          } else if (currentDeployFilter === 'deployed') {
+            matchDeploy = (isPlatformApplicable(item, 'android') && isItemDeployed(item, 'android')) || (isPlatformApplicable(item, 'ios') && isItemDeployed(item, 'ios'));
+          } else if (currentDeployFilter === 'pending') {
+            const aosApp = isPlatformApplicable(item, 'android');
+            const iosApp = isPlatformApplicable(item, 'ios');
+            const isAos = isItemDeployed(item, 'android');
+            const isIos = isItemDeployed(item, 'ios');
+            if (aosApp && iosApp) matchDeploy = !isAos && !isIos;
+            else if (aosApp) matchDeploy = !isAos;
+            else if (iosApp) matchDeploy = !isIos;
+            else matchDeploy = false;
+          }
+        }
+      }
 
       const itemSev = item.severity || 'S3';
       const matchSev = currentSeverity === 'all' || itemSev === currentSeverity;
@@ -823,29 +1223,97 @@
       ? `<a href="voc_dashboard.html?id=${encodeURIComponent(vocRefMatch)}" class="voc-ref-badge" onclick="event.stopPropagation()" title="Open in VOC Studio">💬 ${escapeHtml(vocRefMatch)} ↗</a>` 
       : '';
 
-    const isDeployed = isItemDeployed(item);
-    const deployVersion = getDeployVersion(item);
-    const cleanVer = String(deployVersion || '').replace(/^🚀\s*/, '').trim();
-    const deployTime = getDeployTimestamp(item);
-    const deployTooltip = isDeployed 
-      ? (cleanVer ? `🚀 배포 릴리즈: ${cleanVer} (${deployTime || '최근'}) - 클릭하여 미배포 전환` : (deployTime ? `🚀 배포 완료 (${deployTime}) - 클릭하여 미배포 전환` : '🚀 배포 완료 - 클릭하여 미배포 전환'))
-      : '⏳ 미배포 (클릭하여 배포 완료 전환)';
+    // 1 & 2. Android & iOS Deploy Cells (Context-aware: Hidden in pre-release, Base in all, Interactive in phase3)
+    const isPreRelease = (currentTrackId === 'phase1' || currentTrackId === 'phase2' || isFeedback);
+    let deployCellAosHtml = '';
+    let deployCellIosHtml = '';
 
-    const versionBadgeHtml = (isDeployed && cleanVer)
-      ? `<span class="qa-deploy-ver-tag" onclick="window.MODO_QA.openEditDeployVersionModal('${itemKey}', event)" title="${t('tooltipClickToEditRelease') || '클릭하여 배포 릴리즈 버전 수정'}">🚀 ${escapeHtml(cleanVer)}</span>`
-      : '';
+    if (!isPreRelease) {
+      if (currentTrackId === 'all' && (item.phase === 'phase1' || item.phase === 'phase2')) {
+        deployCellAosHtml = `
+          <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+            <div class="qa-deploy-cell" title="출시 전 사전 검증 완료 (v1.0.0 Base 탑재)">
+              <span class="qa-deploy-tag deployed" style="font-size:10px; padding:2px 6px;">✓ Base</span>
+            </div>
+          </td>
+        `;
+        deployCellIosHtml = `
+          <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+            <div class="qa-deploy-cell" title="출시 전 사전 검증 완료 (v1.0.0 Base 탑재)">
+              <span class="qa-deploy-tag deployed" style="font-size:10px; padding:2px 6px;">✓ Base</span>
+            </div>
+          </td>
+        `;
+      } else {
+        // 1. Android Deploy Cell
+        const isPlatformIosOnly = !isPlatformApplicable(item, 'android');
+        if (isPlatformIosOnly) {
+          deployCellAosHtml = `
+            <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+              <div class="qa-deploy-cell" title="${t('deployNaTooltipIosOnly') || 'iOS 전용 항목 (AOS 배포 비해당)'}">
+                <span class="qa-deploy-na">- (N/A)</span>
+              </div>
+            </td>
+          `;
+        } else {
+          const isDeployedAos = isItemDeployed(item, 'android');
+          const deployVerAos = getDeployVersion(item, 'android');
+          const cleanVerAos = String(deployVerAos || '').replace(/^🚀\s*/, '').trim();
+          const deployTimeAos = getDeployTimestamp(item, 'android');
+          const tooltipAos = isDeployedAos
+            ? (cleanVerAos ? `AOS 배포: ${cleanVerAos} (${deployTimeAos || '최근'}) - 클릭하여 미배포 전환` : 'AOS 배포 완료 - 클릭하여 미배포 전환')
+            : '⏳ AOS 미배포 (클릭하여 배포 완료 전환)';
+          const verBadgeAos = (isDeployedAos && cleanVerAos)
+            ? `<span class="qa-deploy-ver-tag ver-aos" onclick="window.MODO_QA.openEditDeployVersionModal('${itemKey}', 'android', event)" title="${t('tooltipClickToEditRelease') || '클릭하여 AOS 배포 릴리즈 버전 수정'}">${getOsLogoSvg('android', 12, 'margin-right:3px;')} ${escapeHtml(cleanVerAos)}</span>`
+            : '';
+          deployCellAosHtml = `
+            <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+              <div class="qa-deploy-cell">
+                <label class="qa-deploy-switch" title="${escapeHtml(tooltipAos)}">
+                  <input type="checkbox" ${isDeployedAos ? 'checked' : ''} onchange="window.MODO_QA.toggleDeploy('${itemKey}', 'android', this.checked, event)">
+                  <span class="qa-deploy-slider slider-aos"></span>
+                </label>
+                ${verBadgeAos}
+              </div>
+            </td>
+          `;
+        }
 
-    const deployCellHtml = `
-      <td style="text-align: center; width: 90px;" onclick="event.stopPropagation()">
-        <div class="qa-deploy-cell">
-          <label class="qa-deploy-switch" title="${escapeHtml(deployTooltip)}">
-            <input type="checkbox" ${isDeployed ? 'checked' : ''} onchange="window.MODO_QA.toggleDeploy('${itemKey}', this.checked, event)">
-            <span class="qa-deploy-slider"></span>
-          </label>
-          ${versionBadgeHtml}
-        </div>
-      </td>
-    `;
+        // 2. iOS Deploy Cell
+        const isPlatformAndroidOnly = !isPlatformApplicable(item, 'ios');
+        if (isPlatformAndroidOnly) {
+          deployCellIosHtml = `
+            <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+              <div class="qa-deploy-cell" title="${t('deployNaTooltipAosOnly') || 'Android 전용 항목 (iOS 배포 비해당)'}">
+                <span class="qa-deploy-na">- (N/A)</span>
+              </div>
+            </td>
+          `;
+        } else {
+          const isDeployedIos = isItemDeployed(item, 'ios');
+          const deployVerIos = getDeployVersion(item, 'ios');
+          const cleanVerIos = String(deployVerIos || '').replace(/^🚀\s*/, '').trim();
+          const deployTimeIos = getDeployTimestamp(item, 'ios');
+          const tooltipIos = isDeployedIos
+            ? (cleanVerIos ? `iOS 배포: ${cleanVerIos} (${deployTimeIos || '최근'}) - 클릭하여 미배포 전환` : 'iOS 배포 완료 - 클릭하여 미배포 전환')
+            : '⏳ iOS 미배포 (클릭하여 배포 완료 전환)';
+          const verBadgeIos = (isDeployedIos && cleanVerIos)
+            ? `<span class="qa-deploy-ver-tag ver-ios" onclick="window.MODO_QA.openEditDeployVersionModal('${itemKey}', 'ios', event)" title="${t('tooltipClickToEditRelease') || '클릭하여 iOS 배포 릴리즈 버전 수정'}">${getOsLogoSvg('ios', 12, 'margin-right:3px;')} ${escapeHtml(cleanVerIos)}</span>`
+            : '';
+          deployCellIosHtml = `
+            <td style="text-align: center; width: 84px;" onclick="event.stopPropagation()">
+              <div class="qa-deploy-cell">
+                <label class="qa-deploy-switch" title="${escapeHtml(tooltipIos)}">
+                  <input type="checkbox" ${isDeployedIos ? 'checked' : ''} onchange="window.MODO_QA.toggleDeploy('${itemKey}', 'ios', this.checked, event)">
+                  <span class="qa-deploy-slider slider-ios"></span>
+                </label>
+                ${verBadgeIos}
+              </div>
+            </td>
+          `;
+        }
+      }
+    }
 
     const phaseTagHtml = (currentTrackId === 'all' && item.phase)
       ? ` <span class="phase-mini-tag" style="font-size:9.5px; opacity:0.8; font-weight:800; text-transform:uppercase; background:var(--bg-subtle); border:1px solid var(--border); padding:1px 4px; border-radius:3px; margin-left:3px;" title="${item.phase}">${item.phase === 'phase1' ? 'P1' : (item.phase === 'phase2' ? 'P2' : (item.phase === 'phase3' ? 'P3' : item.phase))}</span>`
@@ -853,7 +1321,8 @@
 
     return `
       <tr class="main-row ${isPinned ? 'highlighted' : ''} ${isSelected ? 'selected-row' : ''}" data-key="${itemKey}" data-id="${item.id}" onclick="window.MODO_QA.toggleDetail('${itemKey}', this)">
-        ${deployCellHtml}
+        ${deployCellAosHtml}
+        ${deployCellIosHtml}
         <td>
           <span class="id-tag" title="${t('clickToPin')}" onclick="window.MODO_QA.toggleHighlight('${itemKey}', event)">#${paddedId}${phaseTagHtml}</span>
         </td>
@@ -972,9 +1441,23 @@
         let valA = a[sortColumn] ?? '';
         let valB = b[sortColumn] ?? '';
 
+        if (sortColumn === 'deployed_android') {
+          const depA = !isPlatformApplicable(a, 'android') ? -1 : (isItemDeployed(a, 'android') ? 1 : 0);
+          const depB = !isPlatformApplicable(b, 'android') ? -1 : (isItemDeployed(b, 'android') ? 1 : 0);
+          if (depA !== depB) return sortAsc ? depA - depB : depB - depA;
+          return compareIds(a.id, b.id, sortAsc);
+        }
+
+        if (sortColumn === 'deployed_ios') {
+          const depA = !isPlatformApplicable(a, 'ios') ? -1 : (isItemDeployed(a, 'ios') ? 1 : 0);
+          const depB = !isPlatformApplicable(b, 'ios') ? -1 : (isItemDeployed(b, 'ios') ? 1 : 0);
+          if (depA !== depB) return sortAsc ? depA - depB : depB - depA;
+          return compareIds(a.id, b.id, sortAsc);
+        }
+
         if (sortColumn === 'deployed') {
-          const depA = isItemDeployed(a) ? 1 : 0;
-          const depB = isItemDeployed(b) ? 1 : 0;
+          const depA = (isItemDeployed(a, 'android') || isItemDeployed(a, 'ios')) ? 1 : 0;
+          const depB = (isItemDeployed(b, 'android') || isItemDeployed(b, 'ios')) ? 1 : 0;
           if (depA !== depB) return sortAsc ? depA - depB : depB - depA;
           return compareIds(a.id, b.id, sortAsc);
         }
@@ -1066,17 +1549,18 @@
       } else {
         thead.innerHTML = `
           <tr>
-            <th style="width: 90px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed')">${(t('thDeploy') || '배포 ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('deployed')}</th>
-            <th style="width: 70px; cursor: pointer;" onclick="window.MODO_QA.sortTable('id')">${(t('thId') || 'ID ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('id')}</th>
-            <th style="width: 105px; cursor: pointer;" onclick="window.MODO_QA.sortTable('severity')">${(t('thSeverity') || 'Severity ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('severity')}</th>
-            <th style="width: 85px; cursor: pointer;" onclick="window.MODO_QA.sortTable('date')">${(t('thDate') || 'Date ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('date')}</th>
-            <th style="width: 85px; cursor: pointer;" onclick="window.MODO_QA.sortTable('platform')">${(t('thPlatform') || 'OS ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('platform')}</th>
-            <th style="width: 115px; cursor: pointer;" onclick="window.MODO_QA.sortTable('category')">${(t('thCategory') || 'Category ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('category')}</th>
-            <th style="width: 22%; cursor: pointer;" onclick="window.MODO_QA.sortTable('title')">${(t('thTitle') || 'Issue Summary ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('title')}</th>
-            <th style="width: 23%;">${t('thCause') || 'Root Cause Analysis'}</th>
-            <th style="width: 25%;">${t('thSolution') || 'Resolution & Action Items'}</th>
-            <th style="width: 60px; text-align: center;">${t('thFiles') || 'Files'}</th>
-            <th style="width: 75px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('status')">${(t('thStatus') || 'Status ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('status')}</th>
+            <th style="width: 84px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed_android')">${getOsLogoSvg('android', 13, 'margin-right:3px;')} AOS 배포${getSortIndicator('deployed_android')}</th>
+            <th style="width: 84px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('deployed_ios')">${getOsLogoSvg('ios', 13, 'margin-right:3px;')} iOS 배포${getSortIndicator('deployed_ios')}</th>
+            <th style="width: 68px; cursor: pointer;" onclick="window.MODO_QA.sortTable('id')">${(t('thId') || 'ID ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('id')}</th>
+            <th style="width: 100px; cursor: pointer;" onclick="window.MODO_QA.sortTable('severity')">${(t('thSeverity') || 'Severity ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('severity')}</th>
+            <th style="width: 82px; cursor: pointer;" onclick="window.MODO_QA.sortTable('date')">${(t('thDate') || 'Date ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('date')}</th>
+            <th style="width: 80px; cursor: pointer;" onclick="window.MODO_QA.sortTable('platform')">${(t('thPlatform') || 'OS ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('platform')}</th>
+            <th style="width: 110px; cursor: pointer;" onclick="window.MODO_QA.sortTable('category')">${(t('thCategory') || 'Category ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('category')}</th>
+            <th style="width: 21%; cursor: pointer;" onclick="window.MODO_QA.sortTable('title')">${(t('thTitle') || 'Issue Summary ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('title')}</th>
+            <th style="width: 22%;">${t('thCause') || 'Root Cause Analysis'}</th>
+            <th style="width: 24%;">${t('thSolution') || 'Resolution & Action Items'}</th>
+            <th style="width: 56px; text-align: center;">${t('thFiles') || 'Files'}</th>
+            <th style="width: 72px; text-align: center; cursor: pointer;" onclick="window.MODO_QA.sortTable('status')">${(t('thStatus') || 'Status ↕').replace(/↕|▲|▼/g, '').trim()}${getSortIndicator('status')}</th>
           </tr>
         `;
       }
@@ -1516,7 +2000,7 @@
     } else {
       sortColumn = colKey;
       // For date, id, rating, upvotes, deployed, start with descending (latest / highest first) by default
-      sortAsc = (colKey === 'date' || colKey === 'id' || colKey === 'rating' || colKey === 'upvotes' || colKey === 'deployed') ? false : true;
+      sortAsc = (colKey === 'date' || colKey === 'id' || colKey === 'rating' || colKey === 'upvotes' || colKey === 'deployed' || colKey === 'deployed_android' || colKey === 'deployed_ios') ? false : true;
     }
     renderTable();
   }
@@ -1527,6 +2011,7 @@
     if (dateSelect) {
       dateSelect.addEventListener('change', e => {
         currentDate = e.target.value;
+        updateDetailFilterActiveBadge();
         renderTable();
       });
     }
@@ -1566,6 +2051,7 @@
         document.querySelectorAll('#categoryFilters .filter-tag').forEach(t => t.classList.remove('active'));
         tag.classList.add('active');
         currentCategory = tag.getAttribute('data-cat');
+        updateDetailFilterActiveBadge();
         renderTable();
       });
     });
@@ -1584,6 +2070,7 @@
         document.querySelectorAll('#severityFilters .filter-tag').forEach(t => t.classList.remove('active'));
         tag.classList.add('active');
         currentSeverity = tag.getAttribute('data-sev');
+        updateDetailFilterActiveBadge();
         renderTable();
       });
     });
@@ -1803,10 +2290,27 @@
     bindEvents();
     initDrawerResize();
 
-    const targetReleaseEl = document.getElementById('targetReleaseInput');
-    if (targetReleaseEl) {
-      targetReleaseEl.value = getTargetRelease();
+    // Restore collapsible detail drawer state
+    try {
+      const savedDrawerState = localStorage.getItem(STORAGE_KEY_DETAIL_FILTER_OPEN);
+      if (savedDrawerState === 'true') {
+        toggleDetailFilters(true);
+      } else {
+        toggleDetailFilters(false);
+      }
+    } catch {}
+
+    // Initialize dual target releases in UI
+    const targetReleaseAosEl = document.getElementById('targetReleaseAosInput');
+    if (targetReleaseAosEl) {
+      targetReleaseAosEl.value = getTargetRelease('android');
     }
+    const targetReleaseIosEl = document.getElementById('targetReleaseIosInput');
+    if (targetReleaseIosEl) {
+      targetReleaseIosEl.value = getTargetRelease('ios');
+    }
+
+    updateDetailFilterActiveBadge();
   }
 
   const STORAGE_KEY_SHEET_URL = 'qa_sheet_sync_url';
@@ -1962,15 +2466,38 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
   }
 
   // Release Notes Auto-Generator from Deployed Items (Dynamic & Real-Time)
-  function copyReleaseNotes() {
-    const targetList = (activeIssues || []).filter(item => isItemDeployed(item));
+  // Supports dual OS: 'android' vs 'ios'
+  // Supports scope: 'latest' (Current target release only) | 'all' (Full release history grouped by version)
+  function copyReleaseNotes(arg0 = 'android', arg1 = 'latest') {
+    let os = 'android';
+    let mode = 'latest';
+    if (arg0 === 'latest' || arg0 === 'all') {
+      mode = arg0;
+      os = 'android';
+    } else {
+      os = (arg0 || 'android').toLowerCase();
+      mode = arg1 || 'latest';
+    }
+
+    const isIos = os === 'ios';
+    const osPlatformFilter = isIos ? 'android' : 'ios';
+    const targetList = (activeIssues || []).filter(item => {
+      const p = (item.platform || 'all').toLowerCase();
+      if (p === osPlatformFilter) return false;
+      return isItemDeployed(item, os);
+    });
+
     if (!targetList || targetList.length === 0) {
-      showToast(t('toastNoDeployedItems') || '⚠️ 배포 완료된 항목이 없습니다.');
+      const noItemToast = isIos ? (t('toastNoDeployedItemsIos') || '⚠️ iOS 배포 완료된 항목이 없습니다.') : (t('toastNoDeployedItemsAos') || '⚠️ Android 배포 완료된 항목이 없습니다.');
+      showToast(noItemToast);
       return;
     }
 
     const trackName = (currentTrackId || 'All').toUpperCase();
     const today = new Date().toISOString().slice(0, 10);
+    const osLabel = isIos ? 'Apple iOS' : 'Google Android';
+    const osStoreName = isIos ? 'Apple App Store' : 'Google Play Store';
+    const osIcon = isIos ? '🍎' : '🤖';
 
     const catMap = {
       ui: '🎨 UI & UX 개선 (Design & Usability)',
@@ -1983,28 +2510,124 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
       db: '💾 데이터베이스 & 로컬 저장소 (Database & Storage)'
     };
 
-    const grouped = {};
-    targetList.forEach(item => {
-      const cat = normalizeCategory(item.category) || 'reliability';
-      if (!grouped[cat]) grouped[cat] = [];
-      grouped[cat].push(item);
-    });
+    function cleanVersionStr(v) {
+      if (!v) return '';
+      return String(v).replace(/^🚀\s*/, '').replace(/\s+/g, ' ').trim();
+    }
 
-    const targetVer = getTargetRelease();
-    let markdown = `## 🚀 Modo Release Notes (${targetVer} - ${trackName})\n`;
-    markdown += `- 배포 일자: ${today}\n`;
-    markdown += `- 총 배포 항목: ${targetList.length}건\n\n`;
+    function getVersionKey(v) {
+      return cleanVersionStr(v).replace(/\s+/g, '').toLowerCase();
+    }
 
-    Object.keys(grouped).forEach(cat => {
-      const header = catMap[cat] || `📦 ${cat.toUpperCase()}`;
-      markdown += `### ${header}\n`;
-      grouped[cat].forEach(item => {
-        const paddedId = String(item.id).startsWith('FB-') ? String(item.id) : String(item.id).padStart(2, '0');
-        const plat = item.platform && item.platform !== 'all' ? `[${item.platform.toUpperCase()}] ` : '';
-        markdown += `- [#${paddedId}] ${plat}${item.title || item.problem || ''}\n`;
+    let markdown = '';
+    let successToastMsg = '';
+
+    if (mode === 'latest') {
+      const targetVer = cleanVersionStr(getTargetRelease(os));
+      const targetVerKey = getVersionKey(targetVer);
+
+      // 1. Strict key match against target release
+      let matchedItems = targetList.filter(item => {
+        const itemVerKey = getVersionKey(getDeployVersion(item, os));
+        return itemVerKey === targetVerKey;
       });
-      markdown += `\n`;
-    });
+
+      // 2. Fallback smart substring match if strict match yields 0
+      if (matchedItems.length === 0 && targetVerKey) {
+        matchedItems = targetList.filter(item => {
+          const itemVerKey = getVersionKey(getDeployVersion(item, os));
+          return itemVerKey && (itemVerKey.includes(targetVerKey) || targetVerKey.includes(itemVerKey));
+        });
+      }
+
+      if (matchedItems.length === 0) {
+        const fallbackMsg = isIos 
+          ? (t('toastNoLatestDeployedItemsIos', { ver: targetVer }) || `⚠️ iOS 대상 릴리즈('${targetVer}')에 배포 완료된 항목이 없습니다.`)
+          : (t('toastNoLatestDeployedItemsAos', { ver: targetVer }) || `⚠️ Android 대상 릴리즈('${targetVer}')에 배포 완료된 항목이 없습니다.`);
+        showToast(fallbackMsg);
+        return;
+      }
+
+      // Group by category
+      const grouped = {};
+      matchedItems.forEach(item => {
+        const cat = normalizeCategory(item.category) || 'reliability';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(item);
+      });
+
+      markdown = `## ${osIcon} Modo ${osLabel} Release Notes (${targetVer} - ${trackName})\n`;
+      markdown += `- 배포 일자: ${today}\n`;
+      markdown += `- 배포 스토어: ${osStoreName}\n`;
+      markdown += `- 배포 버전: ${targetVer}\n`;
+      markdown += `- 배포 항목: ${matchedItems.length}건\n\n`;
+
+      Object.keys(grouped).forEach(cat => {
+        const header = catMap[cat] || `📦 ${cat.toUpperCase()}`;
+        markdown += `### ${header}\n`;
+        grouped[cat].forEach(item => {
+          const paddedId = String(item.id).startsWith('FB-') ? String(item.id) : String(item.id).padStart(2, '0');
+          const plat = item.platform && item.platform !== 'all' ? `[${item.platform.toUpperCase()}] ` : '';
+          markdown += `- [#${paddedId}] ${plat}${item.title || item.problem || ''}\n`;
+        });
+        markdown += `\n`;
+      });
+
+      successToastMsg = isIos
+        ? (t('toastReleaseNotesCopiedIosLatest', { ver: targetVer }) || `🍎 iOS 최신 릴리즈(${targetVer}) 배포 노트가 클립보드에 복사되었습니다!`)
+        : (t('toastReleaseNotesCopiedAosLatest', { ver: targetVer }) || `📢 Android 최신 릴리즈(${targetVer}) 배포 노트가 클립보드에 복사되었습니다!`);
+    } else {
+      // mode === 'all'
+      // Group all deployed items by their deploy version
+      const versionGroups = {};
+      targetList.forEach(item => {
+        const rawVer = cleanVersionStr(getDeployVersion(item, os)) || '기타 / 미지정 (Unassigned)';
+        if (!versionGroups[rawVer]) versionGroups[rawVer] = [];
+        versionGroups[rawVer].push(item);
+      });
+
+      // Sort versions descending (extract numbers: e.g. 71 vs 70 vs 69)
+      const sortedVersions = Object.keys(versionGroups).sort((a, b) => {
+        const numA = parseInt((a.match(/\d+/) || [0])[0], 10);
+        const numB = parseInt((b.match(/\d+/) || [0])[0], 10);
+        if (numA !== numB) return numB - numA;
+        return b.localeCompare(a);
+      });
+
+      markdown = `# 📜 Modo ${osLabel} Master Release Notes (${trackName})\n`;
+      markdown += `- 생성 일자: ${today}\n`;
+      markdown += `- 배포 스토어: ${osStoreName}\n`;
+      markdown += `- 전체 배포 항목: ${targetList.length}건 (총 ${sortedVersions.length}개 릴리즈 버전)\n\n`;
+
+      sortedVersions.forEach(ver => {
+        const items = versionGroups[ver];
+        markdown += `---\n\n`;
+        markdown += `## ${osIcon} Release ${ver} (${items.length}건)\n\n`;
+
+        // Group by category within this version
+        const catGroup = {};
+        items.forEach(item => {
+          const cat = normalizeCategory(item.category) || 'reliability';
+          if (!catGroup[cat]) catGroup[cat] = [];
+          catGroup[cat].push(item);
+        });
+
+        Object.keys(catGroup).forEach(cat => {
+          const header = catMap[cat] || `📦 ${cat.toUpperCase()}`;
+          markdown += `### ${header}\n`;
+          catGroup[cat].forEach(item => {
+            const paddedId = String(item.id).startsWith('FB-') ? String(item.id) : String(item.id).padStart(2, '0');
+            const plat = item.platform && item.platform !== 'all' ? `[${item.platform.toUpperCase()}] ` : '';
+            markdown += `- [#${paddedId}] ${plat}${item.title || item.problem || ''}\n`;
+          });
+          markdown += `\n`;
+        });
+      });
+
+      successToastMsg = isIos
+        ? (t('toastReleaseNotesCopiedIosAll', { count: targetList.length }) || `📜 버전별 iOS 전체 릴리즈 노트(${targetList.length}건)가 클립보드에 복사되었습니다!`)
+        : (t('toastReleaseNotesCopiedAosAll', { count: targetList.length }) || `📜 버전별 Android 전체 릴리즈 노트(${targetList.length}건)가 클립보드에 복사되었습니다!`);
+    }
 
     const fallbackCopy = (text) => {
       const textarea = document.createElement('textarea');
@@ -2015,7 +2638,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
       textarea.select();
       try {
         document.execCommand('copy');
-        showToast(t('toastReleaseNotesCopied') || '📋 배포 릴리즈 노트가 클립보드에 복사되었습니다!');
+        showToast(successToastMsg);
       } catch {
         showToast('❌ 클립보드 복사 실패');
       } finally {
@@ -2025,7 +2648,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(markdown.trim()).then(() => {
-        showToast(t('toastReleaseNotesCopied') || '📋 배포 릴리즈 노트가 클립보드에 복사되었습니다!');
+        showToast(successToastMsg);
       }).catch(() => {
         fallbackCopy(markdown.trim());
       });
@@ -2317,6 +2940,8 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
     getDeployVersion,
     getTargetRelease,
     setTargetRelease,
+    toggleDetailFilters,
+    resetAllFilters,
     openEditDeployVersionModal,
     closeEditDeployModal,
     applyQuickTargetRelease,
@@ -2344,7 +2969,15 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
     showFilesPopover,
     closeFilesPopover,
     copySingleFile,
-    copyAllFiles
+    copyAllFiles,
+    getOsLogoSvg,
+    openDeploySaveModal,
+    closeDeploySaveModal,
+    saveDeployRegistryDirectly,
+    downloadDeployRegistryJs,
+    downloadDeployRegistryJson,
+    copyDeployRegistrySnippet,
+    copyDeploySyncCli
   };
 
   // Backward-compatibility bridge

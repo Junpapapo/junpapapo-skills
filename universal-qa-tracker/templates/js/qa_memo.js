@@ -234,8 +234,18 @@
       document.getElementById('qaMemoBtnCopy').onclick = () => {
         if (navigator.clipboard) navigator.clipboard.writeText(body.innerText || '').then(() => this.setSaveStatus('📋 복사 완료!', '#0CA678'));
       };
-      document.getElementById('qaMemoBtnClear').onclick = () => {
-        if (confirm('현재 탭의 메모를 모두 비우시겠습니까?')) {
+      document.getElementById('qaMemoBtnClear').onclick = async () => {
+        let ok = false;
+        if (window.QA_DIALOG) {
+          ok = await window.QA_DIALOG.confirm({
+            title: '메모 비우기',
+            message: '현재 탭의 메모를 모두 비우시겠습니까? 작성 중인 내용이 지워집니다.',
+            confirmText: '비우기',
+            cancelText: '취소',
+            danger: true
+          });
+        }
+        if (ok) {
           widget.querySelectorAll('[data-hl]').forEach(b => b.classList.remove('active'));
           body.innerHTML = '';
           this.debounceSave();
@@ -253,10 +263,19 @@
           if (e.target.dataset.del) { this.deleteTab(e.target.dataset.del); return; }
           this.switchTab(tabEl.dataset.tab);
         };
-        tabEl.ondblclick = () => {
+        tabEl.ondblclick = async () => {
           const tab = this.state.tabs.find(t => t.id === tabEl.dataset.tab);
           if (!tab) return;
-          const next = prompt('탭 이름 변경:', tab.title);
+          let next = null;
+          if (window.QA_DIALOG) {
+            next = await window.QA_DIALOG.prompt({
+              title: '탭 이름 변경',
+              message: '새로운 메모 탭 이름을 입력하세요:',
+              defaultValue: tab.title,
+              confirmText: '변경',
+              cancelText: '취소'
+            });
+          }
           if (next && next.trim()) {
             tab.title = next.trim();
             this.refreshTabs();
@@ -298,9 +317,19 @@
       this.switchTab(newId);
     }
 
-    deleteTab(tabId) {
+    async deleteTab(tabId) {
       if (this.state.tabs.length <= 1) return;
-      if (!confirm('이 메모 탭을 삭제하시겠습니까?')) return;
+      let ok = false;
+      if (window.QA_DIALOG) {
+        ok = await window.QA_DIALOG.confirm({
+          title: '메모 탭 삭제',
+          message: '이 메모 탭을 삭제하시겠습니까? 탭 안의 내용이 영구 삭제됩니다.',
+          confirmText: '삭제',
+          cancelText: '취소',
+          danger: true
+        });
+      }
+      if (!ok) return;
       this.state.tabs = this.state.tabs.filter(t => t.id !== tabId);
       if (this.state.activeTabId === tabId) this.state.activeTabId = this.state.tabs[0].id;
       this.switchTab(this.state.activeTabId);

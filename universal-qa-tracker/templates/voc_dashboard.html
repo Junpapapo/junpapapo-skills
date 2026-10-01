@@ -3611,6 +3611,7 @@
       <a href="index.html" class="nav-view-tab">🏠 Hub</a>
       <a href="qa_analytics_dashboard.html" class="nav-view-tab">📊 비주얼 대시보드</a>
       <a href="qa_spreadsheet.html" class="nav-view-tab">📋 스프레드시트</a>
+      <a href="ops_release_dashboard.html" class="nav-view-tab" style="color:var(--ios-orange);">🚀 릴리즈 관제</a>
       <a href="voc_dashboard.html" class="nav-view-tab active" style="color:#0CA678;">💬 VOC Studio</a>
     </nav>
 
@@ -3676,8 +3677,8 @@
         <div class="kpi-label">📱 인앱 피드백</div>
         <div class="kpi-val" id="kpiInAppCount" style="color:#0CA678;">0건</div>
         <div class="kpi-os-sub">
-          <span class="kpi-os-chip android" id="kpiInAppAndroid" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('android', document.querySelector('[data-os=android]'))" title="Android 인앱 피드백만 보기">🤖 Android 0</span>
-          <span class="kpi-os-chip ios" id="kpiInAppIos" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('ios', document.querySelector('[data-os=ios]'))" title="iOS 인앱 피드백만 보기">🍎 iOS 0</span>
+          <span class="kpi-os-chip android" id="kpiInAppAndroid" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('android', document.querySelector('[data-os=android]'))" title="Android 인앱 피드백만 보기"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Android" /> Android 0</span>
+          <span class="kpi-os-chip ios" id="kpiInAppIos" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('ios', document.querySelector('[data-os=ios]'))" title="iOS 인앱 피드백만 보기"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="iOS" /> iOS 0</span>
         </div>
       </div>
       <div class="kpi-icon"><img src="assets/icons/icon_cloud_sync.webp" class="kpi-sticker-img" alt="In-App Feedback" /></div>
@@ -3687,8 +3688,8 @@
         <div class="kpi-label">⭐ 스토어 리뷰</div>
         <div class="kpi-val" id="kpiStoreCount" style="color:var(--accent-blue);">0건</div>
         <div class="kpi-os-sub">
-          <span class="kpi-os-chip play" id="kpiStorePlay" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('android', document.querySelector('[data-os=android]'))" title="Google Play 스토어 리뷰만 보기">🤖 Play 0</span>
-          <span class="kpi-os-chip appstore" id="kpiStoreAppStore" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('ios', document.querySelector('[data-os=ios]'))" title="Apple App Store 리뷰만 보기">🍎 AppStore 0</span>
+          <span class="kpi-os-chip play" id="kpiStorePlay" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('android', document.querySelector('[data-os=android]'))" title="Google Play 스토어 리뷰만 보기"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Play" /> Play 0</span>
+          <span class="kpi-os-chip appstore" id="kpiStoreAppStore" onclick="event.stopPropagation(); window.MODO_VOC.setOsFilter('ios', document.querySelector('[data-os=ios]'))" title="Apple App Store 리뷰만 보기"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="AppStore" /> AppStore 0</span>
         </div>
       </div>
       <div class="kpi-icon"><img src="assets/icons/icon_play_store.webp" class="kpi-sticker-img" alt="Store Reviews" /></div>
@@ -3755,8 +3756,8 @@
         <!-- OS Segmented Filter -->
         <div class="os-filter-bar">
           <button class="os-tab active" data-os="all" onclick="window.MODO_VOC.setOsFilter('all', this)"><img src="assets/icons/icon_globe.webp" class="btn-sticker-icon" alt="All" /> 전체 OS (<span id="cntOsAll">0</span>)</button>
-          <button class="os-tab" data-os="android" onclick="window.MODO_VOC.setOsFilter('android', this)"><img src="assets/icons/icon_android.webp" class="btn-sticker-icon" alt="Android" /> Android (<span id="cntOsAndroid">0</span>)</button>
-          <button class="os-tab" data-os="ios" onclick="window.MODO_VOC.setOsFilter('ios', this)"><img src="assets/icons/icon_apple.webp" class="btn-sticker-icon" alt="iOS" /> iOS (<span id="cntOsIos">0</span>)</button>
+          <button class="os-tab" data-os="android" onclick="window.MODO_VOC.setOsFilter('android', this)"><img src="assets/icons/logo_google_play.svg" class="btn-sticker-icon" alt="Android" /> Android (<span id="cntOsAndroid">0</span>)</button>
+          <button class="os-tab" data-os="ios" onclick="window.MODO_VOC.setOsFilter('ios', this)"><img src="assets/icons/logo_app_store.svg" class="btn-sticker-icon" alt="iOS" /> iOS (<span id="cntOsIos">0</span>)</button>
         </div>
         <div class="filter-chips">
           <button class="filter-chip active" data-filter="all" onclick="window.MODO_VOC.setFilter('all', this)">전체 (<span id="cntAll">0</span>)</button>
@@ -3875,8 +3876,8 @@
           <div class="quote-header-bar">
             <span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">💬 E열: 유저 원문 내용 (Content)</span>
             <div style="display:flex; gap:6px; align-items:center;">
-              <button type="button" class="btn-console-link play" id="btnHeaderPlayConsole" onclick="window.MODO_VOC.openStoreConsole('android')" title="Google Play Console 리뷰 관리 바로가기"><img src="assets/icons/icon_play_store.webp" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
-              <button type="button" class="btn-console-link appstore" id="btnHeaderAppStore" onclick="window.MODO_VOC.openStoreConsole('ios')" title="Apple App Store Connect 바로가기"><img src="assets/icons/icon_app_store.webp" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
+              <button type="button" class="btn-console-link play" id="btnHeaderPlayConsole" onclick="window.MODO_VOC.openStoreConsole('android')" title="Google Play Console 리뷰 관리 바로가기"><img src="assets/icons/logo_google_play.svg" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
+              <button type="button" class="btn-console-link appstore" id="btnHeaderAppStore" onclick="window.MODO_VOC.openStoreConsole('ios')" title="Apple App Store Connect 바로가기"><img src="assets/icons/logo_app_store.svg" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
               <button class="btn-copy-quote" id="btnCopyCustomerQuote" onclick="window.MODO_VOC.copyCustomerQuote()" title="유저 원문 내용 복사 (클립보드)">
                 <img src="assets/icons/icon_copy_clipboard.webp" class="btn-sticker-icon" alt="Copy" />
                 <span>원문 복사</span>
@@ -3950,8 +3951,8 @@
               <div class="studio-btn-bar">
                 <div class="studio-btn-group">
                   <button class="btn-studio btn-studio-primary" onclick="window.MODO_VOC.copyReply()"><img src="assets/icons/icon_copy_clipboard.webp" class="btn-sticker-icon" alt="Copy" /> 완성된 답글 복사</button>
-                  <button class="btn-studio btn-studio-play" id="btnPlayConsole" onclick="window.MODO_VOC.openStoreConsole('android')" title="Google Play Console 리뷰 관리 열기 (답글 자동 복사)"><img src="assets/icons/icon_play_store.webp" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
-                  <button class="btn-studio btn-studio-appstore" id="btnAppStore" onclick="window.MODO_VOC.openStoreConsole('ios')" title="Apple App Store Connect 리뷰 관리 열기 (답글 자동 복사)"><img src="assets/icons/icon_app_store.webp" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
+                  <button class="btn-studio btn-studio-play" id="btnPlayConsole" onclick="window.MODO_VOC.openStoreConsole('android')" title="Google Play Console 리뷰 관리 열기 (답글 자동 복사)"><img src="assets/icons/logo_google_play.svg" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
+                  <button class="btn-studio btn-studio-appstore" id="btnAppStore" onclick="window.MODO_VOC.openStoreConsole('ios')" title="Apple App Store Connect 리뷰 관리 열기 (답글 자동 복사)"><img src="assets/icons/logo_app_store.svg" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
                   <button class="btn-studio btn-studio-qa" onclick="window.MODO_VOC.convertToQaIssue()"><img src="assets/icons/icon_rocket_qa.webp" class="btn-sticker-icon" alt="QA" /> QA 트래커로 승격</button>
                 </div>
                 <div class="studio-btn-group">
@@ -4038,8 +4039,8 @@
         </div>
         <div class="timeline-legend">
           <span class="legend-item"><span class="legend-dot" style="background:#0CA678;"></span> 📱 인앱</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#228BE6;"></span> 🤖 Play</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#495057;"></span> 🍎 AppStore</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#228BE6;"></span> <img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="Play" /> Play</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#495057;"></span> <img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="AppStore" /> AppStore</span>
         </div>
       </div>
       <div class="timeline-chart-body" id="vocTimelineBars">
@@ -4204,8 +4205,8 @@
           <select id="sheetSourceFilter" class="sheet-filter-select" onchange="window.MODO_VOC.onSheetSourceFilter(this.value)">
             <option value="all">전체 출처 (All Sources)</option>
             <option value="in_app">📱 인앱 피드백</option>
-            <option value="play_store">🤖 Play 스토어</option>
-            <option value="app_store">🍎 App Store</option>
+            <option value="play_store">Google Play 스토어</option>
+            <option value="app_store">Apple App Store</option>
           </select>
           <select id="sheetStatusFilter" class="sheet-filter-select" onchange="window.MODO_VOC.onSheetStatusFilter(this.value)">
             <option value="all">전체 상태 (All Status)</option>
@@ -4522,8 +4523,8 @@
       let selectedSurveyOptionFilter = null;
       let editingCampaignId = null;
 
-      const SVG_ANDROID = `<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align:-2px; flex-shrink:0;"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4111 13.8533 8.1 12 8.1s-3.5902.3111-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>`;
-      const SVG_APPLE = `<svg viewBox="0 0 170 170" width="12" height="12" fill="currentColor" style="vertical-align:-2px; flex-shrink:0;"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.59-7.71-11.66-14.01-6.19-9.56-11.01-20.91-14.46-34.05-3.46-13.14-5.19-25.24-5.19-36.29 0-14.99 3.82-27.42 11.45-37.3 7.64-9.88 17.34-14.93 29.1-15.15 4.8 0 10.12 1.25 15.96 3.75 5.84 2.5 9.68 3.81 11.53 3.93 1.48-.12 5.48-1.55 12-4.28 6.53-2.74 12.19-3.99 16.99-3.75 12.52.66 22.84 5.4 30.96 14.22-10.99 6.64-16.38 15.84-16.16 27.61.22 9.14 3.75 16.94 10.59 23.4 6.84 6.46 14.88 10.15 24.12 11.08-2.28 6.96-5.16 14.15-8.64 21.57zM119.22 31.84c0-7.72 2.76-14.92 8.28-21.6 5.53-6.69 12.24-10.24 20.15-10.66.11.98.17 1.85.17 2.61 0 7.61-2.83 14.85-8.49 21.72-5.65 6.86-12.44 10.45-20.37 10.77-.11-.98-.17-1.85-.17-2.61z"/></svg>`;
+      const SVG_ANDROID = `<img src="assets/icons/logo_google_play.svg" style="width:13px; height:13px; vertical-align:-2px; flex-shrink:0;" alt="Android" />`;
+      const SVG_APPLE = `<img src="assets/icons/logo_app_store.svg" style="width:13px; height:13px; vertical-align:-2px; flex-shrink:0;" alt="iOS" />`;
 
       let currentTemplateLang = 'ko';
 
@@ -4776,15 +4777,15 @@
         const inAppIos = inAppItems.filter(i => (i.os || i.device || '').toLowerCase().includes('ios')).length;
         const elInAppAndroid = document.getElementById('kpiInAppAndroid');
         const elInAppIos = document.getElementById('kpiInAppIos');
-        if (elInAppAndroid) elInAppAndroid.innerHTML = `🤖 Android <strong>${inAppAndroid}</strong>`;
-        if (elInAppIos) elInAppIos.innerHTML = `🍎 iOS <strong>${inAppIos}</strong>`;
+        if (elInAppAndroid) elInAppAndroid.innerHTML = `<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Android" /> Android <strong>${inAppAndroid}</strong>`;
+        if (elInAppIos) elInAppIos.innerHTML = `<img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="iOS" /> iOS <strong>${inAppIos}</strong>`;
 
         const storePlay = storeItems.filter(i => i.source === 'play_store' || (i.os || i.device || '').toLowerCase().includes('android')).length;
         const storeAppStore = storeItems.filter(i => i.source === 'app_store' || (i.os || i.device || '').toLowerCase().includes('ios')).length;
         const elStorePlay = document.getElementById('kpiStorePlay');
         const elStoreAppStore = document.getElementById('kpiStoreAppStore');
-        if (elStorePlay) elStorePlay.innerHTML = `🤖 Play <strong>${storePlay}</strong>`;
-        if (elStoreAppStore) elStoreAppStore.innerHTML = `🍎 AppStore <strong>${storeAppStore}</strong>`;
+        if (elStorePlay) elStorePlay.innerHTML = `<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Play" /> Play <strong>${storePlay}</strong>`;
+        if (elStoreAppStore) elStoreAppStore.innerHTML = `<img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="AppStore" /> AppStore <strong>${storeAppStore}</strong>`;
 
         document.getElementById('kpiAvgRating').textContent = `${avg} ★`;
         document.getElementById('kpiActionableCount').textContent = `${actionable}건`;
@@ -4869,10 +4870,10 @@
           let sourceLabel = '📱 인앱';
           if (itemSrc === 'play_store') {
             sourceBadgeClass = 'source-badge-play';
-            sourceLabel = '🤖 Play';
+            sourceLabel = '<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="Play" /> Play';
           } else if (itemSrc === 'app_store') {
             sourceBadgeClass = 'source-badge-appstore';
-            sourceLabel = '🍎 App Store';
+            sourceLabel = '<img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="App Store" /> App Store';
           }
 
           const isAndroid = (item.os || item.device || '').toLowerCase().includes('android');
@@ -4918,9 +4919,9 @@
                   ${itemSrc === 'in_app' ? `
                     <span style="font-size:10px; color:var(--text-muted); padding:2px 6px; background:var(--bg-subtle); border-radius:4px;">🔒 익명 제보</span>
                   ` : (isAndroid ? `
-                    <button type="button" class="card-mini-btn play" onclick="event.stopPropagation(); window.MODO_VOC.quickOpenConsole('android', '${item.id}')" title="Google Play Console 리뷰 관리 열기"><img src="assets/icons/icon_play_store.webp" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
+                    <button type="button" class="card-mini-btn play" onclick="event.stopPropagation(); window.MODO_VOC.quickOpenConsole('android', '${item.id}')" title="Google Play Console 리뷰 관리 열기"><img src="assets/icons/logo_google_play.svg" class="btn-sticker-icon" alt="Play" /> Play Console ↗</button>
                   ` : `
-                    <button type="button" class="card-mini-btn appstore" onclick="event.stopPropagation(); window.MODO_VOC.quickOpenConsole('ios', '${item.id}')" title="Apple App Store Connect 열기"><img src="assets/icons/icon_app_store.webp" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
+                    <button type="button" class="card-mini-btn appstore" onclick="event.stopPropagation(); window.MODO_VOC.quickOpenConsole('ios', '${item.id}')" title="Apple App Store Connect 열기"><img src="assets/icons/logo_app_store.svg" class="btn-sticker-icon" alt="AppStore" /> App Store ↗</button>
                   `)}
                 </div>
               </div>
@@ -4956,10 +4957,10 @@
             srcBadgeEl.textContent = '📱 인앱 피드백 (익명)';
           } else if (itemSrc === 'play_store') {
             srcBadgeEl.className = 'source-badge source-badge-play';
-            srcBadgeEl.textContent = '🤖 Play 스토어 리뷰';
+            srcBadgeEl.innerHTML = `<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="Play" /> Play 스토어 리뷰`;
           } else {
             srcBadgeEl.className = 'source-badge source-badge-appstore';
-            srcBadgeEl.textContent = '🍎 App Store 리뷰';
+            srcBadgeEl.innerHTML = `<img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="AppStore" /> App Store 리뷰`;
           }
         }
 
@@ -4998,9 +4999,9 @@
           if (isInApp) {
             specSrcEl.innerHTML = `<span style="color:#0CA678; font-weight:700;">📱 인앱 피드백</span>`;
           } else if (itemSrc === 'play_store') {
-            specSrcEl.innerHTML = `<span style="color:#228BE6; font-weight:700;">🤖 Play 스토어</span>`;
+            specSrcEl.innerHTML = `<span style="color:#228BE6; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="Play" /> Play 스토어</span>`;
           } else {
-            specSrcEl.innerHTML = `<span style="color:#495057; font-weight:700;">🍎 App Store</span>`;
+            specSrcEl.innerHTML = `<span style="color:#495057; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="AppStore" /> App Store</span>`;
           }
         }
 
@@ -5221,9 +5222,9 @@
 
         window.open(consoleUrl, '_blank', 'noopener,noreferrer');
         if (hasCopied) {
-          showToast(platform === 'ios' ? '🍎 답글이 복사되었습니다! App Store Connect에 붙여넣으세요.' : '🤖 답글이 복사되었습니다! Play Console에 붙여넣으세요.');
+          showToast(platform === 'ios' ? '답글이 복사되었습니다! App Store Connect에 붙여넣으세요.' : '답글이 복사되었습니다! Play Console에 붙여넣으세요.');
         } else {
-          showToast(platform === 'ios' ? '🍎 App Store Connect 리뷰 관리로 이동합니다.' : '🤖 Google Play Console 리뷰 관리로 이동합니다.');
+          showToast(platform === 'ios' ? 'App Store Connect 리뷰 관리로 이동합니다.' : 'Google Play Console 리뷰 관리로 이동합니다.');
         }
       }
 
@@ -5634,7 +5635,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
         const inAppIos = inAppItems.filter(i => (i.os || i.device || '').toLowerCase().includes('ios')).length;
         const inAppPct = total > 0 ? ((inAppItems.length / total) * 100).toFixed(1) : '0.0';
         const elAkpiInAppRatio = document.getElementById('akpiInAppRatio');
-        if (elAkpiInAppRatio) elAkpiInAppRatio.textContent = '점유율 ' + inAppPct + '% (🤖 ' + inAppAndroid + ' · 🍎 ' + inAppIos + ')';
+        if (elAkpiInAppRatio) elAkpiInAppRatio.innerHTML = `점유율 ${inAppPct}% (<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="AOS" /> ${inAppAndroid} · <img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="iOS" /> ${inAppIos})`;
 
         const storePlay = storeItems.filter(i => i.source === 'play_store' || (i.os || i.device || '').toLowerCase().includes('android')).length;
         const storeAppStore = storeItems.filter(i => i.source === 'app_store' || (i.os || i.device || '').toLowerCase().includes('ios')).length;
@@ -5642,7 +5643,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
         const elAkpiStore = document.getElementById('akpiStore');
         if (elAkpiStore) elAkpiStore.textContent = storeItems.length + '건';
         const elAkpiStoreRatio = document.getElementById('akpiStoreRatio');
-        if (elAkpiStoreRatio) elAkpiStoreRatio.textContent = '점유율 ' + storePct + '% (🤖 ' + storePlay + ' · 🍎 ' + storeAppStore + ')';
+        if (elAkpiStoreRatio) elAkpiStoreRatio.innerHTML = `점유율 ${storePct}% (<img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="Play" /> ${storePlay} · <img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px;" alt="AppStore" /> ${storeAppStore})`;
 
         const elAkpiAvgRating = document.getElementById('akpiAvgRating');
         if (elAkpiAvgRating) elAkpiAvgRating.textContent = `${avgRating} ★`;
@@ -5665,10 +5666,10 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
           const inAppAndroid = inAppItems.filter(i => (i.os || i.device || '').toLowerCase().includes('android')).length;
           const inAppIos = inAppItems.filter(i => (i.os || i.device || '').toLowerCase().includes('ios')).length;
           const sources = [
-            { label: '🤖 Android 인앱 피드백', count: inAppAndroid, color: '#0CA678' },
-            { label: '🍎 iOS 인앱 피드백', count: inAppIos, color: '#1098AD' },
-            { label: '🤖 Play 스토어 리뷰', count: playItems.length, color: '#228BE6' },
-            { label: '🍎 App Store 리뷰', count: appStoreItems.length, color: '#7950F2' }
+            { label: 'Android 인앱 피드백', icon: 'assets/icons/logo_google_play.svg', count: inAppAndroid, color: '#0CA678' },
+            { label: 'iOS 인앱 피드백', icon: 'assets/icons/logo_app_store.svg', count: inAppIos, color: '#1098AD' },
+            { label: 'Play 스토어 리뷰', icon: 'assets/icons/logo_google_play.svg', count: playItems.length, color: '#228BE6' },
+            { label: 'App Store 리뷰', icon: 'assets/icons/logo_app_store.svg', count: appStoreItems.length, color: '#7950F2' }
           ];
           const badgeEl = document.getElementById('chartSourceBadge');
           if (badgeEl) badgeEl.textContent = '4개 채널 (OS 분리)';
@@ -5677,7 +5678,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
             const pct = total > 0 ? Math.round((s.count / total) * 100) : 0;
             return `
               <div class="chart-bar-row">
-                <div class="chart-bar-label" title="${s.label}">${s.label}</div>
+                <div class="chart-bar-label" title="${s.label}"><img src="${s.icon}" style="width:12px; height:12px; vertical-align:-2px; margin-right:4px;" alt="" />${s.label}</div>
                 <div class="chart-bar-track">
                   <div class="chart-bar-fill" style="width: ${pct}%; background: ${s.color};"></div>
                 </div>
@@ -6044,8 +6045,8 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
                 <strong style="color:#FFF;">📅 ${d}</strong>
                 <span>총 <strong>${entry.total}건</strong> 접수</span>
                 <span style="color:#51CF66;">• 📱 인앱 피드백: ${entry.inApp}건</span>
-                <span style="color:#339AF0;">• 🤖 Google Play: ${entry.play}건</span>
-                <span style="color:#CED4DA;">• 🍎 App Store: ${entry.appStore}건</span>
+                <span style="color:#339AF0; display:inline-flex; align-items:center; gap:3px;">• <img src="assets/icons/logo_google_play.svg" style="width:10px; height:10px;" alt="" /> Google Play: ${entry.play}건</span>
+                <span style="color:#CED4DA; display:inline-flex; align-items:center; gap:3px;">• <img src="assets/icons/logo_app_store.svg" style="width:10px; height:10px;" alt="" /> App Store: ${entry.appStore}건</span>
                 <span style="font-size:9.5px; opacity:0.8; margin-top:2px;">(클릭 시 시트 검색 필터링)</span>
               </div>
               <div class="timeline-count-badge">${entry.total}</div>
@@ -6259,12 +6260,13 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
 
           const itemSrc = item.source || 'in_app';
           let sourceHtml = '<span style="color:#0CA678; font-weight:700;">📱 인앱</span>';
-          if (itemSrc === 'play_store') sourceHtml = '<span style="color:#228BE6; font-weight:700;">🤖 Play</span>';
-          else if (itemSrc === 'app_store') sourceHtml = '<span style="color:#495057; font-weight:700;">🍎 AppStore</span>';
+          if (itemSrc === 'play_store') sourceHtml = '<span style="color:#228BE6; font-weight:700; display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_google_play.svg" style="width:11px; height:11px;" alt="Play" /> Play</span>';
+          else if (itemSrc === 'app_store') sourceHtml = '<span style="color:#495057; font-weight:700; display:inline-flex; align-items:center; gap:3px;"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px;" alt="AppStore" /> AppStore</span>';
 
           const isAndroid = (item.os || item.device || '').toLowerCase().includes('android');
           const isIos = (item.os || item.device || '').toLowerCase().includes('ios');
           const osBadge = isAndroid ? 'os-badge-android' : (isIos ? 'os-badge-ios' : 'os-badge-universal');
+          const osIcon = isAndroid ? '<img src="assets/icons/logo_google_play.svg" style="width:10px; height:10px; vertical-align:-1px; margin-right:3px;" alt="" />' : (isIos ? '<img src="assets/icons/logo_app_store.svg" style="width:10px; height:10px; vertical-align:-1px; margin-right:3px;" alt="" />' : '');
           const osText = isAndroid ? 'Android' : (isIos ? 'iOS' : (item.os || 'Universal'));
 
           return `
@@ -6274,7 +6276,7 @@ window.MODO_FEEDBACK_DATA = ${JSON.stringify(data, null, 2)};
               <td><span class="card-cat ${item.category}" style="font-size:10.5px;">${catNameMap[item.category] || item.category}</span></td>
               <td style="color:var(--star-gold); font-weight:700;">${stars}</td>
               <td class="sheet-cell-content" title="${escapeHtml(item.content || '')}">${escapeHtml(item.content || '')}</td>
-              <td><span class="${osBadge}" style="font-size:10px;">${osText}</span></td>
+              <td><span class="${osBadge}" style="font-size:10px; display:inline-flex; align-items:center;">${osIcon}${osText}</span></td>
               <td style="font-family:var(--font-mono); font-size:11px;">v${escapeHtml(item.appVersion || '1.0.44')}</td>
               <td>${escapeHtml((item.language || 'ko').toUpperCase())}</td>
               <td>${item.isPro ? '<span style="color:var(--star-gold); font-weight:700;">PRO</span>' : '<span style="color:var(--text-muted);">FREE</span>'}</td>
