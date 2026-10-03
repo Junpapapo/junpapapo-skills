@@ -1194,6 +1194,7 @@
     <nav class="nav-view-switcher">
       <a href="qa_analytics_dashboard.html" class="nav-view-tab active">📊 비주얼 대시보드</a>
       <a href="qa_spreadsheet.html" class="nav-view-tab">📋 스프레드시트</a>
+      <a href="ops_release_dashboard.html" class="nav-view-tab" style="color:var(--ios-orange);">🚀 릴리즈 관제</a>
       <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC Studio</a>
     </nav>
 
@@ -1538,6 +1539,7 @@
   <script src="data/feedback_manifest.js?v=2.4"></script>
   <script src="data/qa_manifest.js?v=2.4"></script>
   <script src="js/qa_i18n.js?v=2.4"></script>
+  <script src="js/qa_dialog.js?v=1.0"></script>
   <script src="js/qa_memo.js?v=1.0"></script>
 
   <!-- Dashboard Analytics Engine -->
@@ -1836,6 +1838,20 @@
           const count = t.getData ? t.getData().length : 0;
           const isActive = t.id === currentTrackId;
           const trackColor = t.color || 'var(--ios-blue)';
+
+          let iconHtml = '';
+          if (t.id === 'phase1') {
+            iconHtml = '<img src="assets/icons/logo_google_play.svg" alt="Google Play" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px; display:inline-block;" />';
+          } else if (t.id === 'phase2') {
+            iconHtml = '<img src="assets/icons/logo_app_store.svg" alt="App Store" style="width:13px; height:13px; vertical-align:-1px; margin-right:5px; display:inline-block;" />';
+          } else if (t.id === 'all') {
+            iconHtml = '<span style="font-size:12px; margin-right:4px;">🚀</span>';
+          } else if (t.id === 'phase3') {
+            iconHtml = '<span style="font-size:12px; margin-right:4px;">💎</span>';
+          } else if (t.id === 'feedback') {
+            iconHtml = '<span style="font-size:12px; margin-right:4px;">💬</span>';
+          }
+
           return `
             <button 
               type="button"
@@ -1843,7 +1859,7 @@
               onclick="window.switchAnalyticsPhase('${t.id}')"
               style="${isActive ? `--active-track-color: ${trackColor};` : ''}"
             >
-              <span>${getTrackLabel(t)}</span>
+              <span style="display:inline-flex; align-items:center;">${iconHtml}${getTrackLabel(t)}</span>
               <span class="phase-count-badge" style="${isActive ? `background: ${trackColor}; color: #FFFFFF;` : ''}">${count}${unit}</span>
             </button>
           `;

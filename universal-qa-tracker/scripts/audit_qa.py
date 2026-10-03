@@ -234,7 +234,7 @@ def main():
                 if cat not in VOC_DOMAINS:
                     errors.append(f"[{filename}] VOC Issue #{iid} has non-standard category '{cat}'.")
             else:
-                STANDARD_DOMAINS = {"reliability", "core", "ui", "perf", "media", "monetization", "auth", "db"}
+                STANDARD_DOMAINS = {"reliability", "core", "ui", "perf", "media", "monetization", "auth", "db", "widget", "notification", "storage"}
                 if cat not in STANDARD_DOMAINS:
                     errors.append(f"[{filename}] Issue #{iid} has non-standard category '{cat}'. Must be strictly one of: {', '.join(sorted(STANDARD_DOMAINS))}")
 

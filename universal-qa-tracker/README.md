@@ -13,7 +13,7 @@
 ## 🌟 Highlights & Key Value
 
 - **Zero-Server Browser Execution**: Double-click and open directly via `file:///` protocol in Chrome, Safari, Edge, or Firefox. No local Node/Python web servers or CORS workarounds required.
-- **Canonical 5-Portal Suite**: Complete portal suite covering executive launchpad, interactive master spreadsheet, visual analytics studio, in-app VOC feedback studio, and Google Sheets setup documentation.
+- **Canonical 6-Portal Suite**: Complete portal suite covering executive launchpad, interactive master spreadsheet, visual analytics studio, production release & version cadence studio, in-app VOC feedback studio, and Google Sheets setup documentation.
 - **High-Density Progressive Spreadsheet View**: Compact, professional spreadsheet layout benchmarked from rigorous testing workflows (500+ issues tracked with zero lag via 50-item chunk progressive rendering, sub-16ms paint, debounced search, and cached lookups).
 - **Dual-OS Deployment Governance (🤖 AOS & 🍎 iOS)**: Independent deployment tracking with smart N/A cross-platform guards, dual target releases, sticky table headers, 2-tier collapsible drawer filter toolbar, and tailored Google Play Store & Apple App Store release notes auto-generators.
 - **Interactive Visual Dashboard**: Real-time pure SVG charts, IEEE 1044 severity donut metrics, daily time-series risk burndown stacked bars, and code hotspot analysis.
@@ -54,8 +54,9 @@ universal-qa-tracker/
     ├── index.html                      # Portal 1: Executive Hub Launchpad
     ├── qa_spreadsheet.html             # Portal 2: Interactive Master Spreadsheet
     ├── qa_analytics_dashboard.html     # Portal 3: QA Intelligence & Analytics Studio
-    ├── voc_dashboard.html              # Portal 4: Voice of Customer (VOC) & Survey Studio (3-Tab)
-    ├── google_sheets_voc_setup_guide.html # Portal 5: Google Sheets & Apps Script Setup Guide
+    ├── ops_release_dashboard.html      # Portal 4: Production Release & Version Cadence Studio
+    ├── voc_dashboard.html              # Portal 5: Voice of Customer (VOC) & Survey Studio (3-Tab)
+    ├── google_sheets_voc_setup_guide.html # Portal 6: Google Sheets & Apps Script Setup Guide
     ├── js/
     │   ├── qa_i18n.js                  # Client-side i18n localization engine
     │   └── qa_engine.js                # Search, filtering, bookmarks, and renderer
@@ -92,15 +93,16 @@ python scripts/init_tracker.py --target-dir "docs/02_Guides/internal_qa_issue_tr
 
 ---
 
-## 🏛️ The Canonical 5-Portal Suite
+## 🏛️ The Canonical 6-Portal Suite
 
 | Portal | File | Description & Key Capabilities |
 | :--- | :--- | :--- |
 | **1. Executive Hub** | [`index.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/index.html) | Apple-style frosted glass launchpad with live telemetry summary cards, milestone progress bars, and navigation links. |
 | **2. Master Spreadsheet** | [`qa_spreadsheet.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/qa_spreadsheet.html) | High-density 500+ issue spreadsheet with sticky table header, dual-OS deployment tracking (🤖 AOS / 🍎 iOS) with smart N/A, 2-tier collapsible drawer filter toolbar, tailored store release notes generators, 8-domain category filters, IEEE 1044 severity badges, interactive bug generator modal, and resizable inspection drawer. |
 | **3. Analytics Studio** | [`qa_analytics_dashboard.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/qa_analytics_dashboard.html) | Deep intelligence studio featuring 8 pure SVG charts (Daily Risk Burndown, IEEE 1044 Donut, Category Radar/Bars, Code Hotspots), Auto-Insights narrative engine, and frosted settings popover. |
-| **4. VOC & Survey Studio** | [`voc_dashboard.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/voc_dashboard.html) | Voice of Customer triage and survey intelligence studio with 3 dedicated views: **Live VOC Feed** (filtering & 1-click "Promote to QA"), **VOC Analytics** (satisfaction, platform & category distribution), and **Survey History & Insights** (4-choice podium charts, rating cross-matrix, multiline verbatim quotes, and report generation). |
-| **5. Google Sheets Setup** | [`google_sheets_voc_setup_guide.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/google_sheets_voc_setup_guide.html) | Interactive 4-step SOP guide detailing Google Sheets webhook configuration, v2.0 master Apps Script deployment (15-column schema), `Survey_Config` 17-language automatic translation setup, and client app telemetry integration. |
+| **4. Release Cadence Studio** | [`ops_release_dashboard.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/ops_release_dashboard.html) | Independent OS release track governance (Android Google Play vs iOS App Store), stepped progression curve timeline, monthly volume comparison, interactive calendar sprint matrix with multi-release support, and one-click changelog drawer. |
+| **5. VOC & Survey Studio** | [`voc_dashboard.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/voc_dashboard.html) | Voice of Customer triage and survey intelligence studio with 3 dedicated views: **Live VOC Feed** (filtering & 1-click "Promote to QA"), **VOC Analytics** (satisfaction, platform & category distribution), and **Survey History & Insights** (4-choice podium charts, rating cross-matrix, multiline verbatim quotes, and report generation). |
+| **6. Google Sheets Setup** | [`google_sheets_voc_setup_guide.html`](file:///c:/00_Workspace/00_Mobile_Apps/Modo/.gemini/skills/universal-qa-tracker/templates/google_sheets_voc_setup_guide.html) | Interactive 4-step SOP guide detailing Google Sheets webhook configuration, v2.0 master Apps Script deployment (15-column schema), `Survey_Config` 17-language automatic translation setup, and client app telemetry integration. |
 
 ---
 

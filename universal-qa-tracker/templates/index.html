@@ -142,6 +142,36 @@
     .nav-btn-icon:hover {
       background: var(--bg-hover);
     }
+    .nav-view-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .nav-view-tab {
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .nav-view-tab:hover {
+      color: var(--text-primary);
+    }
+    .nav-view-tab.active {
+      background: var(--bg-surface-solid);
+      color: var(--text-primary);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
     .settings-menu-container {
       position: relative;
     }
@@ -431,6 +461,16 @@
       <div class="nav-brand-icon">M</div>
       <span class="nav-brand-title">Modo QA Studio</span>
       <span class="nav-hub-tag">Executive Hub</span>
+      
+      <!-- Cross-Platform View Switcher -->
+      <nav class="nav-view-switcher" style="margin-left: 8px;">
+        <a href="index.html" class="nav-view-tab active">🏠 Hub</a>
+        <a href="qa_spreadsheet.html" class="nav-view-tab">📋 시트</a>
+        <a href="qa_analytics_dashboard.html" class="nav-view-tab">📊 분석</a>
+        <a href="ops_release_dashboard.html" class="nav-view-tab" style="color:var(--accent-orange);">🚀 릴리즈</a>
+        <a href="voc_dashboard.html" class="nav-view-tab" style="color:#0CA678;">💬 VOC</a>
+      </nav>
+
       <button type="button" class="nav-memo-btn" onclick="window.QA_MEMO ? window.QA_MEMO.toggle() : null" title="임시 메모장 / Scratchpad" style="margin-left:8px;"><span data-i18n="navMemo">📝 메모</span></button>
     </div>
     <div class="nav-right">
@@ -595,6 +635,26 @@
         </div>
       </a>
 
+      <!-- Card 5: Production Release & Version Cadence Studio -->
+      <a href="ops_release_dashboard.html" class="portal-card" style="--card-accent:#FF9500; --card-accent-bg:rgba(255,149,0,0.1);">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-wrap"><img src="assets/icons/icon_rocket_qa.webp" class="portal-card-img" alt="Release Cadence Studio" /></div>
+            <div class="card-text-wrap">
+              <div class="card-title">정식운영 릴리즈 관제 스튜디오</div>
+              <div class="card-tagline">Release &amp; Version Cadence Studio</div>
+            </div>
+          </div>
+          <div class="card-desc">
+            버전별 처리 건수 및 성격별 스택 차트, 일자별 계단식 버전업 타임라인, 월별 릴리즈 주기 피크 분석 및 원클릭 체인지로그 서랍.
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-tag" id="cardReleaseCount">16 Official Releases</span>
+          <span class="card-cta">릴리즈 관제 열기 ➔</span>
+        </div>
+      </a>
+
     </section>
 
     <!-- Footer -->
@@ -683,6 +743,10 @@
       if (totalVocEl) totalVocEl.textContent = `${vocLen}건`;
       const cardVocEl = document.getElementById('cardVocCount');
       if (cardVocEl) cardVocEl.textContent = `${vocLen} Real Feedback`;
+
+      const rels = window.MODO_RELEASE_REGISTRY || [];
+      const cardRelEl = document.getElementById('cardReleaseCount');
+      if (cardRelEl) cardRelEl.textContent = `${rels.length || 16} Official Releases`;
     }
 
     window.onQaLanguageChanged = function (lang) {

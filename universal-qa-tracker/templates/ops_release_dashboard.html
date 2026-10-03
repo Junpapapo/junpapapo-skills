@@ -855,22 +855,22 @@
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
             <!-- AOS Target Box -->
-            <div style="background: rgba(43,138,62,0.06); border: 1px solid rgba(43,138,62,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_AOS_VER || 'v1.1.12')" title="Android 최신 배포 체인지로그 보기">
+            <div style="background: rgba(43,138,62,0.06); border: 1px solid rgba(43,138,62,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_AOS_VER || 'v1.1.13')" title="Android 최신 배포 체인지로그 보기">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 10px; font-weight: 800; color: var(--aos-green); display: flex; align-items: center; gap: 3px;"><img src="assets/icons/logo_google_play.svg" style="width:12px; height:12px;" alt="AOS" />Android</span>
-                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiAosBuild">b79</span>
+                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiAosBuild">b80</span>
               </div>
-              <div style="font-size: 16px; font-weight: 900; color: var(--aos-green); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetAos">v1.1.12</div>
-              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiAosDate">Play Store · 10-02</div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--aos-green); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetAos">v1.1.13</div>
+              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiAosDate">Play Store · 10-03</div>
             </div>
             <!-- iOS Target Box -->
             <div style="background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_IOS_VER || 'v1.1.16')" title="iOS 최신 배포 체인지로그 보기">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 10px; font-weight: 800; color: var(--ios-apple-blue); display: flex; align-items: center; gap: 3px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="iOS" />iOS</span>
-                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiIosBuild">b85</span>
+                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiIosBuild">b86</span>
               </div>
               <div style="font-size: 16px; font-weight: 900; color: var(--ios-apple-blue); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetIos">v1.1.16</div>
-              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiIosDate">App Store · 10-02</div>
+              <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiIosDate">App Store · 10-03</div>
             </div>
           </div>
         </div>
@@ -1055,7 +1055,7 @@
         document.getElementById('chipPhase3').classList.toggle('active', scope === 'phase3');
         document.getElementById('chipAll').classList.toggle('active', scope === 'all');
         
-        selectedVersion = scope === 'phase3' ? 'v1.1.4' : 'v1.1.12';
+        selectedVersion = scope === 'phase3' ? 'v1.1.4' : 'v1.1.13';
         renderAll();
       };
 
@@ -1197,7 +1197,7 @@
           const elBld = document.getElementById('kpiAosBuild');
           const elDt = document.getElementById('kpiAosDate');
           if (elVer) elVer.textContent = latestAos.version;
-          if (elBld) elBld.textContent = `b${latestAos.aosBuild || latestAos.build || '87'}`;
+          if (elBld) elBld.textContent = `b${latestAos.aosBuild || latestAos.build || '80'}`;
           if (elDt) elDt.textContent = `Play Store · ${(latestAos.aosDate || latestAos.date).slice(5)}`;
         }
         if (latestIos) {
@@ -1206,7 +1206,7 @@
           const elBld = document.getElementById('kpiIosBuild');
           const elDt = document.getElementById('kpiIosDate');
           if (elVer) elVer.textContent = latestIos.version;
-          if (elBld) elBld.textContent = `b${latestIos.iosBuild || latestIos.build || '87'}`;
+          if (elBld) elBld.textContent = `b${latestIos.iosBuild || latestIos.build || '86'}`;
           if (elDt) elDt.textContent = `App Store · ${(latestIos.iosDate || latestIos.date).slice(5)}`;
         }
       }
@@ -1319,7 +1319,7 @@
                     <span style="font-size:12px; font-weight:800; color:var(--aos-green); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:14px; height:14px;" alt="AOS" />Android (Google Play) 배포 트랙</span>
                     <span style="font-size:10px; font-weight:700; color:var(--aos-green); background:rgba(43,138,62,0.1); padding:1.5px 6px; border-radius:4px;">${aosReleases.length}개 버전 · ${totalAosIssues}건 반영</span>
                   </div>
-                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.12'} (b${aosReleases[aosReleases.length - 1]?.build || '87'})</span>
+                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.13'} (b${aosReleases[aosReleases.length - 1]?.build || '80'})</span>
                 </div>
                 ${svgAos}
               </div>
@@ -1331,7 +1331,7 @@
                     <span style="font-size:12px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:14px; height:14px;" alt="iOS" />iOS (Apple App Store) 배포 트랙</span>
                     <span style="font-size:10px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:1.5px 6px; border-radius:4px;">${iosReleases.length}개 버전 · ${totalIosIssues}건 반영</span>
                   </div>
-                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
+                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '86'})</span>
                 </div>
                 ${svgIos}
               </div>
@@ -1349,7 +1349,7 @@
                   <span style="font-size:13px; font-weight:800; color:var(--aos-green); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_google_play.svg" style="width:15px; height:15px;" alt="AOS" />Android (Google Play) 단독 배포 트랙</span>
                   <span style="font-size:11px; font-weight:700; color:var(--aos-green); background:rgba(43,138,62,0.1); padding:2px 8px; border-radius:5px;">총 ${aosReleases.length}개 버전 · ${totalAosIssues}건 해결</span>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Play Console 최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.12'} (b${aosReleases[aosReleases.length - 1]?.build || '87'})</span>
+                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Play Console 최신: ${aosReleases[aosReleases.length - 1]?.version || 'v1.1.13'} (b${aosReleases[aosReleases.length - 1]?.build || '80'})</span>
               </div>
               ${svgAos}
             </div>
@@ -1366,7 +1366,7 @@
                   <span style="font-size:13px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:15px; height:15px;" alt="iOS" />iOS (Apple App Store) 단독 배포 트랙</span>
                   <span style="font-size:11px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:2px 8px; border-radius:5px;">총 ${iosReleases.length}개 버전 · ${totalIosIssues}건 해결</span>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">App Store Connect 최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
+                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">App Store Connect 최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '86'})</span>
               </div>
               ${svgIos}
             </div>
@@ -1588,9 +1588,17 @@
         const releases = window.MODO_RELEASE_REGISTRY || [];
         const dateMap = {};
         releases.forEach(r => {
-          dateMap[r.date] = r;
-          if (r.aosDate) dateMap[r.aosDate] = r;
-          if (r.iosDate) dateMap[r.iosDate] = r;
+          const d = r.date;
+          if (!dateMap[d]) dateMap[d] = [];
+          dateMap[d].push(r);
+          if (r.aosDate && r.aosDate !== d) {
+            if (!dateMap[r.aosDate]) dateMap[r.aosDate] = [];
+            dateMap[r.aosDate].push(r);
+          }
+          if (r.iosDate && r.iosDate !== d) {
+            if (!dateMap[r.iosDate]) dateMap[r.iosDate] = [];
+            dateMap[r.iosDate].push(r);
+          }
         });
 
         const weeks = [
@@ -1598,46 +1606,65 @@
           { label: '9월 2주 (07~13)', days: ['2026-09-07', '2026-09-08', '2026-09-09', '2026-09-10', '2026-09-11', '2026-09-12', '2026-09-13'] },
           { label: '9월 3주 (14~20)', days: ['2026-09-14', '2026-09-15', '2026-09-16', '2026-09-17', '2026-09-18', '2026-09-19', '2026-09-20'] },
           { label: '9월 4주 (21~27)', days: ['2026-09-21', '2026-09-22', '2026-09-23', '2026-09-24', '2026-09-25', '2026-09-26', '2026-09-27'] },
-          { label: '9월 5주+10월', days: ['2026-09-28', '2026-09-29', '2026-09-30', '2026-10-01', '2026-10-02'] }
+          { label: '9월 5주+10월', days: ['2026-09-28', '2026-09-29', '2026-09-30', '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04'] }
         ];
 
         let html = '<div class="heatmap-grid">';
         weeks.forEach(w => {
           html += `<div class="heatmap-row"><div class="heatmap-row-label">${w.label.slice(0, 5)}</div>`;
           w.days.forEach(d => {
-            const rel = dateMap[d];
-            const hasRel = !!rel;
+            const relList = dateMap[d] || [];
+            const hasRel = relList.length > 0;
 
             let cellClass = 'heatmap-cell';
             let platLogo = '';
             let platName = '';
+            let verText = '';
+            let tipText = `${d}: 배포 없음`;
+            let clickVer = '';
+
             if (hasRel) {
-              if (rel.platform === 'android') {
-                cellClass += ' aos-only';
-                platLogo = '<img src="assets/icons/logo_google_play.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="AOS"/>';
-                platName = '[AOS]';
-              } else if (rel.platform === 'ios') {
-                cellClass += ' ios-only';
-                platLogo = '<img src="assets/icons/logo_app_store.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="iOS"/>';
-                platName = '[iOS]';
-              } else {
+              const hasAos = relList.some(r => r.platform === 'android' || r.platform === 'all');
+              const hasIos = relList.some(r => r.platform === 'ios' || r.platform === 'all');
+
+              if (hasAos && hasIos) {
                 cellClass += ' dual-release';
                 platLogo = '<span style="font-size:8.5px; margin-right:1px;">🌐</span>';
                 platName = '[양대OS]';
+                const aosVer = relList.find(r => r.platform === 'android' || r.platform === 'all')?.version.replace('v', '') || '';
+                const iosVer = relList.find(r => r.platform === 'ios')?.version.replace('v', '') || '';
+                verText = (aosVer && iosVer && aosVer !== iosVer) ? `${aosVer}/${iosVer}` : (aosVer || iosVer);
+                tipText = `${d}: [양대OS] ` + relList.map(r => `${r.version} (${r.label})`).join(' / ');
+                clickVer = relList[0].version;
+              } else if (hasAos) {
+                const rel = relList[0];
+                cellClass += ' aos-only';
+                platLogo = '<img src="assets/icons/logo_google_play.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="AOS"/>';
+                platName = '[AOS]';
+                verText = rel.version.replace('v', '');
+                tipText = `${d}: ${platName} ${rel.version} (${rel.label})`;
+                clickVer = rel.version;
+              } else {
+                const rel = relList[0];
+                cellClass += ' ios-only';
+                platLogo = '<img src="assets/icons/logo_app_store.svg" style="width:9px; height:9px; vertical-align:-1px; margin-right:2px; display:inline-block;" alt="iOS"/>';
+                platName = '[iOS]';
+                verText = rel.version.replace('v', '');
+                tipText = `${d}: ${platName} ${rel.version} (${rel.label})`;
+                clickVer = rel.version;
               }
             }
 
             const dayNum = d.slice(8);
-            const tipText = hasRel ? `${d}: ${platName} ${rel.version} (${rel.label})` : `${d}: 배포 없음`;
 
             html += `
               <div class="${cellClass}"
-                onmouseover="showTooltip(event, '${tipText}')"
+                onmouseover="showTooltip(event, '${tipText.replace(/'/g, "\\'")}')"
                 onmouseout="hideTooltip()"
-                onclick="${hasRel ? `window.focusChangelog('${rel.version}')` : ''}"
+                onclick="${hasRel ? `window.focusChangelog('${clickVer}')` : ''}"
               >
                 <span>${dayNum}</span>
-                ${hasRel ? `<span style="font-size:8.5px; font-weight:800; font-family:var(--font-mono); display:inline-flex; align-items:center;">${platLogo}${rel.version.replace('v', '')}</span>` : ''}
+                ${hasRel ? `<span style="font-size:8px; font-weight:800; font-family:var(--font-mono); display:inline-flex; align-items:center;">${platLogo}${verText}</span>` : ''}
               </div>
             `;
           });
@@ -1658,7 +1685,7 @@
 
       // 6. Focus Changelog Drawer for a Specific Version
       window.focusChangelog = function (verStr, targetOs) {
-        if (verStr === 'latest') verStr = 'v1.1.12';
+        if (verStr === 'latest') verStr = 'v1.1.13';
         if (verStr === 'all') verStr = 'v1.1.4';
 
         selectedVersion = normalizeVersion(verStr);
@@ -1811,7 +1838,7 @@
           metadata: {
             title: "Modo Production Release & Version Cadence Intelligence",
             exportedAt: new Date().toISOString(),
-            currentLiveVersion: "v1.1.12",
+            currentLiveVersion: "v1.1.13",
             targetScope: currentScope,
             currentPlatform: currentPlatform
           },

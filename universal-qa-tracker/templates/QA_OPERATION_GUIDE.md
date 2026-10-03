@@ -16,10 +16,10 @@ docs/02_Guides/internal_qa_issue_tracker/
 ├── voc_dashboard.html                   # 💬 [VOC Studio] 듀얼 뷰 스위처, CSAT 만족도 커브, 인입 추이 타임라인, 키워드 클라우드, 구글 시트 13열 라이브 그리드, 매크로 답변
 ├── google_sheets_voc_setup_guide.html   # 📖 [Setup Guide] Google Apps Script 실시간 웹앱 배포 가이드
 ├── QA_OPERATION_GUIDE.md                # 📘 [본 문서] 팀 표준 운영 매뉴얼 & 라이프사이클 지침
-├── QA_REPORT.md                         # 📄 [Automated Report] 전체 393건 이슈 분석 및 완료 보고서
+├── QA_REPORT.md                         # 📄 [Automated Report] 전체 395건 이슈 분석 및 완료 보고서
 ├── data/                                # 🗄️ [Data Registry] 트랙별 독립 데이터셋
 │   ├── qa_manifest.js                   # 트랙 레지스트리 (Phase 1~3, VOC)
-│   ├── phase1_closed_testing.js         # Phase 1 비공개 테스트 결함 데이터셋 (389건)
+│   ├── phase1_closed_testing.js         # Phase 1 비공개 테스트 결함 데이터셋 (395건)
 │   ├── phase2_open_beta.js              # Phase 2 오픈베타 데이터셋
 │   ├── phase3_v1_1_backlog.js           # Phase 3 정식 출시/백로그 데이터셋
 │   └── feedback_manifest.js             # 유저 VOC 피드백 로컬 데이터셋
@@ -44,7 +44,7 @@ docs/02_Guides/internal_qa_issue_tracker/
 
 | 개발 마일스톤 | 트랙 ID | 관리 범위 | 현 상태 |
 | :--- | :---: | :--- | :---: |
-| **Phase 1: Android 비공개** | `phase1` | 구글 플레이 14일 비공개 테스트 기간 중 발견된 결함 및 테스터 피드백 개선 | **100% 완료** |
+| **Phase 1: Android 비공개** | `phase1` | 구글 플레이 14일 비공개 테스트 기간 중 발견된 결함 및 테스터 피드백 개선 (#01 ~ #444) | **100% 완료** |
 | **Phase 2: iOS 테스트 (TestFlight)** | `phase2` | 애플 TestFlight 및 iOS 실기기 환경 특화 결함 및 위젯/권한 관리 | **실시간 운영 중** |
 | **Phase 3: 정식 운영 & 로드맵** | `phase3` | 프로덕션 정식 출시(v1.0+) 및 v1.1 이후 백로그 기능/개선 관리 | **실시간 운영 중** |
 | **유저 VOC (In-App)** | `feedback` | 인앱 피드백 모달을 통해 구글 시트로 실시간 수집되는 고객 정성적 의견 | **실시간 운영 중** |

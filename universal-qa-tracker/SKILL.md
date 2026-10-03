@@ -1,15 +1,15 @@
 ---
 name: universal-qa-tracker
-description: Universal QA Issue Tracking & Verification System. Provides zero-server HTML/JS spreadsheet, analytics dashboard, and VOC customer feedback portals, CLI tools for adding/updating issues, multi-track milestone management, dataset auditing, feedback synchronization, and multilingual reports (EN, KO, JA). Use when initializing QA tracking, registering QA bugs, updating issue resolutions, tracking release milestones, synchronizing user VOC feedback, or exporting QA sign-off documents.
+description: Universal QA Issue Tracking & Verification System. Provides zero-server HTML/JS spreadsheet, analytics dashboard, production release cadence studio, and VOC customer feedback portals, CLI tools for adding/updating issues, multi-track milestone management, dataset auditing, feedback synchronization, and multilingual reports (EN, KO, JA). Use when initializing QA tracking, registering QA bugs, updating issue resolutions, tracking release milestones, synchronizing user VOC feedback, or exporting QA sign-off documents.
 ---
 
 # Universal QA Issue Tracker (`universal-qa-tracker`)
 
-A comprehensive, zero-dependency, client-side QA issue management and Voice-of-Customer (VOC) telemetry ecosystem. Benchmarked from enterprise-grade closed and open testing workflows, it provides the canonical **5-Portal Suite** (Executive Hub, Interactive Master Spreadsheet, QA Intelligence & Analytics Studio, VOC Feedback Studio, and Automated Google Sheets & Apps Script Setup Guide), in-app React Native/Web feedback SDK templates, and a zero-dependency Python CLI automation suite with 100% local `file:///` zero-server execution.
+A comprehensive, zero-dependency, client-side QA issue management and Voice-of-Customer (VOC) telemetry ecosystem. Benchmarked from enterprise-grade closed and open testing workflows, it provides the canonical **6-Portal Suite** (Executive Hub, Interactive Master Spreadsheet, QA Intelligence & Analytics Studio, Production Release & Version Cadence Studio, VOC Feedback Studio, and Automated Google Sheets & Apps Script Setup Guide), in-app React Native/Web feedback SDK templates, and a zero-dependency Python CLI automation suite with 100% local `file:///` zero-server execution.
 
 ---
 
-## 1. Core Architecture & Canonical 5-Portal Suite
+## 1. Core Architecture & Canonical 6-Portal Suite
 
 ```
 universal-qa-tracker/
@@ -17,8 +17,9 @@ universal-qa-tracker/
 ├── index.html                          # Portal 1: Executive Hub Launchpad
 ├── qa_spreadsheet.html                 # Portal 2: Interactive Master Spreadsheet
 ├── qa_analytics_dashboard.html         # Portal 3: QA Intelligence & Analytics Studio
-├── voc_dashboard.html                  # Portal 4: Voice of Customer (VOC) Feedback Studio
-├── google_sheets_voc_setup_guide.html  # Portal 5: Automated Google Sheets & Apps Script Setup Guide
+├── ops_release_dashboard.html          # Portal 4: Production Release & Version Cadence Studio
+├── voc_dashboard.html                  # Portal 5: Voice of Customer (VOC) Feedback Studio
+├── google_sheets_voc_setup_guide.html  # Portal 6: Automated Google Sheets & Apps Script Setup Guide
 ├── css/
 │   └── qa_memo.css                     # Floating Sticky Scratchpad memo styles
 ├── js/
@@ -87,7 +88,13 @@ Universal QA Tracker v2.0 introduces a zero-cost, real-time in-app survey and VO
    - **Row 3 (Universal English `en`)**: Overridable fallback for non-Korean locales.
    - **Dynamic Fetching**: Apps Script endpoint `doGet(e)` serves the localized active survey via `action=get_survey&lang=<user_locale>`.
 
-3. **Portal 4: VOC Feedback Studio 3-Tab Architecture**:
+3. **Portal 4: Production Release & Version Cadence Studio (ops_release_dashboard.html)**:
+   - **Independent OS Release Tracks**: Dual horizontal lanes for Android (Google Play) and iOS (Apple App Store) with independent build versions, release dates, and solved issue counts.
+   - **Stepped Progression Timeline**: Real-time SVG dual-curve trajectory comparing version progression velocity, lead times, and milestones across platforms.
+   - **Monthly Release Cadence & Calendar Heatmap**: Monthly volume bar chart and interactive calendar sprint matrix with multi-platform tags and one-click changelog drawer inspection.
+   - **Instant Version Changelog Drawer**: Responsive side drawer filtering and grouping resolved QA issues for selected app store releases.
+
+4. **Portal 5: VOC Feedback Studio 3-Tab Architecture**:
    - **Tab 1 (`💬 실시간 VOC 피드백`)**: Live feedback stream, category/rating filters, search, and 1-click **Promote to QA** action.
    - **Tab 2 (`📊 VOC 통계 & 분석`)**: Aggregate rating trends, category distribution, platform breakdown, and submission velocity.
    - **Tab 3 (`🎯 설문 이력 & 인사이트`)**: Deep survey analytics with campaign selector, 4-choice podium charts, star-rating cross-matrix correlation, multiline user quote cards, and Markdown/HTML report export.

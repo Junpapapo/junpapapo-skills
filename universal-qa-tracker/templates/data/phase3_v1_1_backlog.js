@@ -1,6 +1,6 @@
 /**
  * Modo QA Master Dataset - Phase 3: Production V1.1 & Feature Backlog (정식 출시/V1.1 트랙)
- * Total Issues: 43 Items (정식 출시 후 유지보수/신규 기능 트랙)
+ * Total Issues: 63 Items (정식 출시 후 유지보수/신규 기능 트랙)
  */
 window.MODO_QA_PHASE3 = [
   {
@@ -37,7 +37,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Implement 'Horizontal Wings' Real-Time Sound Equalizer (Voice Equalizer Wings) for Voice Recording Modal",
     "problem_en": "The central microphone was statically displayed during recording, lacking dynamic visual responsiveness and feedback to actual voice input volume.",
-    "solution_en": "1) Added 'Horizontal Wings' audio equalizer (VoiceEqualizerWings, 5 rounded bars per wing) flanking the mic button. 2) Applied warm amber-orange glow gradient and 60FPS native organic wave driven by real-time audio metering. 3) Implemented gentle idle breathing wave during silence."
+    "solution_en": "1) Added 'Horizontal Wings' audio equalizer (VoiceEqualizerWings, 5 rounded bars per wing) flanking the mic button. 2) Applied warm amber-orange glow gradient and 60FPS native organic wave driven by real-time audio metering. 3) Implemented gentle idle breathing wave during silence.",
+    "deployedAos": true,
+    "deployedVersionAos": "",
+    "deployedDateAos": "2026-09-21 07:17",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 2,
@@ -68,7 +74,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Enable Android R8 Code Minification and Configure 1:1 ProGuard Keep Rules for Google Play 2027 Policy",
     "problem_en": "R8 minification was temporarily postponed before v1.1.1 release to avoid runtime crashes, resulting in recurring Play Console optimization warnings towards the February 2027 deadline.",
-    "solution_en": "1) Enabled android.enableMinifyInReleaseBuilds=true to shrink bundle size by 30~45% and eliminate Play Console warnings. 2) Fixed android.enableShrinkResourcesInReleaseBuilds=false to protect getIdentifier() widget assets. 3) Added comprehensive 1:1 ProGuard keep rules across all 10 native layers."
+    "solution_en": "1) Enabled android.enableMinifyInReleaseBuilds=true to shrink bundle size by 30~45% and eliminate Play Console warnings. 2) Fixed android.enableShrinkResourcesInReleaseBuilds=false to protect getIdentifier() widget assets. 3) Added comprehensive 1:1 ProGuard keep rules across all 10 native layers.",
+    "deployedAos": true,
+    "deployedVersionAos": "",
+    "deployedDateAos": "2026-09-21 07:17",
+    "deployedIos": true,
+    "deployedVersionIos": "",
+    "deployedDateIos": "2026-09-21 07:17"
   },
   {
     "id": 3,
@@ -101,7 +113,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Refine Secret Developer Dispatch Message Copy ('Solo Dev Team' ➔ 'Indie Dev Team')",
     "problem_en": "The copy '1-person dev team' in the secret developer dispatch card felt semantically awkward and underrepresented the craft.",
-    "solution_en": "Updated ko.ts to '인디 개발팀에게' (Indie dev team) to align with existing global locales (independent developer / 独立开发团队) and enhance sincerity."
+    "solution_en": "Updated ko.ts to '인디 개발팀에게' (Indie dev team) to align with existing global locales (independent developer / 独立开发团队) and enhance sincerity.",
+    "deployedAos": true,
+    "deployedVersionAos": "",
+    "deployedDateAos": "2026-09-21 07:17",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 4,
@@ -147,7 +165,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Update Onboarding Slide 2 Copy (Shift from Deprecated Voice AI / STT to Vivid High-Quality Voice Recording across 17 Locales)",
     "problem_en": "Speech-to-text and AI summary features were previously removed from the app, yet slide 2 still displayed 'AI Voice & Smart Summary', causing functional mismatch and user confusion.",
-    "solution_en": "Updated slide 2 title to 'Crystal-Clear Voice Recording' and description to 'When typing is inconvenient, record your thoughts and important moments in high-quality audio.' with 100% parity across all 17 locales."
+    "solution_en": "Updated slide 2 title to 'Crystal-Clear Voice Recording' and description to 'When typing is inconvenient, record your thoughts and important moments in high-quality audio.' with 100% parity across all 17 locales.",
+    "deployedAos": true,
+    "deployedVersionAos": "",
+    "deployedDateAos": "2026-09-21 07:17",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 5,
@@ -194,7 +218,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Brand App Icon Overhaul with Unified Ivory White Background, 550px Max Fit, and Build Unification",
     "problem_en": "Severe clipping on Android 72dp masks, and build-android.ps1 triggered legacy overwrite.",
-    "solution_en": "Unified backgrounds to #FBFAF6 Ivory White, engineered 550px Max-Fit adaptive foreground with 237px padding, and unified build pipeline with safeExec retry mechanism."
+    "solution_en": "Unified backgrounds to #FBFAF6 Ivory White, engineered 550px Max-Fit adaptive foreground with 237px padding, and unified build pipeline with safeExec retry mechanism.",
+    "deployedAos": true,
+    "deployedVersionAos": "",
+    "deployedDateAos": "2026-09-21 07:17",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 6,
@@ -229,7 +259,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Fix Multi-Photo Attachment Preview & Black Viewer Defect in Note Detail with Self-Healing Nested Array Pipeline",
     "problem_en": "Adding 2+ photos inside an existing note caused broken thumbnail previews and a black empty screen in the image viewer due to double-serialized JSON strings being treated as single raw URIs.",
-    "solution_en": "1) Standardized handleSelectPhoto to parse multi-photo attachments via parseImageAttachments(). 2) Engineered self-healing recursive flatMap in imageAttachmentsService to automatically restore pre-existing damaged notes. 3) Hardened pickPhoto to prevent image overwriting."
+    "solution_en": "1) Standardized handleSelectPhoto to parse multi-photo attachments via parseImageAttachments(). 2) Engineered self-healing recursive flatMap in imageAttachmentsService to automatically restore pre-existing damaged notes. 3) Hardened pickPhoto to prevent image overwriting.",
+    "deployedAos": true,
+    "deployedVersionAos": "70 (1.1.3)",
+    "deployedDateAos": "2026-09-23 15:55",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 7,
@@ -264,7 +300,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Bidirectional Theme Accent Color Sync for Home & QuickView Switch Icons and Schedule Timer/D-Day Text",
     "problem_en": "1) SCHEDULE Clock icon and D-1 badge text were hardcoded to emerald green (#10B981). 2) QuickView return Home icon and Standard/Elder Home QuickView switch icons were static webp images ignoring user accent colors.",
-    "solution_en": "1) Bound SCHEDULE Clock icon and D-Day badge text to theme.accentPrimary. 2) Replaced QuickView return home icon with Lucide Home (21/25px, strokeWidth 2.2) tinted with theme.accentPrimary. 3) Replaced Standard and Elder Home switch icons with Lucide LayoutGrid (20/22px, strokeWidth 2.2) tinted with theme.accentPrimary for symmetric bidirectional harmony."
+    "solution_en": "1) Bound SCHEDULE Clock icon and D-Day badge text to theme.accentPrimary. 2) Replaced QuickView return home icon with Lucide Home (21/25px, strokeWidth 2.2) tinted with theme.accentPrimary. 3) Replaced Standard and Elder Home switch icons with Lucide LayoutGrid (20/22px, strokeWidth 2.2) tinted with theme.accentPrimary for symmetric bidirectional harmony.",
+    "deployedAos": true,
+    "deployedVersionAos": "70 (1.1.3)",
+    "deployedDateAos": "2026-09-23 15:55",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 8,
@@ -299,7 +341,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Analyze Google Play Console Bitmap Decoding Warning and Build R8 Stack Trace LineNumberTable Preservation & mapping.txt Auto-Export Pipeline",
     "problem_en": "Play Console flagged a performance recommendation stating 'Your app is manually downloading and decoding images' pointing to Glide/Fresco/AdMob internals. Analysis confirmed a heuristic false positive, while identifying missing LineNumberTable preservation in R8 rules.",
-    "solution_en": "1) Added SourceFile and LineNumberTable preservation in proguard-rules.pro for 100% accurate Play Console de-obfuscation. 2) Added explicit keep rules for Fresco and Glide image pipelines. 3) Automated mapping.txt export to builds/ during AAB bundleRelease builds in build-android.ps1."
+    "solution_en": "1) Added SourceFile and LineNumberTable preservation in proguard-rules.pro for 100% accurate Play Console de-obfuscation. 2) Added explicit keep rules for Fresco and Glide image pipelines. 3) Automated mapping.txt export to builds/ during AAB bundleRelease builds in build-android.ps1.",
+    "deployedAos": true,
+    "deployedVersionAos": "70 (1.1.3)",
+    "deployedDateAos": "2026-09-23 15:55",
+    "deployedIos": true,
+    "deployedVersionIos": "70 (1.1.3)",
+    "deployedDateIos": "2026-09-23 15:55"
   },
   {
     "id": 9,
@@ -334,7 +382,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Synchronize DevSecretDispatchCard Theme Reactivity for Retro CRT Terminal and Dynamic Accent Colors",
     "problem_en": "When selecting Retro CRT Terminal themes (Matrix Green, CRT Amber, E-Ink) or custom accent colors, DevSecretDispatchCard remained stuck with hardcoded amber/yellow borders and badges (#F59E0B, #D97706).",
-    "solution_en": "1) Refactored card border, shadow, CONFIDENTIAL badge, and quote border to bind dynamically to theme.accentPrimary. 2) Replaced conflicting color illustration with theme-tinted Lucide Terminal and Star vector icons under retro terminal modes. 3) Added 3 comprehensive unit tests."
+    "solution_en": "1) Refactored card border, shadow, CONFIDENTIAL badge, and quote border to bind dynamically to theme.accentPrimary. 2) Replaced conflicting color illustration with theme-tinted Lucide Terminal and Star vector icons under retro terminal modes. 3) Added 3 comprehensive unit tests.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.4)",
+    "deployedDateAos": "2026-09-23 21:55",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 10,
@@ -379,7 +433,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Modularize Carta E-Ink Theme with 10 Signature Inks in 5x2 Grid and Guarantee Instant Reversion to Default Theme on Developer Mode OFF",
     "problem_en": "Carta E-Ink was restricted to fixed carbon black outlines (#2B2B28, #111111), and required verified safe reversion to the standard default theme upon toggling the developer mode master switch OFF.",
-    "solution_en": "1) Modularized E_INK_PALETTES with 10 signature fountain pen inks (5x2 grid) and dynamic getEInkTheme() in Colors.ts. 2) Engineered modular DevEInkInkPaletteRow.tsx adhering to the < 400 lines architectural rule. 3) Synchronized 12 i18n keys across all 17 locales. 4) Added regression unit tests ensuring 100% instant reversion to standard themes when developer mode is turned OFF."
+    "solution_en": "1) Modularized E_INK_PALETTES with 10 signature fountain pen inks (5x2 grid) and dynamic getEInkTheme() in Colors.ts. 2) Engineered modular DevEInkInkPaletteRow.tsx adhering to the < 400 lines architectural rule. 3) Synchronized 12 i18n keys across all 17 locales. 4) Added regression unit tests ensuring 100% instant reversion to standard themes when developer mode is turned OFF.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.4)",
+    "deployedDateAos": "2026-09-23 21:55",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 11,
@@ -415,7 +475,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Standardize Editor Top Navigation Keyboard Toggle Control and 44px Compact Bottom Tab Bar across Platforms",
     "problem_en": "Lack of state integration between active software keyboard and navigation bars reduced available typing viewport and left unnecessary vertical padding in bottom tab bar.",
-    "solution_en": "1) Standardized keyboard toggle controls across note headers. 2) Auto-hid bottom action shelf during active typing to maximize viewport on both Android and iOS. 3) Slimmed 5-tab bar to 44px with vertical center alignment across all platforms."
+    "solution_en": "1) Standardized keyboard toggle controls across note headers. 2) Auto-hid bottom action shelf during active typing to maximize viewport on both Android and iOS. 3) Slimmed 5-tab bar to 44px with vertical center alignment across all platforms.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 12,
@@ -453,7 +519,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Android Editor Keyboard Dismissal Italic Toolbar Synchronization and Caret Position Reset Defect",
     "problem_en": "1) Programmatic focus from the header button failed to raise Android software keyboard. 2) Toggling keyboard dismiss caused the 2nd formatting toolbar button (Italic) to falsely synchronize ON/OFF in lockstep with the keyboard. 3) Dismissing keyboard wiped out the active selection range, causing subsequent focus to reset the caret to the very beginning of the note.",
-    "solution_en": "1) Replaced faulty document.queryCommandState('italic') in editorTemplate.ts with DOM tree ancestor inspection. 2) Preserved lastSelectionRange on blur without deleting ranges. 3) Restored previous caret position on focusEditor. 4) Linked native requestFocus() in RichTextEditor.tsx. 5) Applied Lucide KeyboardOff vector icon."
+    "solution_en": "1) Replaced faulty document.queryCommandState('italic') in editorTemplate.ts with DOM tree ancestor inspection. 2) Preserved lastSelectionRange on blur without deleting ranges. 3) Restored previous caret position on focusEditor. 4) Linked native requestFocus() in RichTextEditor.tsx. 5) Applied Lucide KeyboardOff vector icon.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "71(1.1.5)",
+    "deployedDateIos": "2026-09-25 06:30"
   },
   {
     "id": 13,
@@ -499,7 +571,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Header Touch Collision Elimination, Audio Leak Prevention, Master Key Vault Isolation, Modal VDOM Optimization, and Monolith Decomposition",
     "problem_en": "1) HitSlop collisions between adjacent header buttons across 8px gaps. 2) Audio leak potential on new note exit. 3) Master key written to AsyncStorage plaintext on native devices. 4) NoteUnlockModal mounted per list item wasting VDOM memory. 5) FeedbackModal (646 lines) and ProEmblemCardModal (1,299 lines) violating the 400-line architecture rule.",
-    "solution_en": "1) Applied asymmetric hitSlop to eliminate touch interference. 2) Added AudioService.stopAudio() unmount cleanup in new note screen. 3) Isolated master keys strictly in SecureStore on native devices while preserving non-destructive legacy migration. 4) Lazy-mounted unlock modals inside FlatLists. 5) Decomposed monolithic modals into subcomponents under 400 lines each."
+    "solution_en": "1) Applied asymmetric hitSlop to eliminate touch interference. 2) Added AudioService.stopAudio() unmount cleanup in new note screen. 3) Isolated master keys strictly in SecureStore on native devices while preserving non-destructive legacy migration. 4) Lazy-mounted unlock modals inside FlatLists. 5) Decomposed monolithic modals into subcomponents under 400 lines each.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 14,
@@ -538,7 +616,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Persist Home Upcoming Schedule Ticker Accordion Expand/Collapse State Across Screen Transitions",
     "problem_en": "When upcoming schedule count was set to multiple (3 or 5 items), expanding the accordion was reset to collapsed upon navigating away and returning to the home screen due to local component useState.",
-    "solution_en": "1) Added SCHEDULE_HOME_EXPANDED storage key. 2) Integrated isScheduleHomeExpanded state & setIsScheduleHomeExpanded action in settingsStore with AsyncStorage persistence. 3) Restored expanded state on app boot in settingsDataLoader. 4) Bound UpcomingScheduleTicker to global settingsStore to preserve user's expand/collapse preference across navigation. 5) Added re-mount persistence unit test."
+    "solution_en": "1) Added SCHEDULE_HOME_EXPANDED storage key. 2) Integrated isScheduleHomeExpanded state & setIsScheduleHomeExpanded action in settingsStore with AsyncStorage persistence. 3) Restored expanded state on app boot in settingsDataLoader. 4) Bound UpcomingScheduleTicker to global settingsStore to preserve user's expand/collapse preference across navigation. 5) Added re-mount persistence unit test.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 15,
@@ -571,7 +655,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Home Screen Note Swipe Action Sensitivity Optimization, Flick Velocity Detection, and Silky Spring Physics",
     "problem_en": "Note item swipe actions (pin/delete) in home lists and settings preview required dragging 75-85px with no velocity detection, causing rubber-band bounces and requiring users to swipe 2-3 times.",
-    "solution_en": "1) Lowered threshold to 52px (56px elder). 2) Added flick velocity detection (|vx| > 0.38). 3) Prevented FlatList termination interference. 4) Tuned spring physics to friction: 10, tension: 45. 5) Added threshold haptic feedback. 6) Maintained under 400 lines across all files."
+    "solution_en": "1) Lowered threshold to 52px (56px elder). 2) Added flick velocity detection (|vx| > 0.38). 3) Prevented FlatList termination interference. 4) Tuned spring physics to friction: 10, tension: 45. 5) Added threshold haptic feedback. 6) Maintained under 400 lines across all files.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 16,
@@ -603,7 +693,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Yoga Layout Native Crash (SIGSEGV App Closure) in Backup Vault Tab Navigation and Implement Safety Guards",
     "problem_en": "Intermittently upon opening 'Backup Vault & Restore' or switching tabs, the app crashed and closed immediately without error logs due to native engine crashes.",
-    "solution_en": "1) Completely eliminated display: 'none' tab concealment in backup-vault.tsx, switching to activeTab conditional rendering. 2) Added isMounted guards in fetchVaultStats preventing async setState on unmounted components. 3) Replaced static BACKUP_DIR with dynamic getBackupDir() in localBackupService.ts."
+    "solution_en": "1) Completely eliminated display: 'none' tab concealment in backup-vault.tsx, switching to activeTab conditional rendering. 2) Added isMounted guards in fetchVaultStats preventing async setState on unmounted components. 3) Replaced static BACKUP_DIR with dynamic getBackupDir() in localBackupService.ts.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 17,
@@ -649,7 +745,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Google Drive Backup Eventual Consistency Optimistic Merge, Cloud Snapshot Deletion Pipeline, and Modal/Badge UI UX Elevation",
     "problem_en": "1) Creating a snapshot immediately showed 0 count due to Google Spanner distributed indexing latency. 2) Inability to delete redundant Google Drive snapshots from backup vault or cloud sync history. 3) Backup buttons in cloud sync and data settings executed without confirmation prompts. 4) Android count badge clung too closely to the chevron icon.",
-    "solution_en": "1) Implemented optimistic merge ([item, ...snapshots]) in syncStore.ts ensuring immediate visibility. 2) Created deleteSnapshot API pipeline across HTTP, Client, and Store. 3) Added Trash2 button and showConfirm dialogs to SnapshotHistoryModal and RestoreCloudTab. 4) Added showConfirm prompts before triggering backup in both cloud-sync.tsx and data.tsx with 17-language parity. 5) Elevated count badge with Figma-style pill styling and gap: 8."
+    "solution_en": "1) Implemented optimistic merge ([item, ...snapshots]) in syncStore.ts ensuring immediate visibility. 2) Created deleteSnapshot API pipeline across HTTP, Client, and Store. 3) Added Trash2 button and showConfirm dialogs to SnapshotHistoryModal and RestoreCloudTab. 4) Added showConfirm prompts before triggering backup in both cloud-sync.tsx and data.tsx with 17-language parity. 5) Elevated count badge with Figma-style pill styling and gap: 8.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-25 06:30",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 18,
@@ -696,7 +798,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Build Pro On-Device Voice Clarity & Boost Engine, Settings UI Integration, Option A Auto-Clean Save, and AudioPlayerView Badge",
     "problem_en": "1) Voice recording preview previously lacked true differentiation and failed to apply enhancement when user immediately pressed save. 2) Misleading 'AI' naming created technical confusion rather than providing clear voice clarity benefits. 3) Note audio player lacked visual indicator for enhanced audio recordings.",
-    "solution_en": "1) Created audioVoiceEnhancerService.ts with 4-stage speech DSP pipeline (120Hz rumble cut, 2.5kHz vocal boost, dynamic leveling compressor, adaptive noise gate). 2) Integrated Voice Clarity Boost toggle with purple PRO badge in AppAudioDspCard.tsx. 3) Implemented Option A in useVoiceRecordingSession.ts guaranteeing enhanced audio save even on instant save. 4) Added inline [Voice Boost] badge in AudioPlayerView.tsx. 5) Synchronized all 17 locales with 100% triple verification."
+    "solution_en": "1) Created audioVoiceEnhancerService.ts with 4-stage speech DSP pipeline (120Hz rumble cut, 2.5kHz vocal boost, dynamic leveling compressor, adaptive noise gate). 2) Integrated Voice Clarity Boost toggle with purple PRO badge in AppAudioDspCard.tsx. 3) Implemented Option A in useVoiceRecordingSession.ts guaranteeing enhanced audio save even on instant save. 4) Added inline [Voice Boost] badge in AudioPlayerView.tsx. 5) Synchronized all 17 locales with 100% triple verification.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-26 08:02",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 19,
@@ -735,7 +843,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Google Drive Background Silent Session Recovery (signInSilently) after App Update and Audio Player 2-Row UI Layout Overhaul",
     "problem_en": "1) After updating or restarting the app with a connected Google account, manual sync failed with error due to unconfigured GoogleSignin SDK and missing silent session restoration when token expired. 2) Voice memo player in note editor crammed Voice Memo title, Voice Clean badge, and 00:00/00:16 duration into a narrow 180px column, causing text clipping and overlap.",
-    "solution_en": "1) Ensured this.configure() and implemented GoogleSignin.signInSilently() session recovery in getValidAccessToken() before fetching fresh tokens into SecureStore. 2) Proactively configured GoogleAuthService on syncStore.initialize(). 3) Redesigned AudioPlayerView.tsx into a balanced 2-row layout (top header with title, badge, duration, delete; bottom playback with controls and expanded waveform scrubber), completely eliminating text clipping while remaining under 349 lines. 4) All 94 test suites and 519 tests passed 100%."
+    "solution_en": "1) Ensured this.configure() and implemented GoogleSignin.signInSilently() session recovery in getValidAccessToken() before fetching fresh tokens into SecureStore. 2) Proactively configured GoogleAuthService on syncStore.initialize(). 3) Redesigned AudioPlayerView.tsx into a balanced 2-row layout (top header with title, badge, duration, delete; bottom playback with controls and expanded waveform scrubber), completely eliminating text clipping while remaining under 349 lines. 4) All 94 test suites and 519 tests passed 100%.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-26 08:02",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 20,
@@ -779,7 +893,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Voice Memo Playback Freezing (00:00 Stalled) after Clean App Reinstall and Google Cloud Sync, and Restore Full Binary Media Streaming",
     "problem_en": "After cleanly reinstalling the app and syncing with Google Cloud, tapping play on existing voice memos showed a pause icon but stayed completely frozen at 00:00 without playing audio, while newly recorded memos played fine. Caused by corrupted filename extraction on JSON audio arrays, missing uploads/downloads, corrupted URIs in SQLite, and AudioPlayerView setting isPlaying true even when audio failed to load.",
-    "solution_en": "1) Added JSON array parsing and regex filename sanitization in SyncMediaEngine.extractMediaFileNames. 2) Supported JSON array re-anchoring and self-healing in ArchiveRestoreEngine.normalizeRestoredMediaUri. 3) Cross-platform re-anchoring in audioUtils.ts. 4) Added missing media reconciliation in syncPushEngine and syncPullEngine. 5) Added status.isLoaded guard and on-demand cloud media download in AudioPlayerView. 6) All 94 test suites and 523 tests passed 100%."
+    "solution_en": "1) Added JSON array parsing and regex filename sanitization in SyncMediaEngine.extractMediaFileNames. 2) Supported JSON array re-anchoring and self-healing in ArchiveRestoreEngine.normalizeRestoredMediaUri. 3) Cross-platform re-anchoring in audioUtils.ts. 4) Added missing media reconciliation in syncPushEngine and syncPullEngine. 5) Added status.isLoaded guard and on-demand cloud media download in AudioPlayerView. 6) All 94 test suites and 523 tests passed 100%.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-26 08:02",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 21,
@@ -823,7 +943,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "W3C/POSIX Standard Clean Filename Extraction Engine Overhaul, Multi-Audio Voice Memo Cloud Sync & Offline ZIP Backup Integrity Guarantee",
     "problem_en": "1) Restricted ASCII regex (/^[a-zA-Z0-9_\\-\\.]+/) truncated or nullified filenames containing whitespace, Korean, or special characters. 2) Notes with multiple voice recordings failed to parse filenames from JSON arrays, resulting in skipped Google Drive uploads/downloads and missing files in offline ZIP backups, leading to 'Audio file not found' errors. 3) Missing localization key across 17 locale packs.",
-    "solution_en": "1) Created extractCleanFileName in utils/audioUtils.ts using W3C URL decoding and POSIX path splitting without patchwork regex. 2) Updated syncMediaEngine.ts to unwrap multi-audio JSON arrays and extract clean filenames for all files. 3) Enhanced backupZipPacker.ts to include all audio recordings from JSON arrays in offline ZIP snapshots. 4) Verified AudioPlayerView on-demand streaming download and safe toast fallback. 5) Added voice.audioFileNotFound across all 17 locales with 1:1 parity. 6) 94 test suites, 540 tests 100% passed."
+    "solution_en": "1) Created extractCleanFileName in utils/audioUtils.ts using W3C URL decoding and POSIX path splitting without patchwork regex. 2) Updated syncMediaEngine.ts to unwrap multi-audio JSON arrays and extract clean filenames for all files. 3) Enhanced backupZipPacker.ts to include all audio recordings from JSON arrays in offline ZIP snapshots. 4) Verified AudioPlayerView on-demand streaming download and safe toast fallback. 5) Added voice.audioFileNotFound across all 17 locales with 1:1 parity. 6) 94 test suites, 540 tests 100% passed.",
+    "deployedAos": true,
+    "deployedVersionAos": "71(1.1.5)",
+    "deployedDateAos": "2026-09-26 08:03",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.4 (82)",
+    "deployedDateIos": "2026-09-30 05:31"
   },
   {
     "id": 22,
@@ -854,7 +980,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Complete Removal of Unnecessary Clipboard Text Restore in Backup Vault and Overhaul to Clean Single-File (JSON/ZIP) Restore UI",
     "problem_en": "The RestoreLocalTab had an unused 'Restore from Clipboard' option with 2 segmented tabs, cluttering UI layout and risking memory hangs with large JSON payloads.",
-    "solution_en": "Removed segmented tabs and clipboard text restore parser entirely from RestoreLocalTab.tsx, unifying into a streamlined, robust single-file JSON/ZIP restore interface across both Android and iOS."
+    "solution_en": "Removed segmented tabs and clipboard text restore parser entirely from RestoreLocalTab.tsx, unifying into a streamlined, robust single-file JSON/ZIP restore interface across both Android and iOS.",
+    "deployedAos": true,
+    "deployedVersionAos": "74(1.1.7)",
+    "deployedDateAos": "2026-09-26 16:07",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 23,
@@ -890,7 +1022,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Calendar Widget Pastel Cube Column 1:1 Vertical Alignment and Muted Glass Slate Blue Text/Backdrop Missing Render Resolution (Android & iOS)",
     "problem_en": "1) In Pastel Cube calendar style, weekday headers and date cells were misaligned horizontally. 2) In Muted Glass style, date numerals were invisible due to missing contrast and background slate-blue rendering in Android and iOS widgets.",
-    "solution_en": "1) Aligned Pastel Cube weekday and date columns to strict 1:1 equal-width vertical cells across 2x2 and 4x2 layouts. 2) Restored slate-blue glass background and high-contrast text rendering for Muted Glass style in LiveWidgetStylesPart2.ts, preview, and iOS ModoCalendarWidget.swift."
+    "solution_en": "1) Aligned Pastel Cube weekday and date columns to strict 1:1 equal-width vertical cells across 2x2 and 4x2 layouts. 2) Restored slate-blue glass background and high-contrast text rendering for Muted Glass style in LiveWidgetStylesPart2.ts, preview, and iOS ModoCalendarWidget.swift.",
+    "deployedAos": true,
+    "deployedVersionAos": "74(1.1.7)",
+    "deployedDateAos": "2026-09-26 16:07",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 24,
@@ -937,7 +1075,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Workspace Hub (KeepHub) Widget Display Lines (1/2/3 Lines), Theme Accent Palette Sync, and Per-Note Background Color (Note Color) Live Integration",
     "problem_en": "1) KeepHub widget on home screen ignored customized note display lines (1/2/3 lines) and theme accent palette, falling back to static grey cards. 2) Per-note background colors set by users were completely omitted from widget cards. 3) widgetTaskHandler lacked fallback to getActiveConfigForModel for keephub, resetting configs on background lifecycle.",
-    "solution_en": "1) Created modular resolveKeepHubCardColors helper for harmonized note card styling. 2) Added color field to WidgetNoteSummary and fully wired notesStore sync pipeline across Android and iOS. 3) Implemented individual note color tints and theme accent borders in ModoKeepHubWidget.tsx and iOS ModoKeepHubWidget.swift. 4) Added getActiveConfigForModel fallback in widgetTaskHandler. 5) Wired live debounced sync in TextColorSelector.tsx. 6) 95 test suites and 545 tests passed 100%."
+    "solution_en": "1) Created modular resolveKeepHubCardColors helper for harmonized note card styling. 2) Added color field to WidgetNoteSummary and fully wired notesStore sync pipeline across Android and iOS. 3) Implemented individual note color tints and theme accent borders in ModoKeepHubWidget.tsx and iOS ModoKeepHubWidget.swift. 4) Added getActiveConfigForModel fallback in widgetTaskHandler. 5) Wired live debounced sync in TextColorSelector.tsx. 6) 95 test suites and 545 tests passed 100%.",
+    "deployedAos": true,
+    "deployedVersionAos": "74(1.1.7)",
+    "deployedDateAos": "2026-09-26 16:07",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 25,
@@ -992,7 +1136,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Fix Widget Click App Crash & ANR Freeze (Standardize to OPEN_APP), Perfect 1:1 Column Alignment for Pastel Cube, and Modularize 4x2 Wide Layout (Android Native & iOS WidgetKit)",
     "problem_en": "1) Tapping widgets on Android home screen immediately dismissed the app, forced cold boots on next tap, and caused ANR tap freezing. 2) Pastel Cube calendar displayed skewed weekday headers and day numbers due to LinearLayout intrinsic width measurement mismatch and injected space-between views. 3) Pastel Cube in 4x2 wide widget stretched the 2x2 layout horizontally without quick memo preview. 4) iOS ModoCalendarWidget.swift had duplicated 4x2 grid logic with Saturday red color contamination, spacing drift, and missing pastel cube rendering.",
-    "solution_en": "1) Switched all widget clickActions from OPEN_URI to native OPEN_APP, avoiding singleTask component mismatch against launcher activity-alias. 2) Removed space-between and applied flex: 1, width: 0, marginHorizontal: 1 across all 7 columns for exact alignment. 3) Created modular PastelCubeWideLayout (< 290 lines) featuring 1:1 calendar on left and quick memo preview on right. 4) Unified iOS month grid with renderMonthCalendar, fixing Saturday blue/Sunday red, adding 4x2 pastel cube styling, and reducing lines from 421 to 375 (< 400 lines limit). 5) Verified 0 tsc errors and 100% PASS across 95 test suites / 545 tests."
+    "solution_en": "1) Switched all widget clickActions from OPEN_URI to native OPEN_APP, avoiding singleTask component mismatch against launcher activity-alias. 2) Removed space-between and applied flex: 1, width: 0, marginHorizontal: 1 across all 7 columns for exact alignment. 3) Created modular PastelCubeWideLayout (< 290 lines) featuring 1:1 calendar on left and quick memo preview on right. 4) Unified iOS month grid with renderMonthCalendar, fixing Saturday blue/Sunday red, adding 4x2 pastel cube styling, and reducing lines from 421 to 375 (< 400 lines limit). 5) Verified 0 tsc errors and 100% PASS across 95 test suites / 545 tests.",
+    "deployedAos": true,
+    "deployedVersionAos": "74(1.1.7)",
+    "deployedDateAos": "2026-09-26 16:07",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 26,
@@ -1027,7 +1177,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Block Cross-Widget Style Overwrite on Multi-Pin, Fix Missing isMini on Initial Widget Render, and Ensure Pure 2x2 Calendar Display on 3x2 Resizing",
     "problem_en": "1) Adding a new widget style from Widget Studio altered/overwrote existing widgets on the Android home screen. 2) When first adding a 2x2 calendar widget like Pastel Cube, rows and dates were crushed and misaligned until resized to 3x2 and back to 2x2. 3) Resizing or placing 2x2 square styles onto 3x2/4x2 forced an unwanted split layout with Quick Memo.",
-    "solution_en": "1) Injected isMini={widgetName === 'ModoMiniCalendarWidget'} in renderSingleWidgetInstance.tsx to stop 2x2 widgets from erroneously rendering 4x2 wide layouts on first render. 2) Removed AndroidWidgetSync.refreshAllWidgets() from applyWidgetToHomeScreen, ensuring pinning only syncs the new widget instance with 0% impact on existing ones. 3) Added a 200ms retry safeguard in bindNewWidgetsAndSync for resilient new widget ID binding. 4) Refined isWideLayout in ModoCalendarWidget.tsx to only trigger for true wide styles (!isMini && ['dual_month', 'vivid_purple', 'dark_neon']), allowing 2x2 styles to remain pure calendars when resized to 3x2. 5) Verified 0 tsc errors and 100% PASS across 95 test suites / 545 tests."
+    "solution_en": "1) Injected isMini={widgetName === 'ModoMiniCalendarWidget'} in renderSingleWidgetInstance.tsx to stop 2x2 widgets from erroneously rendering 4x2 wide layouts on first render. 2) Removed AndroidWidgetSync.refreshAllWidgets() from applyWidgetToHomeScreen, ensuring pinning only syncs the new widget instance with 0% impact on existing ones. 3) Added a 200ms retry safeguard in bindNewWidgetsAndSync for resilient new widget ID binding. 4) Refined isWideLayout in ModoCalendarWidget.tsx to only trigger for true wide styles (!isMini && ['dual_month', 'vivid_purple', 'dark_neon']), allowing 2x2 styles to remain pure calendars when resized to 3x2. 5) Verified 0 tsc errors and 100% PASS across 95 test suites / 545 tests.",
+    "deployedAos": true,
+    "deployedVersionAos": "74(1.1.7)",
+    "deployedDateAos": "2026-09-26 16:07",
+    "deployedIos": true,
+    "deployedVersionIos": "74(1.1.7)",
+    "deployedDateIos": "2026-09-26 16:07"
   },
   {
     "id": 27,
@@ -1068,7 +1224,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Introduce KeepHub Wide Stream Widget, 4-Line Note Preview Option, Dual Action Buttons (What to Record / Quick Capture), and Resolve Android Z-Order Touch Interception Bug (Android Native & iOS WidgetKit)",
     "problem_en": "1) Workspace Hub (KeepHub) lacked a pure memo-feed Wide Stream layout and was limited to 1-3 preview lines without a 4-line option. 2) Android AppWidget RemoteViews cannot host in-place floating speed dial popups on the home screen. 3) Dual action buttons needed separate routes (Left: What to Record sheet, Right: Quick Capture screen). 4) Android home screen widget buttons were unresponsive due to ListView (rn_widget_collection_container) covering ClickableView (rn_widget_clickable_container) in rn_widget.xml Z-order, alongside corner curve clipping and small hit targets.",
-    "solution_en": "1) Added KeepHub wide_stream layout and quad-line (4 lines) note preview option. 2) Placed dual independent action buttons with warm beige (#F5EFE6) and subtle border (#D4C7B5) styling. 3) Completely cleared bottom 44dp from ListView via marginBottom: isWideStream ? 44 : 0 in ModoKeepHubWidget.tsx, granting 100% unobstructed touch priority to ClickableView. 4) Enlarged button to 35dp (+44% area), icon to 24dp, gap to 10dp, and moved away from curved corners (trailing: 14dp, bottom: 8dp). 5) Reduced URL debounce from 1200ms to 500ms and skipped splash screen immediately on deep links. 6) Perfectly synchronized across all 4 surfaces. 7) Triple verified: 0 tsc errors, 100% test pass (95 suites / 545 tests), successful Kotlin compilation."
+    "solution_en": "1) Added KeepHub wide_stream layout and quad-line (4 lines) note preview option. 2) Placed dual independent action buttons with warm beige (#F5EFE6) and subtle border (#D4C7B5) styling. 3) Completely cleared bottom 44dp from ListView via marginBottom: isWideStream ? 44 : 0 in ModoKeepHubWidget.tsx, granting 100% unobstructed touch priority to ClickableView. 4) Enlarged button to 35dp (+44% area), icon to 24dp, gap to 10dp, and moved away from curved corners (trailing: 14dp, bottom: 8dp). 5) Reduced URL debounce from 1200ms to 500ms and skipped splash screen immediately on deep links. 6) Perfectly synchronized across all 4 surfaces. 7) Triple verified: 0 tsc errors, 100% test pass (95 suites / 545 tests), successful Kotlin compilation.",
+    "deployedAos": true,
+    "deployedVersionAos": "75(1.1.8)",
+    "deployedDateAos": "2026-09-27 08:14",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 28,
@@ -1108,7 +1270,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Separate and Register KeepHub Side Rail and Wide Stream as Independent iOS Widgets in WidgetKit Bundle and Establish AppGroup Dual Sync Pipeline",
     "problem_en": "1) Workspace Hub was registered as a single widget in iOS WidgetKit, causing only Side Rail thumbnails to appear in the iOS Widget Gallery and preventing users from previewing or selecting Wide Stream independently. 2) KeepHubTimelineProvider.placeholder returned hardcoded defaultSampleConfig (side_rail) instead of querying AppGroup. 3) Mixing two completely different layout structures in one file would violate the single file < 400 lines limit.",
-    "solution_en": "1) Registered ModoKeepHubWidget (Side Rail) and ModoKeepHubWideWidget (Wide Stream) as two distinct widgets in ModoWidgetBundle.swift and plugins/withModoWidgets.js. 2) Strictly adhered to < 400 lines per file: ModoKeepHubWidget.swift (255 lines) and ModoKeepHubWideWidget.swift (247 lines). 3) Implemented dual AppGroup synchronization in iosWidgetSync.ts (@modo_widget_config_keephub and @modo_widget_config_keephub_wide). 4) Synchronized all 17 language packs in Localizable.strings with 1:1 parity. 5) Triple verified: 0 tsc errors, 100% test pass (95 suites / 545 tests)."
+    "solution_en": "1) Registered ModoKeepHubWidget (Side Rail) and ModoKeepHubWideWidget (Wide Stream) as two distinct widgets in ModoWidgetBundle.swift and plugins/withModoWidgets.js. 2) Strictly adhered to < 400 lines per file: ModoKeepHubWidget.swift (255 lines) and ModoKeepHubWideWidget.swift (247 lines). 3) Implemented dual AppGroup synchronization in iosWidgetSync.ts (@modo_widget_config_keephub and @modo_widget_config_keephub_wide). 4) Synchronized all 17 language packs in Localizable.strings with 1:1 parity. 5) Triple verified: 0 tsc errors, 100% test pass (95 suites / 545 tests).",
+    "deployedAos": true,
+    "deployedVersionAos": "75(1.1.8)",
+    "deployedDateAos": "2026-09-27 08:14",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 29,
@@ -1152,7 +1320,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve What-To-Record Sheet Close 404 Error Screen (+not-found) on Workspace Hub Wide Feed Widget and Place Modo Logo App Launch Icon on Far Left of Bottom Bar (Android Native & iOS WidgetKit)",
     "problem_en": "1) Clicking the What-To-Record button (modo://what-to-record) on Workspace Hub Wide Feed opened the sheet, but pressing 'X' close displayed the 'Something went wrong (+not-found.tsx)' error screen instead of returning to Home. This was caused by the lack of an app/what-to-record.tsx route file in Expo Router, which mounted +not-found under the modal. 2) Wide Feed widget lacked a 1-tap app launch shortcut icon on the bottom bar.",
-    "solution_en": "1) Created app/what-to-record.tsx and app/capture-sheet.tsx route handlers that cleanly redirect to /(tabs) and trigger the quick capture sheet. 2) Registered transparent modal stack screens in app/_layout.tsx. 3) Added router.replace('/(tabs)') fallback to handleClose in QuickCaptureSheet.tsx. 4) Placed Modo pebble gradient logo icon on the far left of the bottom bar across Android (OPEN_APP), iOS (modo://(tabs)), Widget Studio Preview, and Kotlin native builder with 1:1 parity. 5) Verified with 0 tsc errors and 100% test pass across 96 suites / 548 tests."
+    "solution_en": "1) Created app/what-to-record.tsx and app/capture-sheet.tsx route handlers that cleanly redirect to /(tabs) and trigger the quick capture sheet. 2) Registered transparent modal stack screens in app/_layout.tsx. 3) Added router.replace('/(tabs)') fallback to handleClose in QuickCaptureSheet.tsx. 4) Placed Modo pebble gradient logo icon on the far left of the bottom bar across Android (OPEN_APP), iOS (modo://(tabs)), Widget Studio Preview, and Kotlin native builder with 1:1 parity. 5) Verified with 0 tsc errors and 100% test pass across 96 suites / 548 tests.",
+    "deployedAos": true,
+    "deployedVersionAos": "75(1.1.8)",
+    "deployedDateAos": "2026-09-27 08:14",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 30,
@@ -1192,7 +1366,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Schedule Reminder Push Notification Delivery Failure (Full Calculation for On-Time/Preset/Custom Timings & Android Schedule Channel Registration)",
     "problem_en": "Push notifications were never delivered when users created calendar schedules with reminders ('on_time', '10m_before', '1h_before', 'custom_...'). Root causes: 1) DDayNotificationHelper.ts only evaluated legacy D-Day keys (0d_09, 0d_exact, 1h, 1d, 3d, 7d) in its if-else branches, leaving triggerDate as null for all schedule reminders. 2) Missing Android 'schedule' notification channel. 3) Missing permission request trigger upon saving reminders.",
-    "solution_en": "1) Overhauled DDayNotificationHelper.ts with calculateReminderTriggerDate supporting all timings (on_time, 10m/30m/1h/1d before, custom_num_unit). 2) Created getScheduleReminderNotificationPayload for rich schedule titles and time/memo previews. 3) Registered high-importance Android 'schedule' channel and added ensureChannels(). 4) Added requestPermissions() trigger on schedule save when reminder is enabled. 5) Expanded DDayReminderType and formatReminderSummaryKo. 6) Added 10 unit tests passing 100% across all suites."
+    "solution_en": "1) Overhauled DDayNotificationHelper.ts with calculateReminderTriggerDate supporting all timings (on_time, 10m/30m/1h/1d before, custom_num_unit). 2) Created getScheduleReminderNotificationPayload for rich schedule titles and time/memo previews. 3) Registered high-importance Android 'schedule' channel and added ensureChannels(). 4) Added requestPermissions() trigger on schedule save when reminder is enabled. 5) Expanded DDayReminderType and formatReminderSummaryKo. 6) Added 10 unit tests passing 100% across all suites.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 12:16",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 31,
@@ -1229,7 +1409,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Missing Workspace Hub Wide Feed Widget in iOS Widget Gallery (Sync Build Sources, Register project.pbxproj Compile Sources & Enhance withModoWidgets.js Auto-Registration)",
     "problem_en": "Workspace Hub (Wide Feed) widget was missing in the iOS Home Screen widget addition gallery. Root causes: 1) Swift source existed only in targets/widgets/ template and was never copied to the actual native build directory (ios/ModoWidgets/). 2) ModoKeepHubWideWidget() entry was missing in ios/ModoWidgets/ModoWidgetBundle.swift. 3) Missing PBXBuildFile, PBXFileReference, PBXGroup, and PBXSourcesBuildPhase in Modo.xcodeproj. 4) plugins/withModoWidgets.js returned early when existingTarget was present, preventing newly added WIDGET_SWIFT_FILES from being registered in the Xcode project.",
-    "solution_en": "1) Synchronized ModoKeepHubWideWidget.swift, ModoWidgetBundle.swift, and 17 Localizable.strings into ios/ModoWidgets/. 2) Registered ModoKeepHubWideWidget.swift into ModoWidgets target Sources build phase and group in project.pbxproj. 3) Enhanced withModoWidgets.js to detect and register missing Swift source files even when widget target already exists. 4) Triple verified with 0 tsc errors and 100% Jest pass."
+    "solution_en": "1) Synchronized ModoKeepHubWideWidget.swift, ModoWidgetBundle.swift, and 17 Localizable.strings into ios/ModoWidgets/. 2) Registered ModoKeepHubWideWidget.swift into ModoWidgets target Sources build phase and group in project.pbxproj. 3) Enhanced withModoWidgets.js to detect and register missing Swift source files even when widget target already exists. 4) Triple verified with 0 tsc errors and 100% Jest pass.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 32,
@@ -1270,7 +1453,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Calendar Schedule/D-Day Pollution in Workspace Hub (KeepHub) Widget by Enforcing Pure Notes Filtering (Android Native & iOS WidgetKit)",
     "problem_en": "Calendar schedules and D-Days appeared inside the notes list of Workspace Hub widgets instead of pure notes. Root causes: 1) SQLite 'notes' table stores general memos, voice memos, calendar schedules (is_schedule: 1), and D-Days (d_day_date) in a single unified table. 2) syncWidgetFromNotes in stores/notesStore.ts sliced the top 10 notes without filtering out schedules, pushing recently created schedules directly into the widget notes summary. 3) Missing filter guards across iOS AppGroup sync and Android widget renderers.",
-    "solution_en": "1) Enforced pure notes filtering in stores/notesStore.ts (excluding is_schedule === 1 and notes with d_day_date) so KeepHub only receives authentic memos. 2) Preserved D-Day metadata on a separate channel for D-Day widgets without mutating note titles. 3) Added dual filter guards in iosWidgetSync.ts (resolveRecentNotes). 4) Filtered isSchedule in renderSingleWidgetInstance.tsx and widgetTaskHandler.tsx. 5) Synchronized KeepHubPreviewContent.tsx with 1:1 parity. 6) Added unit test and triple verified with 100% Jest pass (562 tests)."
+    "solution_en": "1) Enforced pure notes filtering in stores/notesStore.ts (excluding is_schedule === 1 and notes with d_day_date) so KeepHub only receives authentic memos. 2) Preserved D-Day metadata on a separate channel for D-Day widgets without mutating note titles. 3) Added dual filter guards in iosWidgetSync.ts (resolveRecentNotes). 4) Filtered isSchedule in renderSingleWidgetInstance.tsx and widgetTaskHandler.tsx. 5) Synchronized KeepHubPreviewContent.tsx with 1:1 parity. 6) Added unit test and triple verified with 100% Jest pass (562 tests).",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 12:16",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 33,
@@ -1307,6 +1496,9 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Missing 3D Action Icons in Workspace Hub (Wide Feed) Widget by Syncing WidgetKit Bundle Resources (Fix SF Symbols Fallback)",
     "problem_en": "Custom 3D WebP action icons in Workspace Hub Wide Feed widget fell back to iOS default SF Symbols (app.fill, doc.text, pencil). Root causes: 1) 3 WebP files existed only in React Native assets and were never copied to ios/ModoWidgets/Resources/. 2) Missing PBXBuildFile, PBXFileReference, and PBXResourcesBuildPhase in project.pbxproj. 3) withModoWidgets.js lacked auto-registration of missing resource files for existing widget targets.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 34,
@@ -1357,7 +1549,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Raw HTML Entities (&nbsp;, &#160;) Display in Home Screen Widget Summaries by Integrating Central Sanitizer (stripHtmlAndMarkdown) and Native Swift Defense",
     "problem_en": "Raw HTML entity codes like '&nbsp;&nbsp;' appeared in note previews on iOS Workspace Hub (KeepHub) widgets. Root causes: 1) Rich text editor generates &nbsp; for consecutive spaces and todo checkboxes. 2) Legacy code in notesStore.ts, iosWidgetSync.ts, etc., relied on patchwork regex .replace(/<[^>]*>/g, ''), stripping tags but leaving HTML entities untouched. 3) SwiftUI Text renders raw strings verbatim without HTML entity decoding.",
-    "solution_en": "1) Tier 1 (TS/JS data layer): Purged all patchwork regexes across notesStore.ts, iosWidgetSync.ts, postitContentResolver.ts, ModoKeepHubWidget.tsx, PostitNotePicker.tsx, and ddayNotificationHelper.ts, replacing them 100% with central standard stripHtmlAndMarkdown. 2) utils/markdown.ts: Enhanced stripHtmlAndMarkdown to decode numeric space entities (&#160;, &#xA0;) and strip underscore markdown syntax. 3) Tier 2 (Native Swift rendering layer): Added cleanText decoding helper to ModoKeepHubWideWidget.swift, ModoKeepHubWidget.swift, ModoPostitWidget.swift, and ModoProClockWidget.swift across targets/widgets and ios/ModoWidgets. 4) Added dedicated unit test suite (5 tests) and verified with 100% Jest pass (99 suites, 567 tests)."
+    "solution_en": "1) Tier 1 (TS/JS data layer): Purged all patchwork regexes across notesStore.ts, iosWidgetSync.ts, postitContentResolver.ts, ModoKeepHubWidget.tsx, PostitNotePicker.tsx, and ddayNotificationHelper.ts, replacing them 100% with central standard stripHtmlAndMarkdown. 2) utils/markdown.ts: Enhanced stripHtmlAndMarkdown to decode numeric space entities (&#160;, &#xA0;) and strip underscore markdown syntax. 3) Tier 2 (Native Swift rendering layer): Added cleanText decoding helper to ModoKeepHubWideWidget.swift, ModoKeepHubWidget.swift, ModoPostitWidget.swift, and ModoProClockWidget.swift across targets/widgets and ios/ModoWidgets. 4) Added dedicated unit test suite (5 tests) and verified with 100% Jest pass (99 suites, 567 tests).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 35,
@@ -1399,7 +1594,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Establish 60-Minute Live Clock Timeline Engine and Isolate AppGroup Widget Persistence per Model (iOS WidgetKit Live Ticking & Cross-Widget Shield)",
     "problem_en": "1) iOS clock widgets froze like static screenshots due to ClockTimelineProvider generating only a single entry every 30 minutes with Text(Date()). 2) Applying one widget preset in Widget Studio unexpectedly reset or corrupted colors and themes of unrelated widgets on the home screen because iosWidgetSync unconditionally rewrote all 10 AppGroup keys across all 8 models.",
-    "solution_en": "1) Built 60-minute interval ClockEntry timeline in ClockTimelineProvider.swift with .atEnd policy, ensuring SpringBoard updates every minute. 2) Replaced Text(Date()) with Text(entry.date) in ModoSquareClockWidget and ModoProClockWidget. 3) Implemented selective persistence in iosWidgetSync.ts so only the target model's AppGroup keys are updated. 4) Added dedicated isolation tests and triple verified with 100% Jest pass (99 suites, 569 tests)."
+    "solution_en": "1) Built 60-minute interval ClockEntry timeline in ClockTimelineProvider.swift with .atEnd policy, ensuring SpringBoard updates every minute. 2) Replaced Text(Date()) with Text(entry.date) in ModoSquareClockWidget and ModoProClockWidget. 3) Implemented selective persistence in iosWidgetSync.ts so only the target model's AppGroup keys are updated. 4) Added dedicated isolation tests and triple verified with 100% Jest pass (99 suites, 569 tests).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 36,
@@ -1442,7 +1640,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Implement Targeted iOS Widget Timeline Reload (reloadWidgetTimelines(ofKind:)), Isolate KeepHub Theme Color Stability Upon Clock Addition, and Support 7 Authentic Paper Palettes",
     "problem_en": "Adding or configuring a Clock widget on iOS unexpectedly altered the background and theme colors of the previously added Workspace Hub (KeepHub) widget. Root causes: 1) iosWidgetSync invoked reloadAllWidgetTimelines() across all widgets. 2) Missing AppGroup config caused KeepHub to fall back to a hardcoded 'dark' sample config. 3) KeepHub Swift widgets only supported binary light/dark without authentic paper materials. 4) Note sync rewrote KeepHub without preserving existing AppGroup theme data.",
-    "solution_en": "1) Added reloadWidgetTimelines(ofKind:) native bridge in DynamicIconModule.swift & expo-dynamic-icon. 2) Replaced blanket SpringBoard reload with targeted reload based on targetModel in iosWidgetSync.ts. 3) Preserved existing AppGroup KeepHub theme and settings during note updates. 4) Added colorScheme environment and 7 authentic paper palettes (kraft, parchment, sage, sakura, etc.) in ModoKeepHubWidget.swift & ModoKeepHubWideWidget.swift. 5) Added 3 dedicated unit tests and verified with 100% test pass (99 suites, 572 tests)."
+    "solution_en": "1) Added reloadWidgetTimelines(ofKind:) native bridge in DynamicIconModule.swift & expo-dynamic-icon. 2) Replaced blanket SpringBoard reload with targeted reload based on targetModel in iosWidgetSync.ts. 3) Preserved existing AppGroup KeepHub theme and settings during note updates. 4) Added colorScheme environment and 7 authentic paper palettes (kraft, parchment, sage, sakura, etc.) in ModoKeepHubWidget.swift & ModoKeepHubWideWidget.swift. 5) Added 3 dedicated unit tests and verified with 100% test pass (99 suites, 572 tests).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 37,
@@ -1480,7 +1681,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Resolve Xcode Intentbuilderc Compilation Errors by Aligning SiriKit Intent Schema Category/Verb Pairs and Enum Index 0 'unknown' Specification",
     "problem_en": "Xcode build failed for ModoWidgets and Modo targets due to intentbuilderc errors: 1) '‘view / (null)’ is not a valid category'. 2) 'Enum value at index 0 should be ‘unknown’' across ModoCrtColorEnum, ModoThemeEnum, and ModoFontFamilyEnum.",
-    "solution_en": "1) Fixed ModoClockConfiguration.intentdefinition to use INIntentCategory 'information' and INIntentVerb 'View' adhering to Apple's SupportedCategories.plist. 2) Renamed index 0 of all custom enums to 'unknown' with display name 'Default (App Setting)'. 3) Aligned ClockIntentTimelineProvider.swift switch cases to handle .unknown and @unknown default. 4) Synchronized targets/widgets and ios/ModoWidgets/. 5) Verified clean native build for both Modo and ModoWidgets schemes via xcodebuild, passing all 99 Jest test suites (572 tests)."
+    "solution_en": "1) Fixed ModoClockConfiguration.intentdefinition to use INIntentCategory 'information' and INIntentVerb 'View' adhering to Apple's SupportedCategories.plist. 2) Renamed index 0 of all custom enums to 'unknown' with display name 'Default (App Setting)'. 3) Aligned ClockIntentTimelineProvider.swift switch cases to handle .unknown and @unknown default. 4) Synchronized targets/widgets and ios/ModoWidgets/. 5) Verified clean native build for both Modo and ModoWidgets schemes via xcodebuild, passing all 99 Jest test suites (572 tests).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 38,
@@ -1517,7 +1721,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Restore iOS Clock Widget Intent Configuration Parameters (CRT Color, Theme) and Guarantee Per-Instance Isolation (SiriKit Primary Combinations & Configurable Flags)",
     "problem_en": "When long-pressing a placed clock widget on iOS SpringBoard and tapping 'Edit Widget', only 'Font Family' appeared, omitting CRT Color and Theme. Furthermore, because instance values remained .unknown, modifying a 2nd clock widget in the app clobbered the 1st widget's colors and theme due to unshielded UserDefaults fallback.",
-    "solution_en": "1) Added INIntentParameterConfigurable: true, display priority (1, 2, 3), and tags (1, 2, 3) to crtColor, theme, and fontFamily in ModoClockConfiguration.intentdefinition. 2) Declared primary combination <key>crtColor,fontFamily,theme</key> with INIntentParameterCombinationIsPrimary: true. 3) Synchronized targets/widgets and ios/ModoWidgets/. 4) Verified clean native compilation via intentbuilderc and xcodebuild -scheme ModoWidgets, passing 100% Jest tests (99 suites, 572 tests)."
+    "solution_en": "1) Added INIntentParameterConfigurable: true, display priority (1, 2, 3), and tags (1, 2, 3) to crtColor, theme, and fontFamily in ModoClockConfiguration.intentdefinition. 2) Declared primary combination <key>crtColor,fontFamily,theme</key> with INIntentParameterCombinationIsPrimary: true. 3) Synchronized targets/widgets and ios/ModoWidgets/. 4) Verified clean native compilation via intentbuilderc and xcodebuild -scheme ModoWidgets, passing 100% Jest tests (99 suites, 572 tests).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 39,
@@ -1560,7 +1767,10 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Separate iOS Clock Widget Gallery Slots (#1, #2) and Eliminate Redundant Long-Press Intent Menus (StaticConfiguration Parity & Isolated AppGroup Storage)",
     "problem_en": "SiriKit IntentConfiguration menus lacked frame ID selection, rendering them visually ineffective. Additionally, sharing a single AppGroup key caused newly applied clock styles in the app to clobber previously placed home screen clock widgets.",
-    "solution_en": "1) Reverted clock widgets to lightweight StaticConfiguration, removing non-functional edit sheets. 2) Registered separate Gallery widgets: Square Clock 1/2 and Pro Clock 1/2 in ModoWidgetBundle.swift. 3) Enhanced ClockTimelineProvider to read isolated slot keys (@modo_widget_config_square_clock_2, etc.) and varied default frames. 4) Implemented slot-selective AppGroup persistence and timeline reloading in iosWidgetSync.ts. 5) Created IosSlotSelectModal.tsx in Widget Studio for clear slot-target application. 6) Synced 17 locales across native strings and TS files. 7) Verified via tsc, Jest (572 tests pass), lint, and xcodebuild BUILD SUCCEEDED."
+    "solution_en": "1) Reverted clock widgets to lightweight StaticConfiguration, removing non-functional edit sheets. 2) Registered separate Gallery widgets: Square Clock 1/2 and Pro Clock 1/2 in ModoWidgetBundle.swift. 3) Enhanced ClockTimelineProvider to read isolated slot keys (@modo_widget_config_square_clock_2, etc.) and varied default frames. 4) Implemented slot-selective AppGroup persistence and timeline reloading in iosWidgetSync.ts. 5) Created IosSlotSelectModal.tsx in Widget Studio for clear slot-target application. 6) Synced 17 locales across native strings and TS files. 7) Verified via tsc, Jest (572 tests pass), lint, and xcodebuild BUILD SUCCEEDED.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 40,
@@ -1597,7 +1807,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Add Live Camera/Document Scan Action to QuickView Speed Dial, Unify Scan Pipeline, and Route Back Directly to QuickView Home",
     "problem_en": "1) The QuickView speed dial vertical stack lacked an in-place entry point for live document OCR and QR scanning. 2) Pressing back in the scanner opened from QuickView unexpectedly displayed the 'What to record?' sheet instead of returning cleanly to QuickView home.",
-    "solution_en": "1) Added 'Scan' action button between 'Voice' and 'To-Do' in QuickViewSpeedDial with high-res laser scan icon (CUSTOM_ICONS.scan_laser). 2) Unified with global openQuickCaptureWithAction('scan') pipeline. 3) Introduced scanSource state ('sheet' | 'direct') in QuickCaptureSheet so direct triggers dismiss the sheet entirely on back press, returning directly to QuickView home. 4) Preserved strict 400-line limit across all modified components. 5) Verified via tsc 0 errors and full test suite passes."
+    "solution_en": "1) Added 'Scan' action button between 'Voice' and 'To-Do' in QuickViewSpeedDial with high-res laser scan icon (CUSTOM_ICONS.scan_laser). 2) Unified with global openQuickCaptureWithAction('scan') pipeline. 3) Introduced scanSource state ('sheet' | 'direct') in QuickCaptureSheet so direct triggers dismiss the sheet entirely on back press, returning directly to QuickView home. 4) Preserved strict 400-line limit across all modified components. 5) Verified via tsc 0 errors and full test suite passes.",
+    "deployedAos": true,
+    "deployedVersionAos": "76(1.1.9)",
+    "deployedDateAos": "2026-09-28 06:44",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 41,
@@ -1662,7 +1878,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Optimize Default Note Editor Line Spacing (1.35x Standard, 1.25x Compact, 1.55x Spacious), Introduce Sleek Zero-Fluff Horizontal Slider in Settings, and Sync 17 Locales",
     "problem_en": "1) The default line spacing in the note editor was slightly too loose, reducing vertical information density. 2) There was no user preference setting to adjust editor line spacing. 3) Initial settings copy mentioned competitor apps with verbose descriptions and an overly elongated vertical accordion layout.",
-    "solution_en": "1) Re-calibrated editor typography presets: 1.35x standard (default), 1.25x compact (ultra-dense), 1.55x spacious (relaxed), synchronized across editorTypography.ts and editorTemplate.ts. 2) Created dedicated LineHeightScaleCard.tsx using a sleek, zero-fluff horizontal segment slider. 3) Provided instant header badge synchronization and haptic feedback. 4) Eliminated all third-party app references and redundant text across 17 locale bundles and i18n/types.ts. 5) Passed triple static/runtime verification (tsc 0 errors, 100 Jest test suites / 577 tests 100% pass)."
+    "solution_en": "1) Re-calibrated editor typography presets: 1.35x standard (default), 1.25x compact (ultra-dense), 1.55x spacious (relaxed), synchronized across editorTypography.ts and editorTemplate.ts. 2) Created dedicated LineHeightScaleCard.tsx using a sleek, zero-fluff horizontal segment slider. 3) Provided instant header badge synchronization and haptic feedback. 4) Eliminated all third-party app references and redundant text across 17 locale bundles and i18n/types.ts. 5) Passed triple static/runtime verification (tsc 0 errors, 100 Jest test suites / 577 tests 100% pass).",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 10:45",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 42,
@@ -1693,7 +1915,13 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Convert Home Display Style 2-Card in Theme Settings to 100% Responsive Grid, Eliminating Right Whitespace",
     "problem_en": "The 2 Home Display Style cards in theme settings were wrapped in a horizontal ScrollView with a fixed 156px card width, leaving awkward empty space on the right side of modern phone screens.",
-    "solution_en": "1) Replaced ScrollView with a responsive row container (flexDirection: 'row', gap: 12, width: '100%') and gave each card flex: 1 to evenly occupy 100% of the screen width. 2) Allowed miniature mockups to scale fluidly without distortion. 3) Preserved strict 400-line ceiling and passed all tests."
+    "solution_en": "1) Replaced ScrollView with a responsive row container (flexDirection: 'row', gap: 12, width: '100%') and gave each card flex: 1 to evenly occupy 100% of the screen width. 2) Allowed miniature mockups to scale fluidly without distortion. 3) Preserved strict 400-line ceiling and passed all tests.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 10:44",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
   },
   {
     "id": 43,
@@ -1725,9 +1953,828 @@ window.MODO_QA_PHASE3 = [
     ],
     "title_en": "Fix Senior/Elder Mode Photo Memo Disappearance when Caption Added due to Missing JSON Deserialization, Restoring Thumbnail and Badges",
     "problem_en": "In Elder Mode, adding a caption/memo to a photo note caused the image to completely vanish from the home feed card, while reappearing in edit mode or when the caption was removed (Normal mode worked as expected).",
-    "solution_en": "1) Traced root cause to serializeImageAttachments saving multi-field JSON (__MODO_IMG_ARR__:[{...}]) when captions exist. 2) Integrated parseImageAttachments into ElderNoteListItem.tsx to safely extract firstImageUri across both single URI and serialized arrays. 3) Bound thumbnail bannerImage and media badges to firstImageUri, enabling persistent image rendering and multi-photo counter. 4) Added regression unit tests to ElderNoteListItem.test.tsx (7/7 PASS)."
+    "solution_en": "1) Traced root cause to serializeImageAttachments saving multi-field JSON (__MODO_IMG_ARR__:[{...}]) when captions exist. 2) Integrated parseImageAttachments into ElderNoteListItem.tsx to safely extract firstImageUri across both single URI and serialized arrays. 3) Bound thumbnail bannerImage and media badges to firstImageUri, enabling persistent image rendering and multi-photo counter. 4) Added regression unit tests to ElderNoteListItem.test.tsx (7/7 PASS).",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 10:44",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
+  },
+  {
+    "id": 44,
+    "phase": "phase3",
+    "date": "2026-10-01",
+    "severity": "S2",
+    "severityLabel": "🚨 S2 Critical",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "📅 Schedule",
+    "title": "일정 모달 시간 직접 등록 및 알림시간 변경 시 저장 비활성화 결함 해결 및 캘린더 날짜 셀 더블 탭 시 모달 급발진 방지",
+    "problem": "1) 일정 등록 모달(QuickScheduleModal)에서 제목을 먼저 작성하지 않고 시간을 직접 지정(종일 OFF)하거나 알림시간을 변경할 경우, 우측 상단 [저장] 버튼이 disabled(opacity 0.4)로 막혀 변경한 알림시간 저장이 불가능했던 결함. 2) 캘린더 뷰(DDayMonthlyGrid)에서 이미 선택된 날짜 셀을 한 번 더 탭했을 때 의도치 않게 onLongPressDate가 트리거되어 새 일정 등록 모달이 불쑥 튀어나와 기등록된 일정으로 오인하게 만들었던 인터랙션 결함.",
+    "solution": "1) QuickScheduleModal의 [저장] 버튼에서 disabled={!title.trim()} 및 투명도 축소를 제거하여 구글/애플 캘린더처럼 상시 활성화 유지. 2) handleSave에 스마트 폴백을 적용하여 제목 미입력 상태에서 시간/알림만 설정하고 저장해도 t('schedule.defaultTitle')('제목 없는 일정')으로 100% 정상 저장 보장. 3) DDayMonthlyGrid의 날짜 셀 onPress를 onSelectDate(cell.dateStr)로만 한정하여 더블 탭 시 모달 급발진을 방지하고, 새 일정 등록은 셀 롱프레스 또는 하단 + 버튼으로 명확히 분리.",
+    "files": [
+      "components/schedule/QuickScheduleModal.tsx",
+      "components/dday/DDayMonthlyGrid.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.5)",
+    "deployedDate": "Pending",
+    "cause": "1) 저장 버튼이 오직 title.trim() 존재 여부에만 하드코딩으로 종속되어 있어 시간/알림 우선 설정 플로우를 차단했던 점. 2) 캘린더 셀 탭 이벤트에 선택 상태 조건 분기(cell.isSelected)로 롱프레스 액션을 임의 위임했던 점.",
+    "actions": [
+      "1. components/schedule/QuickScheduleModal.tsx: handleSave에서 fallbackTitle(initialNote.title || defaultTitle) 및 effectiveTitle 적용으로 제목 미입력 시에도 100% 정상 저장 보장 (364줄 < 400줄 엄수)",
+      "2. components/schedule/QuickScheduleModal.tsx: 우측 상단 저장 버튼의 disabled={!title.trim()} 및 opacity 0.4를 제거하여 상시 액셔너블(Actionable) 버튼 확립",
+      "3. components/dday/DDayMonthlyGrid.tsx: 날짜 셀 onPress를 onSelectDate(cell.dateStr)로 단일화하여 셀 중복 탭 시 모달 급발진 원천 차단 (245줄 < 400줄 엄수)",
+      "4. 동기식 3중 정적/동적 검증 통과 (npx tsc --noEmit 0건, npm test 104개 스위트 593개 테스트 100% PASS, npm run lint 0건)"
+    ],
+    "title_en": "Fix Schedule Modal Save Button Disabled when Setting Custom Time/Reminder and Prevent Accidental Modal Popups on Calendar Cell Double Tap",
+    "problem_en": "1) In QuickScheduleModal, if a user set a custom time or modified reminder before typing a title, the Save button was disabled (opacity 0.4), preventing saving. 2) In DDayMonthlyGrid, tapping an already selected date cell triggered onLongPressDate unexpectedly, causing the New Schedule modal to pop up abruptly.",
+    "solution_en": "1) Kept the Save button always active and clickable in QuickScheduleModal without artificial disabling. 2) Applied smart fallback to auto-assign defaultTitle ('Untitled Schedule') when title is omitted. 3) Restricted calendar cell onPress to date selection, reserving modal creation strictly to long-press and '+' buttons.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.11 (78)",
+    "deployedDateAos": "2026-10-01 10:44",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
+  },
+  {
+    "id": 45,
+    "phase": "phase3",
+    "date": "2026-10-01",
+    "severity": "S1",
+    "severityLabel": "🔥 S1 Blocker",
+    "platform": "ios",
+    "platformLabel": "🍎 iOS",
+    "category": "core",
+    "categoryLabel": "🌐 i18n & Core",
+    "title": "iOS 최초 앱 설치/실행 시 시스템 언어(일본어 등) 무시되고 영어로 강등되는 결함 수정 (CFBundleLocalizations 등록 및 expo-localization 네이티브 언어 감지 파이프라인 구축)",
+    "problem": "아이폰의 시스템 언어가 일본어(ja) 또는 비영어권 언어로 설정되어 있음에도 불구하고 앱을 최초 설치하여 실행하면 영어(en)로 초기화되어 나타나며, 아이폰 [설정] ➔ [Modo] 화면에서도 시스템 '언어' 변경 메뉴가 노출되지 않던 결함 (안드로이드는 정상 표시).",
+    "solution": "1) app.json의 ios.infoPlist에 Modo의 17개 공식 지원 언어 코드 배열(CFBundleLocalizations) 및 CFBundleAllowMixedLocalizations: true, CFBundleDevelopmentRegion: 'en' 공식 등록. 2) expo-localization SDK 54 공식 패키지 도입 및 i18n/index.ts의 getDeviceLanguage()를 3중 복원 파이프라인(Tier 1: expo-localization getLocales() 네이티브 선호 언어 ➔ Tier 2: JS Intl API ➔ Tier 3: Web navigator ➔ Fallback: 'en')으로 업그레이드. 3) normalizeLocaleToLanguage 헬퍼 분리 및 단위 테스트 11건 구축(100% PASS).",
+    "files": [
+      "app.json",
+      "package.json",
+      "i18n/index.ts",
+      "jest.setup.js",
+      "__tests__/i18n/localeDetection.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.11)",
+    "deployedDate": "Pending",
+    "cause": "iOS는 Info.plist에 CFBundleLocalizations 선언이 없으면 앱을 '영어 전용'으로 간주하여 기기 언어와 무관하게 앱 프로세스에 영어(en)를 강제 주입(Fallback)하고, 기존 JS Intl 객체 또한 강등된 로케일을 그대로 반환했던 점 (Android는 OS 전체 언어를 직접 전달하므로 정상 작동).",
+    "actions": [
+      "1. app.json: ios.infoPlist에 CFBundleLocalizations (17개 언어 배열), CFBundleAllowMixedLocalizations: true, CFBundleDevelopmentRegion: 'en' 추가",
+      "2. package.json: expo-localization SDK 54 공식 패키지 설치 및 플러그인 연동",
+      "3. i18n/index.ts: normalizeLocaleToLanguage 헬퍼 신설 및 getDeviceLanguage()를 expo-localization 네이티브 우선 3중 감지 엔진으로 강화 (160줄 < 400줄 준수)",
+      "4. jest.setup.js: expo-localization getLocales() 및 getCalendars() 단위 테스트용 모의 객체(mock) 등록",
+      "5. __tests__/i18n/localeDetection.test.ts: 로케일 정규화 및 기기 언어 감지 단위 테스트 11건 신설 (100% PASS)",
+      "6. 동기식 3중 정적/동적 검증 통과 (npx tsc --noEmit 0건, npm test 105개 스위트 604개 테스트 100% PASS, npm run lint 0건)"
+    ],
+    "title_en": "Fix iOS Initial Installation Defaulting to English Despite Device System Language Being Japanese (Register CFBundleLocalizations and Implement expo-localization Native Language Detection Pipeline)",
+    "problem_en": "On iOS, when the device language was set to Japanese (or other non-English languages), fresh installation incorrectly initialized Modo in English, and the iOS Settings app lacked a per-app language selection menu.",
+    "solution_en": "1) Registered all 17 supported languages in app.json under CFBundleLocalizations with CFBundleAllowMixedLocalizations: true. 2) Installed expo-localization and enhanced getDeviceLanguage() with a 3-tier fallback architecture (expo-localization getLocales() -> JS Intl -> navigator -> 'en'). 3) Extracted normalizeLocaleToLanguage helper and verified with 11 comprehensive unit tests.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
+  },
+  {
+    "id": 46,
+    "phase": "phase3",
+    "date": "2026-10-01",
+    "severity": "S1",
+    "severityLabel": "🔥 S1 Blocker",
+    "platform": "ios",
+    "platformLabel": "🍎 iOS",
+    "category": "core",
+    "categoryLabel": "⚡ Native Core",
+    "title": "Xcode 빌드/아카이브 시 EXConstants PhaseScriptExecution 실패 결함 조치 (expo-localization node_modules 실물 설치 및 CocoaPods 동기화)",
+    "problem": "Xcode에서 프로젝트 빌드 또는 아카이브 실행 시 EXConstants 타겟의 '[CP-User] Generate app.config for prebuilt Constants.manifest' 단계에서 Command PhaseScriptExecution failed with a nonzero exit code 에러 발생 (원인: PluginError: Failed to resolve plugin for module \"expo-localization\").",
+    "solution": "1) node_modules에 expo-localization (~17.0.9) 실물 패키지 및 app.plugin.js 설치 완료. 2) npx pod-install ios 실행하여 Modo.xcworkspace에 ExpoLocalization (17.0.9) 네이티브 Pod 연동 완료. 3) package-lock.json 및 빌드 파이프라인 정합성 100% 동기화.",
+    "files": [
+      "package.json",
+      "package-lock.json",
+      "ios/Podfile.lock"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.11)",
+    "deployedDate": "Pending",
+    "cause": "이전 커밋에서 app.json의 plugins 배열에 expo-localization이 등록되었으나, 로컬 node_modules에 패키지 파일이 실물로 설치되어 있지 않아 Xcode의 EXConstants prebuild app.config 생성 스크립트(@expo/config getConfig)가 플러그인을 찾지 못하고 PLUGIN_NOT_FOUND 예외로 중단되었던 현상.",
+    "actions": [
+      "1. npm install 실행: node_modules에 expo-localization (~17.0.9) 및 app.plugin.js 실물 설치",
+      "2. getConfig 파이프라인 사전 검증: node 스크립트로 app.config 생성 에러 0건 정상 통과 검증",
+      "3. npx pod-install ios 실행: iOS 네이티브 ExpoLocalization (17.0.9) CocoaPods 타겟 연동 완료",
+      "4. package-lock.json 동기화 커밋 및 원격 반영",
+      "5. 동기식 3중 정적/동적 검증 통과 (npx tsc --noEmit 0건, npm test 105개 스위트 604개 테스트 100% PASS, npm run lint 0건)"
+    ],
+    "title_en": "Fix Xcode Build and Archive Failure in EXConstants PhaseScriptExecution (Install expo-localization in node_modules and Sync CocoaPods)",
+    "problem_en": "During Xcode build or archive, EXConstants target failed at '[CP-User] Generate app.config for prebuilt Constants.manifest' phase with nonzero exit code due to PluginError: Failed to resolve plugin for module 'expo-localization'.",
+    "solution_en": "1) Installed expo-localization (~17.0.9) physical package into node_modules. 2) Ran pod install to link ExpoLocalization CocoaPods native module to Modo.xcworkspace. 3) Synchronized package-lock.json and verified clean builds.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.15 (91)",
+    "deployedDateIos": "2026-10-01 12:16"
+  },
+  {
+    "id": 47,
+    "phase": "phase3",
+    "date": "2026-10-01",
+    "severity": "S2",
+    "severityLabel": "⚡ S2 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX & Curation",
+    "title": "탐색 화면 For You 스마트 스페이스 일정/디데이 메모 노출 배제 및 가치 중심 스마트 큐레이션(Curation Scoring) 알고리즘 구축",
+    "problem": "탐색(Explore) 화면의 스마트 스페이스 중 'For You' 공간이 전체 활성 메모를 100% 덤프 노출(return true)하여, 독립된 [일정] 탭에서 관리되어야 할 캘린더 일정 및 D-Day 카운트다운 배지 메모가 뒤섞여 나와 시각적 피로도 및 인지 부하가 심각했던 결함.",
+    "solution": "1) db/spacesRepository.ts의 matchesSpace('for_you')에서 D-Day(d_day_date) 및 일정(is_schedule) 속성 메모와 빈 초안 메모를 100% 원천 배제. 2) 중요도(is_pinned, is_favorite), 지식 네트워크(WikiLink), AI 요약문(summary), 멀티미디어(음성/사진/스캔), 본문 길이, 최근성 감쇠를 종합 반영하는 calculateForYouCurationScore 알고리즘 신설 및 가치 점수 기준 내림차순 정렬 적용. 3) getSpaceCountsFromNotes에서 For You 카운트를 필터 결과와 1:1로 일치하도록 동기화. 4) 단위 테스트(spacesRepository.test.ts) 보강 및 3중 검증 통과.",
+    "files": [
+      "db/spacesRepository.ts",
+      "__tests__/db/spacesRepository.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.11)",
+    "deployedDate": "Pending",
+    "cause": "초기 구현 시 SpacesRepository.matchesSpace에서 for_you 공간에 대해 아무런 필터링 없이 전체 메모를 반환(return true)하고, getSpaceCountsFromNotes에서도 notes.length로 단순 대입하여 목적 분리(일정 탭 vs 탐색 탭)가 지켜지지 않았던 점.",
+    "actions": [
+      "1. db/spacesRepository.ts: calculateForYouCurationScore(note) 신설하여 중요도/위키링크/요약/미디어/길이/최근성에 기반한 가치 점수 산출 엔진 구축",
+      "2. db/spacesRepository.ts: matchesSpace('for_you')에서 d_day_date 및 is_schedule 메모 100% 원천 배제 및 유의미한 가치 신호 1개 이상 만족 시 스마트 포함",
+      "3. db/spacesRepository.ts: filterNotesBySpace에서 for_you 조회 시 큐레이션 스코어 내림차순 정렬 적용",
+      "4. db/spacesRepository.ts: getSpaceCountsFromNotes에서 counts.for_you를 matchesSpace('for_you')로 정확히 계산하여 탐색 홈 배지와 1:1 동기화",
+      "5. __tests__/db/spacesRepository.test.ts: D-Day 및 일정 배제, 큐레이션 정렬 순서, 카운트 일치 단위 테스트 추가",
+      "6. 동기식 3중 정적/동적 검증 통과 (npx tsc --noEmit 0건, npm test 105개 스위트 605개 테스트 100% PASS)"
+    ],
+    "title_en": "Exclude Schedule and D-Day Notes from For You Smart Space and Implement Value-Driven Curation Scoring Algorithm",
+    "problem_en": "In the Explore screen, the 'For You' smart space unconditionally dumped all active notes (return true), causing calendar schedule items and D-Day countdown badges—which belong to the dedicated Schedule tab—to clutter the screen and increase cognitive load.",
+    "solution_en": "1) Strictly excluded D-Day (d_day_date) and schedule (is_schedule) notes as well as empty drafts from the 'for_you' filter in db/spacesRepository.ts. 2) Implemented calculateForYouCurationScore weighting user importance (pinned/favorite), knowledge graph connectivity (WikiLinks), AI summary, rich media, length, and recency decay. 3) Synchronized For You space count badge with actual filtered results. 4) Added unit tests and verified with full test suite.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.12 (79)",
+    "deployedDateAos": "2026-10-02 05:46",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.16 (85)",
+    "deployedDateIos": "2026-10-02 05:55"
+  },
+  {
+    "id": 48,
+    "phase": "phase3",
+    "date": "2026-10-02",
+    "severity": "S1",
+    "severityLabel": "🚨 S1 Critical",
+    "platform": "ios",
+    "platformLabel": "🍎 iOS",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "iOS 위젯 스튜디오 폰트 선택 모달(FontGridModal) 유료 폰트 선택 시 프로 해금 모달 중첩 실패 및 앱 터치 프리징(먹통) 결함 완치",
+    "problem": "iOS 실기기 프리 모드에서 위젯 스튜디오 폰트 선택 모달(FontGridModal) 내 잠금(Pro) 폰트 터치 시, 유료 모드 해금 안내 팝업(WidgetProUnlockModal)이 표시되지 않고 화면 전체의 터치가 영구 차단(먹통)되며, 앱을 백그라운드로 전환 후 재진입해도 조작 불가 상태가 지속되던 치명적 결함.",
+    "solution": "1) components/widget-studio/FontGridModal.tsx: 불필요한 외부 Fragment(<>)를 제거하고, <WidgetProUnlockModal>을 부모 <Modal> 태그 내부로 이동 배치하여 iOS RCTModalHostView 서브 계층 렌더링 파이프라인 확립(SquareClockFrameGridModal과 1:1 일치화). 2) handleClose 핸들러(setUnlockTargetFont(null); onClose();)를 신설하여 onRequestClose 및 우측 상단 X 닫기 버튼 터치 시 해금 타깃 상태 안전 리셋 보장. 3) 동기식 3중 검증 통과 (npx tsc 0건, npm test 105개 스위트 605개 테스트 100% PASS).",
+    "files": [
+      "components/widget-studio/FontGridModal.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.11)",
+    "deployedDate": "Pending",
+    "cause": "SquareClockFrameGridModal이나 ClockFrameGridModal과 달리, FontGridModal에서는 외부 Fragment(<> ... </>)로 감싼 채 <WidgetProUnlockModal>이 </Modal> 바깥쪽 형제 노드로 배치되어 있었음. 이로 인해 iOS UIKit 환경에서 첫 번째 모달이 띄워진 상태에서 루트 윈도우 컨트롤러에 두 번째 모달 표시를 동시 시도하자 iOS가 프레젠테이션을 거부하였고, 투명 백드롭 오버레이만 남아 모든 사용자 제스처를 가로채는 뷰 잠김 현상이 발생함.",
+    "actions": [
+      "1. components/widget-studio/FontGridModal.tsx: Fragment(<>) 제거 및 <WidgetProUnlockModal>을 <Modal> 내부로 이동하여 iOS 모달 계층 충돌 및 터치 프리징 원천 해소",
+      "2. components/widget-studio/FontGridModal.tsx: handleClose(setUnlockTargetFont(null); onClose();) 핸들러 신설 및 onRequestClose/닫기 버튼 연동으로 잠금 상태 안전 초기화",
+      "3. 동기식 3중 정적/동적 검증 통과 (npx tsc --noEmit 0건, npm test 105개 스위트 605개 테스트 100% PASS)"
+    ],
+    "title_en": "Fix Touch Freezing and Pro Unlock Modal Presentation Failure on Locked Font Selection in iOS Widget Studio (FontGridModal)",
+    "problem_en": "On iOS devices in Free mode, selecting a locked (Pro) font in the Widget Studio FontGridModal failed to present the WidgetProUnlockModal and permanently blocked all touch interactions (app freeze), which persisted even after backgrounding and resuming the app.",
+    "solution_en": "1) Removed outer Fragment and nested <WidgetProUnlockModal> inside the parent <Modal> tag in FontGridModal.tsx, matching the proven architecture of SquareClockFrameGridModal and allowing iOS RCTModalHostView to render the child modal properly. 2) Added handleClose handler resetting unlockTargetFont on close. 3) Verified with static type check (0 errors) and full Jest test suite (105 suites, 605 tests 100% PASS).",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.16 (85)",
+    "deployedDateIos": "2026-10-02 05:55"
+  },
+  {
+    "id": 49,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S2",
+    "severityLabel": "🔥 S2 Major",
+    "platform": "all",
+    "platformLabel": "🌐 Universal",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "메모 편집 본문 클립보드 이미지 붙여넣기 화면 잘림 해결, Google Keep 스타일 스마트 그리드(1열/2열/3열) 및 전체화면 뷰어(ImageViewerModal) 연동",
+    "problem": "메모 편집 본문(WebView contenteditable)에 이미지를 붙여넣었을 때 CSS max-width 미정의로 인해 2000px+ 원본 해상도 이미지가 화면 우측으로 넘치고 잘리며 가로 스크롤도 안 되는 문제. 또한 타앱(Google Keep)처럼 이미지 수량에 따라 1/2/3열 반응형 그리드 및 탭 시 120fps 네이티브 라이트박스 뷰어가 작동하지 않고 무압축 Base64로 메모 용량이 급증하는 결함.",
+    "solution": "1) components/editor/editorImageGrid.ts 신규 모듈 신설(단일 파일 400줄 제한 준수, 329줄): #editor img에 max-width: 100% 강제 및 .modo-image-grid(1열 풀와이드, 2열 50%, 3열 이상 33.3% 카드 타일, 황금비율 aspect-ratio: 0.72) 자동 래핑. 2) 인라인 Canvas 1200px / 0.82 압축 다운샘플러 파이프라인 구축(95% 용량 절감, 장당 150KB 수준으로 50장 이상 쾌적 보관). 3) 본문 이미지 탭 시 IMAGE_CLICK 브릿지 메시지로 네이티브 ImageViewerModal 풀스크린 라이트박스 뷰어 연동. 4) 신규 메모(app/note/new.tsx) 및 상세/수정(app/note/[id].tsx) 전체 파이프라인 합성 연동.",
+    "files": [
+      "components/editor/editorImageGrid.ts",
+      "components/editor/editorTemplate.ts",
+      "components/editor/RichTextEditor.tsx",
+      "components/editor/RichTextEditorTypes.ts",
+      "app/note/new.tsx",
+      "app/note/[id].tsx",
+      "app/note/useNoteDetailState.ts",
+      "components/note/NoteDetailEditorSection.tsx",
+      "components/note/NoteDetailModals.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "editorTemplate.ts에 #editor img 태그에 대한 max-width: 100% 스타일이 누락되어 원본 해상도 그대로 렌더링되었으며, 브라우저 기본 paste 동작 시 무압축 원본 Base64가 삽입되어 용량이 비대해지고 클릭 이벤트 위임 브릿지가 구현되어 있지 않았음.",
+    "actions": [
+      "1. components/editor/editorImageGrid.ts 독립 모듈 생성 및 반응형 1/2/3열 그리드 CSS와 캔버스 다운샘플러 탑재",
+      "2. components/editor/editorTemplate.ts: 그리드 스타일 및 스크립트 합성 연동",
+      "3. RichTextEditor 및 note/new, note/[id]에 onImageClick → ImageViewerModal 풀스크린 뷰어 연동",
+      "4. 동기식 3중 정적/동적 검증 완료 (tsc 0건, 단위 테스트 5건 PASS, 전체 107개 스위트 619개 테스트 100% PASS)"
+    ],
+    "title_en": "Fix Editor Body Image Paste Overflow, Implement Google Keep Style Smart Responsive Grid (1/2/3 Columns), and Full-Screen Lightbox Integration",
+    "problem_en": "When pasting images into the rich text editor (WebView contenteditable), images overflowed beyond the screen without horizontal scrolling due to missing max-width CSS. Furthermore, multi-image pasting lacked responsive 1/2/3-column grid layouts and native lightbox viewing, and uncompressed Base64 bloated note payload sizes.",
+    "solution_en": "1) Created components/editor/editorImageGrid.ts applying max-width: 100% and .modo-image-grid responsive layout (1-col full, 2-col 50%, 3-col 33.3% with aspect-ratio: 0.72 card tiles). 2) Integrated in-memory canvas downsampler (max 1200px, 0.82 quality) achieving 95% payload reduction (150KB per photo) allowing 50+ photos smoothly. 3) Added IMAGE_CLICK bridge message to trigger native 120fps ImageViewerModal on tap. 4) Wired in both new.tsx and [id].tsx.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.13 (80)",
+    "deployedDateAos": "2026-10-03 06:56",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.16 (86)",
+    "deployedDateIos": "2026-10-03 07:24"
+  },
+  {
+    "id": 50,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S1",
+    "severityLabel": "🚨 S1 Critical",
+    "platform": "ios",
+    "platformLabel": "🍎 iOS",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "최신 아이폰(Face ID/홈 바) 집중모드 하단 \"집중종료\" 캡슐 터치 불능 결함 완치 및 상단 우측 화살표 돌아가기 버튼 신설",
+    "problem": "최신 아이폰(iPhone 12~16 Pro 등) 집중모드에서 하단 \"집중종료\" 캡슐 버튼을 클릭해도 나가지지 않고 클릭 자체가 먹통이 되는 결함. 본문 WKWebView 네이티브 제스처의 JS Touchable 터치 가로채기, 하단 홈 바(Home Indicator 34pt) 경계 간섭 및 hitSlop 부재, alignSelf: center 절대위치 히트테스트 불일치, 상단 헤더 탈출로 부재(Single Point of Failure)가 복합적으로 결합되어 집중모드에 영구 고립되던 치명적 결함.",
+    "solution": "1) components/note/FocusMode.tsx: TouchableOpacity를 고반응성 Pressable로 전면 교체하고 hitSlop(상하좌우 16~24pt) 및 하단 패딩을 안전영역(Math.max(28, insets.bottom + 20))으로 보정. 2) pointerEvents=\"box-none\" 전폭 플로팅 레이어(zIndex: 9999) 도입으로 UIKit hitTest 최우선 순위 보장. 3) 종료 탭 즉시 Keyboard.dismiss() 호출로 가상 키보드 및 에디터 포커스 안전 해제. 4) FocusModeHeader 상단 우측에 뒤로가기 화살표 버튼(<ArrowLeft size={18} />)을 신설하여 키보드 활성화 및 한 손 조작 시에도 즉시 나갈 수 있는 2중 안전 탈출구 구축. 5) 17개 전 언어팩 editor.returnToEdit 추가 및 i18n/types.ts 동기화.",
+    "files": [
+      "components/note/FocusMode.tsx",
+      "app/note/[id].tsx",
+      "app/note/new.tsx",
+      "i18n/types.ts",
+      "i18n/locales/*.ts",
+      "__tests__/components/FocusMode.test.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "WKWebView의 내장 UIScrollView 및 제스처 인식기가 상위 절대 위치 TouchableOpacity의 터치를 취소시켰으며, 최신 아이폰의 하단 Home Indicator 시스템 제스처(34pt)와 버튼의 위치가 겹치고 hitSlop이 전혀 없어 제스처가 씹힘. 또한 전폭 래퍼 없는 alignSelf: center 절대배치로 인해 Yoga/UIKit 히트테스트 바운딩 박스가 어긋났으며, 상단 헤더에 보조 탈출구가 없어 단일 실패점으로 작동함.",
+    "actions": [
+      "1. components/note/FocusMode.tsx: Pressable 교체, hitSlop 부여, pointerEvents=\"box-none\" 전폭 레이어(zIndex: 9999) 래핑 및 Keyboard.dismiss() 연동",
+      "2. FocusModeHeader: 상단 우측에 ArrowLeft 원형 뒤로가기 버튼 신설하여 2중 안전 탈출구 확보",
+      "3. app/note/[id].tsx, app/note/new.tsx: onExit 핸들러 1:1 합성 연동",
+      "4. 17개 로케일 editor.returnToEdit 키 및 i18n/types.ts 100% 동기화",
+      "5. __tests__/components/FocusMode.test.tsx 신규 작성 및 동기식 3중 검증(tsc 0건, 5개 테스트 PASS, 108개 스위트 624개 테스트 100% PASS)"
+    ],
+    "title_en": "Fix Unresponsive Focus Mode Exit Pill Touch on Modern iPhones (Face ID / Home Bar) and Add Top-Right Arrow Return Button",
+    "problem_en": "On modern iPhones (iPhone 12-16 Pro), tapping the floating \"Exit Focus\" pill failed to trigger or register clicks. WKWebView native gesture interception, iOS Home Indicator (34pt) border interference with missing hitSlop, misaligned hitTest bounds on absolute alignSelf: center, and lack of a header exit created a critical trap where users were permanently stuck in Focus Mode.",
+    "solution_en": "1) Replaced TouchableOpacity with Pressable, added generous hitSlop (16-24pt), and adjusted bottom elevation in FocusMode.tsx. 2) Wrapped in a full-width floating container with pointerEvents=\"box-none\" and zIndex: 9999 to guarantee UIKit hit priority. 3) Added Keyboard.dismiss() on exit. 4) Added an ArrowLeft return button in FocusModeHeader for redundant, safe escape under any keyboard or reachability condition. 5) Synced 17 locale files and i18n types.",
+    "deployedIos": true,
+    "deployedVersionIos": "1.1.16 (86)",
+    "deployedDateIos": "2026-10-03 07:24"
+  },
+  {
+    "id": 51,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Minor",
+    "platform": "android",
+    "platformLabel": "🤖 Android",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "안드로이드 시스템 네비게이션 제스처 바와 하단 편집 액션 바(NoteEditorBottomBar) 간 여백(공백) 확보 및 시각적 밀착 완화",
+    "problem": "안드로이드 기기에서 메모 상세/수정 화면 하단의 편집 액션 바(NoteEditorBottomBar)가 OS 시스템 네비게이션 바(제스처 바 / 3버튼 영역)에 너무 딱 달라붙어 답답하게 노출되고 제스처 오작동 우려가 발생함.",
+    "solution": "1) components/note/NoteEditorBottomBar.tsx: safeBottomPadding 계산 로직에 안드로이드 환경 기본 +12px ~ 16px 숨 쉴 공간(Breathing Room)을 추가하여, 편집 카드와 시스템 제스처 바 사이에 자연스럽고 시원한 여백 확보. 2) iOS 및 Web과의 적응형 분기 처리로 플랫폼별 심미적 균형 보장.",
+    "files": [
+      "components/note/NoteEditorBottomBar.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "insets.bottom이 0이거나 작을 때 안드로이드에 6px의 최소 패딩만 적용되었고, insets.bottom이 존재할 때도 추가 오프셋 없이 물리 경계선에 바로 카드가 맞닿아 시각적 답답함이 발생함.",
+    "actions": [
+      "1. components/note/NoteEditorBottomBar.tsx: safeBottomPadding에 안드로이드 전용 +12px 추가 및 기본값 16px로 상향",
+      "2. __tests__/components/NoteEditorBottomBar.test.tsx 단위 테스트 통과",
+      "3. 동기식 3중 검증 완료 (tsc 0건, lint 0건, 108개 스위트 624개 테스트 100% PASS)"
+    ],
+    "title_en": "Add Breathing Room and Comfortable Bottom Padding between NoteEditorBottomBar and Android System Navigation Bar",
+    "problem_en": "On Android devices, the bottom editor action bar (NoteEditorBottomBar) in note detail screen sat directly against the system gesture navigation bar with virtually zero margin, appearing visually cramped.",
+    "solution_en": "1) Enhanced safeBottomPadding in NoteEditorBottomBar.tsx to add +12px extra spacing on Android (and 16px fallback when insets.bottom is 0), creating clean breathing room above the navigation bar. 2) Maintained adaptive platform branches for iOS and Web.",
+    "deployedAos": true,
+    "deployedVersionAos": "1.1.13 (80)",
+    "deployedDateAos": "2026-10-03 06:56"
+  },
+  {
+    "id": 52,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "에디터 본문 첨부 이미지 연속 배치 시 백스페이스 일괄 삭제 방지 및 단일 이미지 선택 삭제 툴바·정밀 클릭 영역(Hitbox) 구축",
+    "problem": "본문에 복수의 이미지를 연속으로 붙여넣었을 때, 백스페이스를 누르면 선택한 이미지가 아닌 본문 내 모든 이미지가 한꺼번에 삭제되는 결함 발생. 또한 이미지 하단에 개행 텍스트를 입력했음에도 텍스트 클릭 시 이미지가 선택되는 클릭 영역(Hitbox) 간섭 문제 발생.",
+    "solution": "1) editorHtmlSource.ts: 본문 이미지 클릭 시 해당 이미지 바로 위에 플로팅 미니 툴바(빨간 휴지통 아이콘)를 렌더링하고, 클릭 시 해당 단일 이미지만 선택 삭제(deleteActiveImage())하는 정밀 UI 파이프라인 구축. 2) keydown 이벤트에서 캐럿이 이미지 직후에 위치할 때 백스페이스를 가로채는 인터셉터를 적용하여 연속 이미지의 일괄 삭제 원천 차단. 3) 이미지 컨테이너의 CSS 마진/패딩 및 인라인 블록 정밀화로 아래 텍스트 클릭 간섭 배제.",
+    "files": [
+      "components/editor/editorHtmlSource.ts",
+      "components/editor/editorScripts.ts",
+      "components/editor/editorStyles.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "Webkit/Blink contenteditable 엔진에서 복수의 <img> 태그가 인접 배치되어 있을 때 백스페이스 입력 시 브라우저 내장 삭제 단위가 이미지 블록 전체를 한 번에 지워버렸으며, 이미지 클릭 영역의 CSS 레이아웃 마진이 하단 텍스트 영역을 침범함.",
+    "actions": [
+      "1. components/editor/editorHtmlSource.ts: 이미지 단일 선택 플로팅 미니 삭제 툴바(Trash 아이콘) 신규 구현",
+      "2. editorScripts.ts: 캐럿 직전 이미지 감지 및 백스페이스 안전 가드 인터셉터 연동",
+      "3. editorStyles.ts: 이미지 블록 히트박스 영역 정밀화 및 하단 텍스트 클릭 간섭 배제",
+      "4. 동기식 3중 검증 완료 (tsc 0건, lint 0건, Jest 100% PASS)"
+    ],
+    "title_en": "Prevent Batch Image Deletion on Backspace for Consecutive Inline Images, Add Floating Single-Delete Toolbar and Refine Hitbox",
+    "problem_en": "When multiple images were placed consecutively in the editor, pressing backspace wiped all images simultaneously instead of the selected one. Additionally, clicking text directly below an image inadvertently triggered image selection due to oversized hitboxes.",
+    "solution_en": "1) Implemented a floating mini trash toolbar directly on top of clicked images to allow surgical single-image deletion. 2) Added keydown backspace interceptor to block accidental bulk deletion when the caret is placed after images. 3) Refined CSS margins and inline-block display to eliminate hitbox interference with adjacent text.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 53,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Minor",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "집중 모드(FocusMode) 상단 헤더 '돌아가기' 화살표 버튼 좌측 이동 및 네비게이션 UX 표준화",
+    "problem": "집중 모드 상단 헤더의 돌아가기 화살표 버튼이 우측에 배치되어 있어, 일반적인 모바일 내비게이션 UX(좌측 상단 뒤로가기) 관례와 일치하지 않아 사용자가 뒤로가기 버튼의 위치를 직관적으로 찾기 어려웠음.",
+    "solution": "1) components/note/FocusMode.tsx: FocusModeHeader에서 뒤로가기 화살표 버튼을 상단 좌측 첫 번째 요소로 이동 배치하여 한눈에 탈출구를 인지할 수 있도록 개선. 2) 타이틀 카운터 및 글자 수 표시 레이아웃을 우측으로 자연스럽게 재배치하여 심미적 균형 완성.",
+    "files": [
+      "components/note/FocusMode.tsx",
+      "__tests__/components/FocusMode.test.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "초기 구현 시 헤더 우측의 보조 액션 영역에 돌아가기 버튼을 임의 배치하여 모바일 앱의 표준 좌측 상단 백버튼 멘탈 모델과 불일치했던 점.",
+    "actions": [
+      "1. components/note/FocusMode.tsx: FocusModeHeader 좌측 첫 번째 요소로 뒤로가기 화살표 버튼 재배치",
+      "2. __tests__/components/FocusMode.test.tsx 단위 테스트 업데이트",
+      "3. 동기식 3중 검증 완료 (tsc 0건, lint 0건, Jest 100% PASS)"
+    ],
+    "title_en": "Relocate Focus Mode 'Return to Edit' Arrow Button to Top-Left Header for Mobile UX Standardization",
+    "problem_en": "The return arrow button in Focus Mode was positioned on the top-right, deviating from standard mobile navigation conventions (top-left back button) and increasing cognitive load when seeking an exit.",
+    "solution_en": "1) Moved the return arrow button to the top-left corner of FocusModeHeader. 2) Realigned the title and word counter to the right for optimal visual balance.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 54,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S2",
+    "severityLabel": "🔥 S2 Critical",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "클립보드 인메모리 좀비 캐시 결함 완치 및 미디어 캡처·음성 강화 서비스 전역 메모리 누수 방어벽 구축",
+    "problem": "이미지 복사 후 '첨부 메모'를 생성한 뒤, 웹에서 URL을 복사하여 '첨부 메모'를 클릭했을 때 OS 클립보드의 새 URL 텍스트 대신 이전에 복사했던 이미지로 새 메모 생성을 시도하는 치명적 좀비 캐시 결함 발생. 또한 화면 간 미디어 전달 스토어의 비동기 소멸 틈 및 음성 보정 캐시의 크기 상한 부재로 인한 잠재적 메모리 누수 위험 존재.",
+    "solution": "1) services/clipboardService.ts: getClipboardImage() 및 getClipboardText()에서 OS 네이티브 클립보드에 데이터가 없으면 즉시 빈 결과를 확정 반환하도록 수정하고, 단순 조회(Getter) 시 인메모리 버퍼 변수를 오염시키던 부수효과를 전면 제거. 텍스트/이미지 복사 시 상호 버퍼 즉시 소멸 보장. 2) hooks/useNewNoteInitialState.ts: PendingCaptureStore.consume()을 적용하여 1회성 미디어 전달 시 읽기와 동시에 원자적 소멸 보장. 3) QuickCaptureSheet.tsx: 텍스트 메모 진입 시 잔류 캡처 스토어 선제 초기화. 4) services/audioVoiceEnhancerService.ts: cleanCache에 MAX_CACHE_ENTRIES = 50 상한선 및 LRU 축출과 clearCache() 구현.",
+    "files": [
+      "services/clipboardService.ts",
+      "hooks/useNewNoteInitialState.ts",
+      "components/capture/QuickCaptureSheet.tsx",
+      "services/audioVoiceEnhancerService.ts",
+      "__tests__/services/clipboardService.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "ClipboardService가 조회 시 전역 변수(memoryClipboardImageBuffer)에 이미지 데이터를 영구 보관하고, 이후 OS 클립보드가 텍스트로 바뀌어도 버퍼에 데이터가 남아있으면 이미지가 있는 것으로 판정하여 새로 복사된 URL 텍스트를 무시하고 옛날 이미지를 강제 반환함.",
+    "actions": [
+      "1. services/clipboardService.ts: OS 클립보드 빈 데이터 즉시 확정 반환, Getter 부수효과 제거, 상호 배타적 버퍼 소멸 적용",
+      "2. hooks/useNewNoteInitialState.ts: PendingCaptureStore.consume()으로 1회성 원자적 소모 보장",
+      "3. components/capture/QuickCaptureSheet.tsx: 텍스트 메모 선택 시 PendingCaptureStore.clear() 선제 실행",
+      "4. services/audioVoiceEnhancerService.ts: MAX_CACHE_ENTRIES(50) LRU 캐시 및 clearCache() 적용",
+      "5. __tests__/services/clipboardService.test.ts: 이미지 복사 후 URL 복사 시 이전 이미지 미반환 회귀 방지 테스트 추가 (108개 스위트 629개 테스트 100% PASS)"
+    ],
+    "title_en": "Resolve Clipboard In-Memory Zombie Cache Defect and Harden Global Media Capture / Audio Enhancer against Memory Leaks",
+    "problem_en": "After copying an image and creating an attached note, copying a URL and selecting 'Smart Paste' erroneously used the stale, previous image instead of the new URL text due to persistent in-memory clipboard cache. Additionally, pending capture store lacked atomic consumption and audio enhancer lacked cache bounds.",
+    "solution_en": "1) Fixed ClipboardService to immediately return empty results when native clipboard lacks data and eliminated buffer-mutating side effects in getters, enforcing mutual exclusion between text and image buffers. 2) Replaced get() with consume() in PendingCaptureStore for atomic single-use lifecycle. 3) Cleared pending capture store on text note entry. 4) Added MAX_CACHE_ENTRIES (50) LRU eviction to AudioVoiceEnhancerService.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 55,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "차세대 하이브리드 스마트 링크 시스템 구축 (문장 속 인라인 스마트 캡슐 칩 & 단독 행 72px 슬림 북마크 카드)",
+    "problem": "기존 에디터에서 웹 URL 입력 시 단순 텍스트나 투박한 파란색 밑줄 링크로만 표시되어, 문맥 속 링크의 시각적 식별력이 떨어지고 단독 행 링크의 웹 프리뷰(타이틀, 파비콘, 도메인)를 직관적으로 탐색하거나 제어하기 어려웠음.",
+    "solution": "1) 하이브리드 링크 시스템 구축: 문맥 속 인라인 URL은 텍스트 줄높이를 해치지 않는 슬림 캡슐 칩(.modo-link-pill)으로 렌더링하고, 단독 행 URL은 72px 슬림 메타데이터 북마크 카드(.modo-bookmark-card)로 자동 전환. 2) W3C 표준 URL API 100% 적용: 땜질식 정규식을 배제하고 new URL() 파서로 도메인 및 경로를 무손실 분할·검증(validateAndNormalizeUrl, isStandaloneUrlLine, findInlineUrlTokens). 3) 0ms 낙관적 스켈레톤 & 비동기 브릿지 인필: 카드 생성 즉시 파비콘/호스트명 표시 후 FETCH_WEB_METADATA 통신으로 OG 메타데이터(제목, 설명, 대표 이미지) 비동기 채움. 4) 캐럿 트랩 탈출구(\\u200B) 및 1클릭 텍스트 전환 토글(🔄) 제공. 5) 17개 전 로케일 동기화 및 9개 단위 테스트 100% PASS.",
+    "files": [
+      "components/editor/editorSmartLinkParser.ts",
+      "components/editor/editorSmartLinkStyles.ts",
+      "components/editor/editorSmartLinkScript.ts",
+      "components/editor/editorSmartLink.ts",
+      "components/editor/editorTemplate.ts",
+      "components/editor/RichTextEditor.tsx",
+      "i18n/types.ts",
+      "i18n/locales/*.ts",
+      "__tests__/services/editorSmartLinkParser.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "에디터 내 URL이 브라우저 기본 a 태그 형식으로만 삽입되어 인라인 문맥과 단독 행 북마크의 UX 차별화가 부재했고, W3C 표준 파서 및 메타데이터 인필 컴포넌트가 연동되지 않았던 점.",
+    "actions": [
+      "1. components/editor/editorSmartLinkParser.ts: W3C 표준 URL API 기반 토큰화 및 단독 행 검증 유틸 신규 구현 (156줄)",
+      "2. components/editor/editorSmartLinkStyles.ts: .modo-link-pill 및 .modo-bookmark-card 초경량 CSS 스타일 구축 (167줄)",
+      "3. components/editor/editorSmartLinkScript.ts: 인라인 칩/북마크 카드 DOM 렌더러, 비동기 메타데이터 인필, 캐럿 탈출구, 텍스트 변환 로직 구축 (245줄)",
+      "4. components/editor/editorSmartLink.ts: 스마트 링크 모듈 통합 배럴 신규 구현",
+      "5. components/editor/editorTemplate.ts & RichTextEditor.tsx: 스마트 링크 스타일/스크립트 비모놀리식 합성 및 FETCH_WEB_METADATA 브릿지 메시지 핸들러 연동",
+      "6. i18n/locales/*.ts: 17개 로케일에 linkConvertToText, linkDeleteCard 100% 동기화",
+      "7. __tests__/services/editorSmartLinkParser.test.ts: 9개 단위 테스트 작성 및 100% 통과"
+    ],
+    "title_en": "Build Next-Generation Hybrid Smart Link System (Inline Smart Capsule Pills & Standalone 72px Slim Bookmark Cards)",
+    "problem_en": "URLs in the editor were displayed as plain blue underlined links without visual distinction between inline contextual links and standalone links, lacking rich web preview cards and intuitive caret controls.",
+    "solution_en": "1) Implemented hybrid link rendering: inline links display as sleek capsule pills (.modo-link-pill), and standalone links automatically transform into 72px rich bookmark cards (.modo-bookmark-card). 2) Applied 100% W3C standard URL API parser without patchwork regex. 3) Provided 0ms optimistic skeleton with async metadata infill via FETCH_WEB_METADATA bridge. 4) Added zero-width space (\\u200B) caret escape hatch and 1-click text conversion toggle (🔄). 5) Synchronized 17 locales and achieved 100% PASS on 9 unit tests.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 56,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Minor",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "스마트 붙여넣기 및 타임라인 내보내기 시 메모 본문 내 광고성 시스템 워터마크·꼬리표 문구 전면 제거",
+    "problem": "URL 링크 복사 후 '첨부 메모'를 생성하거나 웹 스프레드시트/표 복사 붙여넣기, 아젠다 타임라인 내보내기 시 메모 본문 하단에 'Quick bookmark clipped via Modo Smart Paste', 'Converted from spreadsheet via Modo Smart Paste', 'Generated from Modo Agenda Timeline' 등의 불필요한 시스템 워터마크 꼬리표가 자동 삽입되어 메모의 간결성과 사용자 편집 자율성을 침해함.",
+    "solution": "1) services/smartPasteService.ts: URL 클립 북마크 생성 시 본문 하단 워터마크 삽입 블록 전면 제거, 스프레드시트 표 변환 캡션 꼬리표 전면 제거. 2) services/timelineExportService.ts: 타임라인 아젠다 내보내기 시 자동 삽입되던 시스템 생성 꼬리표 텍스트 전면 제거. 3) 순수 사용자 콘텐츠만 온전히 저장·내보내기 되도록 파이프라인 정제.",
+    "files": [
+      "services/smartPasteService.ts",
+      "services/timelineExportService.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "초기 프로토타입 설계 시 스마트 붙여넣기 및 타임라인 내보내기의 출처 표기를 위해 추가했던 워터마크 안내 문구가 정식 버전까지 잔존했던 점.",
+    "actions": [
+      "1. services/smartPasteService.ts: URL 북마크 붙여넣기 시 'Quick bookmark clipped via Modo Smart Paste' 삽입 코드 삭제",
+      "2. services/smartPasteService.ts: 스프레드시트 붙여넣기 시 'Converted from spreadsheet via Modo Smart Paste' 삽입 코드 삭제",
+      "3. services/timelineExportService.ts: 타임라인 텍스트 내보내기 시 'Generated from Modo Agenda Timeline' 꼬리표 코드 삭제",
+      "4. 동기식 3중 검증 완료 (tsc 0건, lint 0건, Jest 100% PASS)"
+    ],
+    "title_en": "Eliminate Promotional System Watermarks and Footers across Smart Paste and Timeline Export Services",
+    "problem_en": "Automatic footers such as 'Quick bookmark clipped via Modo Smart Paste', 'Converted from spreadsheet...', and 'Generated from Modo Agenda Timeline' were inserted into user notes, cluttering content and degrading user editing experience.",
+    "solution_en": "1) Removed default promotional watermarks from URL bookmarks and spreadsheet table conversions in SmartPasteService. 2) Removed system generated tags from timeline export text in TimelineExportService. 3) Preserved 100% pure user note contents across all capture pipelines.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 57,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "Google Keep 방식 텍스트 + 멀티 이미지(최대 10장) 동시 공유 시스템 구축 및 웹 복사 잔여 기호(: :) 전면 정제",
+    "problem": "1) 포켓몬 카드 검색 등 웹페이지에서 카드/이미지 드래그 복사 시 썸네일 핸들 기호(: :, ·· 등)가 클립보드에 묻어와, 공유 시 이미지 1개당 ': :'가 1줄씩 지저분하게 도배됨. 2) 기존 메모 공유 기능이 React Native 순수 텍스트(Share.share)로만 작동하여 본문 속 이미지나 첨부 사진이 메신저(카카오톡)로 전혀 전송되지 않고 증발하던 결함.",
+    "solution": "1) utils/markdown.ts: htmlToFormattedPlainText 정제기에 웹 UI 썸네일 핸들 전용 콜론/점 라인 필터링 및 제로폭 공백(\\u200B, \\uFEFF) 정제 로직 신설. 2) services/noteSharingService.ts 신설: 본문 <img> base64/URL 및 첨부 사진 통합 추출, OOM 방지용 10장 상한선(Safety Cap) 적용, base64 임시 JPEG 캐싱, 10장 초과 안내문구 자동 부착. 3) android/app/src/main/java/com/junpapapo/modo/ModoShareModule.kt & ModoSharePackage.kt 구현: 안드로이드 네이티브 ACTION_SEND_MULTIPLE 및 SharingFileProvider 연동으로 카카오톡/WhatsApp에 텍스트와 사진 최대 10장 묶음 전송 완비. 4) iOS Activity Sheet 및 Web Share 크로스 플랫폼 폴백 구축. 5) 9개 전용 단위 테스트 100% PASS.",
+    "files": [
+      "utils/markdown.ts",
+      "services/noteSharingService.ts",
+      "android/app/src/main/java/com/junpapapo/modo/ModoShareModule.kt",
+      "android/app/src/main/java/com/junpapapo/modo/ModoSharePackage.kt",
+      "android/app/src/main/java/com/junpapapo/modo/MainApplication.kt",
+      "app/note/[id].tsx",
+      "components/home/quickview/useQuickViewSelection.ts",
+      "__tests__/services/noteSharingService.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.12)",
+    "deployedDate": "Pending",
+    "cause": "웹 복사 시 태그 사이에 잔류한 독립 구두점 기호를 텍스트 정제기에서 걸러내지 못했고, 메모 공유 파이프라인이 네이티브 멀티미디어 Intent(ACTION_SEND_MULTIPLE)를 지원하지 않는 순수 텍스트 API에만 의존했던 점.",
+    "actions": [
+      "1. utils/markdown.ts: htmlToFormattedPlainText 내 isolated ': :', '··', zero-width spaces 정규 필터링 신설",
+      "2. services/noteSharingService.ts: 본문 base64 및 첨부 사진 파싱, 10장 안전 캡, 임시 JPEG 캐시, 크로스 플랫폼 오케스트레이터 구축 (307줄)",
+      "3. android/app/src/main/java/.../ModoShareModule.kt & ModoSharePackage.kt: 안드로이드 네이티브 ACTION_SEND_MULTIPLE 및 SharingFileProvider 구현 (115줄)",
+      "4. android/app/src/main/java/.../MainApplication.kt: ModoSharePackage 등록",
+      "5. app/note/[id].tsx & useQuickViewSelection.ts: shareNoteWithImages 파이프라인 일원화 연동",
+      "6. __tests__/services/noteSharingService.test.ts: 9개 단위 테스트 작성 및 100% 통과 (tsc 0건, lint 0건, 110개 스위트 647개 테스트 PASS)"
+    ],
+    "title_en": "Implement Google Keep Style Text & Multi-Image Sharing (Max 10 Images) and Sanitize Stray Punctuation Residue (: :)",
+    "problem_en": "1) Copying cards from web pages caused stray thumbnail handle colons (: :) to pollute shared messages on every image line. 2) Sharing notes containing embedded/attached images stripped all media and sent plain text only.",
+    "solution_en": "1) Upgraded htmlToFormattedPlainText to eliminate isolated colon/dot lines and zero-width spaces. 2) Created noteSharingService with a 10-image safety cap, base64 temp cache decoder, and notice generator. 3) Built Android native ModoShareModule utilizing ACTION_SEND_MULTIPLE with FileProvider to deliver text and up to 10 images simultaneously to KakaoTalk/WhatsApp. 4) Added iOS/Web graceful fallbacks and achieved 100% PASS on 9 unit tests.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 58,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "core",
+    "categoryLabel": "⚡ Core",
+    "title": "에디터 툴바 최좌측 1-Tap 스마트 클립보드 붙여넣기(05_paste.webp) 시스템 및 실시간 상태 감시 파이프라인 구축 (사용자 피드백 기반 중복 플로팅 캡슐 칩 걷어냄)",
+    "problem": "다른 앱에서 텍스트나 링크를 복사해 메모장에 입력할 때 매번 0.5초 이상 화면을 길게 눌러(Long-press) 기본 붙여넣기 메뉴를 띄워야 해 반복 작업 시 피로도가 심하고, 현재 클립보드에 붙여넣을 내용이 존재하는지 직관적으로 알기 어려웠던 사용성 결함.",
+    "solution": "1) 서식 툴바(Simple, Advanced, Elder, Vertical) 최좌측 0번 인덱스에 '05_paste.webp' 아이콘 기반 1-Tap 원터치 붙여넣기 버튼 배치 및 세로 구분선 적용. 2) 실시간 클립보드 감시 훅(hooks/useClipboardWatcher.ts) 신설로 텍스트/이미지 판별. 3) 클립보드 유무 피드백: 있을 때 100% Opacity + 액센트 그린 도트 표시, 없을 때 35% Dimmed 비활성화 표시 (사용자 피드백에 따라 중복되고 부자연스럽던 상단 플로팅 캡슐 칩은 전면 걷어내어 툴바 단일 원터치 버튼으로 심플하게 단일화). 4) 에디터 웹뷰(components/editor/editorTemplate.ts)에 캐럿 위치 직접 삽입 및 URL 자동 북마크 카드 전환 파이프라인(window.insertClipboardContent) 구현. 5) 안드로이드 이미지 복사 시 ClipData.Item.coerceToPlainText()의 content:// URI 문자열로 인한 텍스트 우선 탈취 결함을 해결하기 위해 Image-First 최우선 파이프라인(services/clipboardService.ts의 getClipboardContent) 구축 및 window.insertImageCardsIntoGrid 전역 브릿지 복구. 6) 17개 로케일 완벽 동기화 및 단위 테스트 100% PASS.",
+    "files": [
+      "constants/EditorIcons.ts",
+      "hooks/useClipboardWatcher.ts",
+      "services/clipboardService.ts",
+      "components/editor/RichTextEditorTypes.ts",
+      "components/editor/RichTextEditor.tsx",
+      "components/editor/editorTemplate.ts",
+      "components/editor/editorImageGridScript.ts",
+      "components/editor/EditorToolbarSimpleRow.tsx",
+      "components/editor/EditorToolbarAdvancedRows.tsx",
+      "components/editor/EditorToolbarElderRow.tsx",
+      "components/editor/EditorToolbar.tsx",
+      "components/editor/VerticalEditorToolbar.tsx",
+      "components/editor/VerticalEditorToolsList.tsx",
+      "components/note/NoteDetailHeaderArea.tsx",
+      "components/note/NewNoteHeaderArea.tsx",
+      "components/note/NoteDetailVerticalToolbar.tsx",
+      "app/note/[id].tsx",
+      "app/note/new.tsx",
+      "i18n/types.ts",
+      "i18n/locales/*.ts",
+      "__tests__/components/EditorClipboardPaste.test.tsx",
+      "__tests__/services/clipboardService.test.ts"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "에디터 내에 즉시 접근 가능한 클립보드 붙여넣기 전용 툴바 버튼 부재 및 Android에서 이미지를 복사했을 때 expo-clipboard의 getStringAsync()가 content:// URI 텍스트를 반환하여 텍스트 분기로 빠져 이미지가 누락되던 결함.",
+    "actions": [
+      "1. constants/EditorIcons.ts: 05_paste.webp 에디터 아이콘 맵 등록",
+      "2. hooks/useClipboardWatcher.ts: 실시간 클립보드 상태 감시(이미지 우선 판별, 18자 프리뷰 추출, dismiss/refresh 지원) 신설",
+      "3. 사용자 피드백에 따라 중복되고 시각적 이질감을 유발하던 플로팅 스마트 캡슐 칩(SmartPastePill) 전면 걷어내고 서식 툴바 버튼으로 완전 통합",
+      "4. components/editor/editorTemplate.ts: window.insertClipboardContent 웹뷰 캐럿 위치 삽입 및 URL 자동 북마크 카드 변환 브릿지 구현",
+      "5. services/clipboardService.ts: getClipboardContent 통합 함수 신설(Image-First 우선순위 강제, Data URL 접두사 정규화, content:// 파일 URI 감지 및 Base64 변환)",
+      "6. components/editor/editorImageGridScript.ts: window.insertImageCardsIntoGrid 전역 등록 및 툴바 탭 시 lastSelectionRange 복원 파이프라인 구현",
+      "7. components/editor/RichTextEditorTypes.ts & RichTextEditor.tsx: pasteClipboard 핸들 메서드 노출 및 네이티브/웹 통신 바인딩",
+      "8. EditorToolbar 및 하위 Simple/Advanced/Elder/Vertical 툴바 전반 최좌측에 [📋 Paste] 버튼 및 세로 구분선 배치",
+      "9. app/note/[id].tsx & new.tsx: 툴바 붙여넣기 연동 및 Image-First 클립보드 붙여넣기 직결",
+      "10. i18n/types.ts 및 17개 전 언어팩에 paste, pasteEmpty 1:1 완벽 동기화",
+      "11. __tests__/components/EditorClipboardPaste.test.tsx & clipboardService.test.ts: 단위 테스트 100% 통과 (tsc 0건, lint 0건)"
+    ],
+    "title_en": "Implement 1-Tap Clipboard Smart Paste System (05_paste.webp) on Leftmost Editor Toolbar with Image-First Pipeline (Removed Redundant Floating Pill per User Feedback)",
+    "problem_en": "1) Users had to long-press for 0.5s+ to trigger native paste popup. 2) When copying images on Android, getStringAsync() returned a content:// URI string, falsely triggering text paste and dropping image data.",
+    "solution_en": "1) Placed 1-Tap paste button with '05_paste.webp' at index 0 of all editor toolbars. 2) Built useClipboardWatcher and getClipboardContent with strict Image-First prioritization and Data URL standardization. 3) Provided dynamic feedback (100% opacity + green dot). 4) Removed redundant floating pill per user feedback. 5) Exposed window.insertImageCardsIntoGrid and restored lastSelectionRange. 6) Verified 100% PASS on unit tests across all test suites.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 59,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "표준 피드 홈 화면 D-Day 섹션 헤더 우측 아이콘 24_model_dday_flag_cal.webp 교체 및 D-Day 허브 & 캘린더 대시보드 직통 연동",
+    "problem": "표준 피드 홈 화면의 D-Day 배너 헤더 우측 끝에 위치한 캘린더 아이콘(12_calendar_schedule.webp)이 단순 D-Day 생성 팝업(QuickDDayModal)으로만 연결되어 있어, 메인 캘린더 및 카운트다운/기념일 대시보드 허브(DDayDashboardModal)로 직관적으로 진입하기 어려웠고 아이콘의 시각적 메타포가 위젯/허브 심볼과 일치하지 않았던 사용성 한계.",
+    "solution": "1) components/dday/HomeDDayBanner.tsx: 헤더 우측 끝 버튼의 아이콘을 3D 비스포크 스티커 '24_model_dday_flag_cal.webp'(dday_flag_cal.webp)로 교체하여 캘린더/목표 플래그 비주얼 정체성 통일. 2) 해당 아이콘 클릭 시 단순 추가 모달 대신 월간 캘린더 및 D-/D+ 탭을 아우르는 전체 'D-Day 허브 & 캘린더'(DDayDashboardModal)가 즉시 열리도록 핸들러(handleOpenDashboard) 바인딩. 3) 접근성 라벨을 t('dday.dashboardTitle')로 최적화하고 3중 검증(tsc 0건, Jest 111개 스위트 656개 테스트 100% PASS, lint 0건) 완료.",
+    "files": [
+      "components/dday/HomeDDayBanner.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "표준 홈 피드 D-Day 배너 우측 버튼이 단순 등록 팝업과 연결되어 있어 허브 대시보드 접근성이 떨어지고 아이콘이 3D 플래그 캘린더 심볼과 불일치했던 UX 한계.",
+    "actions": [
+      "1. components/dday/HomeDDayBanner.tsx: DDAY_HUB_CALENDAR_ICON (24_model_dday_flag_cal.webp) 에셋 바인딩",
+      "2. 헤더 우측 끝 버튼(calendarIconBtn) 터치 액션을 handleOpenDashboard(DDayDashboardModal 전체 허브 오픈)로 전환",
+      "3. 접근성 라벨을 t('dday.dashboardTitle')로 갱신하여 스크린 리더 지원 강화",
+      "4. 동기식 3중 검증(tsc 0건, Jest 111개 스위트 ALL PASS, lint 0건) 완료"
+    ],
+    "title_en": "Replace Standard Home Feed D-Day Section Rightmost Icon with 24_model_dday_flag_cal.webp and Link to D-Day Hub & Calendar Dashboard",
+    "problem_en": "The rightmost icon on the standard home feed D-Day section header only triggered the quick create modal, lacking direct one-tap access to the comprehensive D-Day Hub & Calendar dashboard, and used a generic schedule icon rather than the bespoke 3D flag calendar asset.",
+    "solution_en": "1) Replaced the rightmost icon in HomeDDayBanner.tsx with 3D bespoke asset '24_model_dday_flag_cal.webp'. 2) Linked its onPress handler to open the full DDayDashboardModal (monthly calendar + D-/D+ tabs). 3) Updated accessibilityLabel to localized dashboard title. 4) 100% verified across tsc, Jest (656 tests pass), and linter.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 60,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "D-Day 허브 & 캘린더 대시보드 우측 하단 플로팅 플러스(+) 버튼 신설 및 날짜 자동 주입 D-Day 등록 팝업 연동 (일정 화면 FAB 대칭 구현)",
+    "problem": "일정 탭(schedule.tsx)에서는 캘린더 우측 하단 플로팅 플러스(+) 버튼으로 날짜를 선택하고 즉시 일정을 등록할 수 있었으나, D-Day 허브 & 캘린더 모달(DDayDashboardModal.tsx)에는 하단 플로팅 버튼이 없어 상단 헤더의 작은 버튼까지 손을 뻗어야 했고 캘린더에서 선택한 날짜가 D-Day 등록창에 자동 연동되지 않던 사용성 결함.",
+    "solution": "1) components/common/FloatingActionButton.tsx: 모달 환경 지원을 위해 bottomOffset, testID, accessibilityLabel 옵셔널 속성 확장. 2) components/dday/DDayDashboardModal.tsx: 일정 화면과 동일한 시각·햅틱 규격의 FloatingActionButton을 우측 하단에 배치. 3) 캘린더 날짜 터치 시 onDateChange로 선택 날짜를 실시간 감지하여, FAB 클릭 시 해당 날짜가 QuickDDayModal(initialDDayDate)의 목표일로 자동 사전 선택되도록 바인딩. 4) 리스트 하단 패딩(paddingBottom: Spacing.xl + 60)을 확보하여 마지막 카드가 버튼에 가려지지 않도록 최적화. 5) 3중 검증(tsc 0건, Jest 111개 스위트 656개 테스트 100% PASS, lint 0건) 완료.",
+    "files": [
+      "components/common/FloatingActionButton.tsx",
+      "components/dday/DDayDashboardModal.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "D-Day 허브 캘린더에 우측 하단 플로팅 버튼(FAB)이 부재하여 일정 화면과의 UI/UX 일관성이 결여되었고 캘린더 선택 날짜 연동이 누락되어 있었음.",
+    "actions": [
+      "1. components/common/FloatingActionButton.tsx: bottomOffset, testID, accessibilityLabel 옵셔널 속성 추가",
+      "2. components/dday/DDayDashboardModal.tsx: 우측 하단 FloatingActionButton 탑재 및 handleOpenAdd 연결",
+      "3. 캘린더 날짜 선택 상태(selectedCalendarDate) 추적 및 QuickDDayModal initialDDayDate 자동 주입 파이프라인 구현",
+      "4. 리스트 탭 하단 안전 패딩 확보(paddingBottom: Spacing.xl + 60) 및 3중 검증 통과"
+    ],
+    "title_en": "Add Bottom-Right Floating Plus (+) Button to D-Day Hub & Calendar with Auto-Selected Date Ingestion (Symmetric with Schedule Screen FAB)",
+    "problem_en": "While the Schedule screen had a bottom-right FAB for instant creation with selected date, DDayDashboardModal lacked a bottom-right FAB, forcing users to reach for the top header button and manually re-enter dates.",
+    "solution_en": "1) Extended FloatingActionButton with bottomOffset, testID, and accessibilityLabel. 2) Placed FAB at the bottom right of DDayDashboardModal. 3) Auto-injected selected calendar date into QuickDDayModal. 4) Verified 100% PASS across tsc, Jest, and linter.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 61,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "ios",
+    "platformLabel": "🍎 iOS",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "iOS 모도 엠블럼 3D 카드 스와이프/틸트 시 반토막 및 대각선 깜빡임 절단 결함 해결 (Android 무영향 플랫폼 분기 가드 적용)",
+    "problem": "iOS 환경에서 모도 정보의 모도 엠블럼 3D 트레이딩 카드를 터치하여 앞뒤로 뒤집을 때는 정상 작동하나, 상하좌우로 스와이프하거나 드래그할 때 카드가 세로 중심선을 기준으로 반이 잘려 좌우가 깜빡이거나 대각선 기준으로 상하 반이 잘려 깜빡이는 심각한 렌더링 결함 발생.",
+    "solution": "1) 원인 분석: Core Animation CALayer에서 부모의 3D 원근 틸트(perspective + rotateX/rotateY)와 자식의 backfaceVisibility: 'hidden' 법선 벡터(Nz) 판정 오작동 및 overflow: 'hidden'(masksToBounds=true)의 2D 사각형 마스크 절단이 복합 충돌. 2) components/settings/emblem/ProEmblemCardStyles.ts: Android에는 1%의 영향도 없도록 Platform.OS === 'ios' ? 'visible' : 'hidden' 플랫폼 분기 가드를 정밀 적용하여, Android는 기존 hidden을 100% 보존하고 iOS에서만 backfaceVisibility와 overflow를 visible로 개방. 3) stage에 overflow: 'visible'을 부여하여 3D 공간 회전 여유 공간 확보. 4) __tests__/components/ProEmblemCard.test.tsx 단위 테스트 추가. 5) 3중 검증(tsc 0건, Jest 112개 스위트 660개 테스트 100% PASS, lint 0건) 완료.",
+    "files": [
+      "components/settings/emblem/ProEmblemCardStyles.ts",
+      "__tests__/components/ProEmblemCard.test.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "iOS Core Animation의 3D 공간 상에서 perspective + rotateX/rotateY 틸트와 backfaceVisibility: 'hidden' 및 overflow: 'hidden' 2D 마스킹 간의 렌더링 충돌.",
+    "actions": [
+      "1. components/settings/emblem/ProEmblemCardStyles.ts: cardBase에 backfaceVisibility 및 overflow를 Platform.OS === 'ios' ? 'visible' : 'hidden'으로 분기",
+      "2. stage에 overflow: 'visible' 부여하여 3D 회전 캔버스 확보",
+      "3. Android(기존 hidden 100% 유지) 무영향 보장",
+      "4. __tests__/components/ProEmblemCard.test.tsx 신규 작성 및 동기식 3중 검증 통과"
+    ],
+    "title_en": "Fix iOS Modo Emblem 3D Card Swipe/Tilt Half-Clipped & Diagonal Flickering Defect (Zero-Impact on Android via Platform Guard)",
+    "problem_en": "On iOS, while tapping to flip the Modo Emblem 3D Card worked seamlessly, dragging or swiping the card caused it to split in half vertically or diagonally with heavy flickering due to CALayer backface and mask clipping.",
+    "solution_en": "1) Diagnosed conflict between 3D perspective tilt and CALayer backfaceVisibility + masksToBounds 2D clipping. 2) Applied Platform.OS === 'ios' ? 'visible' : 'hidden' to cardBase, preserving 100% Android behavior while fixing iOS. 3) Added overflow: 'visible' to stage. 4) Added ProEmblemCard.test.tsx and achieved 100% pass on 660 tests.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 62,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "퀵뷰 그리드 및 홈 피드 메모 카드(NoteCard.tsx) 상단 배지 다중 표시 시 세로 3열 누적으로 인한 불필요한 개행 및 카드 높이 과다 팽창 결함 해결 (수평 마이크로 뱃지 행 headerBadgeRow 전환 및 콤팩트 패딩 적용)",
+    "problem": "퀵뷰 그리드 및 홈 피드에서 상단 알림 고정(is_notif_pinned), 상단 핀 고정(is_pinned), 즐겨찾기(is_favorite)가 복수 적용된 메모의 경우, 우측 상단 뱃지가 세로 컬럼(badgeColumn)으로 최대 3개(72px)까지 누적되어 제목 텍스트와 불필요하게 충돌하며 강제 개행이 발생하고 카드가 기형적으로 길어지던 결함.",
+    "solution": "1) components/note/NoteCard.tsx: 기존 세로 스택 badgeColumn을 수평 플렉스 행 headerBadgeRow(flexDirection: 'row', gap: 3)로 전면 개편. 2) 뱃지 아이콘 크기를 14.5×14.5px 마이크로 스퀘어클로 정밀 최적화하여 3개 뱃지가 모두 켜져도 단 1줄의 슬림한 높이(14.5px)만 차지하도록 슬림화. 3) 제목 영역의 가로 유효 너비를 40px 이상 확장하여 불필요한 단어 개행과 카드 높이 팽창을 100% 원천 차단. 4) __tests__/components/NoteCard.test.tsx 단위 테스트 갱신 및 3중 검증 통과.",
+    "files": [
+      "components/note/NoteCard.tsx",
+      "__tests__/components/NoteCard.test.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "NoteCard 헤더 내 다중 뱃지가 세로 flex-direction: column으로 쌓여 최대 72px 높이를 점유하고 가로 폭을 잠식하여 제목 개행을 강제하던 레이아웃 설계 결함.",
+    "actions": [
+      "1. components/note/NoteCard.tsx: badgeColumn 세로 스택 제거 및 headerBadgeRow(flexDirection: 'row', gap: 3) 신설",
+      "2. 뱃지 아이콘 크기를 14.5x14.5px 마이크로 스퀘어클로 컴팩트하게 정돈",
+      "3. 3개 뱃지 동시 활성화 시에도 단일 행 높이(14.5px)로 유지하여 제목 영역 가로 폭 40px+ 확보 및 불필요한 개행 완전 박멸",
+      "4. __tests__/components/NoteCard.test.tsx: 3중 뱃지 가로 렌더링 검증 테스트 보강 및 100% PASS"
+    ],
+    "title_en": "Fix Unwanted Line Breaks and Bloated Card Height in NoteCard When Displaying Multiple Badges (Switched to Horizontal headerBadgeRow and Compact Layout)",
+    "problem_en": "When a note had multiple badges active (notif-pinned, pinned, favorite), they stacked vertically in a column up to 72px high, colliding with the title and causing unnecessary line breaks and bloated card heights.",
+    "solution_en": "1) Replaced vertical badgeColumn with horizontal headerBadgeRow (flexDirection: 'row', gap: 3). 2) Optimized badge icons to compact 14.5x14.5px micro badges taking only 1 single line. 3) Reclaimed 40px+ horizontal title space, preventing awkward word breaking. 4) Updated tests and verified 100% PASS.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
+  },
+  {
+    "id": 63,
+    "phase": "phase3",
+    "date": "2026-10-03",
+    "severity": "S3",
+    "severityLabel": "⚡ S3 Major",
+    "platform": "all",
+    "platformLabel": "🌐 All",
+    "category": "ui",
+    "categoryLabel": "🎨 UI/UX",
+    "title": "검색 그리드 카드(SearchResultCardGrid.tsx) 배경색 메모 외곽/내부 이중 사각형 아티팩트 박멸, 110px 빈 미디어 박스 제거(옵션 A 리치 스니펫 전환) 및 3대 검색 뷰 일정 전용 일시/D-Day 미니 칩 전면 강화",
+    "problem": "1) 검색 화면 카드 그리드 뷰(SearchResultCardGrid.tsx)에서 메모에 배경색(보라, 노랑 등)을 지정했을 때, styles.card의 overflow: 'hidden'과 elevation이 반투명 RGBA 배경색과 충돌하여 카드 외곽 테두리 주변에 15px 회색 프레임 잔상이 남고 내부만 따로 사각형으로 잘리는 이중 사각 아티팩트 발생. 2) 사진이 없는 순수 텍스트 메모나 일정에도 110px 고정 높이의 빈 박스와 단순 아이콘 1개만 노출되어 본문 확인이 불가능하고 60% 이상의 카드 공간이 낭비됨. 3) 검색된 일정 카드에서 정작 핵심 정보인 행사 일시(날짜, 시간)와 D-Day 남은 일수가 전혀 표시되지 않던 결함.",
+    "solution": "1) components/search/SearchResultCardGrid.tsx: 카드 컨테이너의 overflow: 'hidden'을 제거하고 사진 썸네일 자체에 borderTopLeftRadius: Radius.md - 1을 부여하여 네이티브 클리핑 잔상 완벽 제거. 2) 순수 텍스트 메모의 110px 빈 박스를 제거하고 상단 인라인 뱃지 + 제목(최대 2줄) + 본문 3줄 스니펫 + 날짜를 꽉 채워 배치(옵션 A). 3) 일정 및 D-Day 메모는 상단에 캘린더 아이콘, 실제 일시(📅 2026.10.15 ⏰ 14:00), D-Day 카운트다운 뱃지(D-12)가 한눈에 들어오는 전용 미니 캘린더 헤더 칩 탑재. 4) SearchResultList.tsx 및 SearchResultTimeline.tsx에도 동일한 일정 일시/D-Day 뱃지를 연동하여 3대 검색 뷰 전체의 일관성 완성. 5) SearchResultCardGridStyles.ts로 스타일 분리 모듈화하여 단일 파일 400줄 제한 엄격 준수. 6) __tests__/components/SearchResultCardGrid.test.tsx 신설 및 113개 스위트 663개 테스트 100% PASS.",
+    "files": [
+      "components/search/SearchResultCardGrid.tsx",
+      "components/search/SearchResultCardGridStyles.ts",
+      "components/search/SearchResultList.tsx",
+      "components/search/SearchResultTimeline.tsx",
+      "__tests__/components/SearchResultCardGrid.test.tsx"
+    ],
+    "status": "resolved",
+    "deployed": false,
+    "deployedVersion": "Pending (1.1.13)",
+    "deployedDate": "Pending",
+    "cause": "반투명 RGBA 배경색과 elevation/overflow: 'hidden' 간의 네이티브 렌더링 클리핑 충돌, 텍스트 메모에 강제된 110px 빈 미디어 박스로 인한 공간 낭비, 그리고 검색 결과 내 일정 정보(일시/D-Day) 누락.",
+    "actions": [
+      "1. components/search/SearchResultCardGrid.tsx: 카드 컨테이너 overflow: 'hidden' 제거 및 이미지 상단 모서리 자체 라운딩으로 네이티브 클리핑 아티팩트 박멸",
+      "2. 사진 없는 텍스트 메모: 110px 빈 박스 제거, 인라인 뱃지 + 2줄 제목 + 3줄 본문 스니펫으로 시원하게 꽉 채워 배치(옵션 A)",
+      "3. 일정/D-Day: 상단에 캘린더 아이콘, 실제 행사 일시, D-Day 카운트다운 뱃지를 담은 전용 미니 캘린더 헤더 칩 탑재",
+      "4. components/search/SearchResultList.tsx & SearchResultTimeline.tsx: 리스트 및 타임라인 뷰에도 행사 일시 및 D-Day 뱃지 1:1 동기화",
+      "5. components/search/SearchResultCardGridStyles.ts: 스타일 분리 모듈화로 전 수정 파일 400줄 제한 완벽 준수",
+      "6. __tests__/components/SearchResultCardGrid.test.tsx 신설 및 전체 113개 테스트 스위트 663개 테스트 100% 통과"
+    ],
+    "title_en": "Eliminate Search Result Grid Double Border/Inner Box Artifacts on Colored Notes, Remove Empty 110px Media Box (Option A Rich Snippets), and Enhance Schedule Date/Time/D-Day Chips across All 3 Search Views",
+    "problem_en": "1) Colored notes in SearchResultCardGrid suffered from a 15px gray outer frame and inner cut-out box artifact due to elevation + overflow: 'hidden' conflict with rgba background colors. 2) Pure text notes wasted 60%+ height on an empty 110px box with a single icon. 3) Schedule search results omitted event dates and D-day counts.",
+    "solution_en": "1) Removed overflow: 'hidden' from card and applied top corner radius to image wrapper, eliminating native clipping artifacts. 2) Replaced 110px empty box on text notes with rich 3-line content snippets (Option A). 3) Added dedicated schedule header banner with event date, time, and D-day countdown. 4) Synchronized schedule chips into SearchResultList and SearchResultTimeline. 5) Extracted SearchResultCardGridStyles.ts (< 400 lines). 6) Verified 100% PASS on unit tests.",
+    "deployedAos": false,
+    "deployedVersionAos": "",
+    "deployedDateAos": "",
+    "deployedIos": false,
+    "deployedVersionIos": "",
+    "deployedDateIos": ""
   }
 ];
-
-
 
