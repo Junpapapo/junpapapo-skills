@@ -93,6 +93,7 @@ Universal QA Tracker v2.0 introduces a zero-cost, real-time in-app survey and VO
    - **Stepped Progression Timeline**: Real-time SVG dual-curve trajectory comparing version progression velocity, lead times, and milestones across platforms.
    - **Monthly Release Cadence & Calendar Heatmap**: Monthly volume bar chart and interactive calendar sprint matrix with multi-platform tags and one-click changelog drawer inspection.
    - **Instant Version Changelog Drawer**: Responsive side drawer filtering and grouping resolved QA issues for selected app store releases.
+   - **100% Dynamic Release Auto-Discovery**: Automatically discovers, parses, semantically sorts (SemVer), and binds newly stamped releases and builds from active QA tracks (phase3_v1_1_backlog.js, qa_deploy_registry.js) into KPI cards, Volume charts, Timeline trajectories, and changelogs with zero hardcoding.
 
 4. **Portal 5: VOC Feedback Studio 3-Tab Architecture**:
    - **Tab 1 (`💬 실시간 VOC 피드백`)**: Live feedback stream, category/rating filters, search, and 1-click **Promote to QA** action.

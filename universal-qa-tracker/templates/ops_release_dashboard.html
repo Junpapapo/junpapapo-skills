@@ -864,12 +864,12 @@
               <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiAosDate">Play Store · 10-03</div>
             </div>
             <!-- iOS Target Box -->
-            <div style="background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_IOS_VER || 'v1.1.16')" title="iOS 최신 배포 체인지로그 보기">
+            <div style="background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.22); border-radius: 8px; padding: 5px 8px; cursor: pointer; transition: all 0.15s ease;" onclick="window.focusChangelog && window.focusChangelog(window.LATEST_IOS_VER || 'v1.1.6')" title="iOS 최신 배포 체인지로그 보기">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 10px; font-weight: 800; color: var(--ios-apple-blue); display: flex; align-items: center; gap: 3px;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px;" alt="iOS" />iOS</span>
-                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiIosBuild">b86</span>
+                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);" id="kpiIosBuild">b85</span>
               </div>
-              <div style="font-size: 16px; font-weight: 900; color: var(--ios-apple-blue); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetIos">v1.1.16</div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--ios-apple-blue); font-family: var(--font-mono); margin-top: 2px;" id="kpiTargetIos">v1.1.6</div>
               <div style="font-size: 9.5px; color: var(--text-secondary); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="kpiIosDate">App Store · 10-03</div>
             </div>
           </div>
@@ -988,7 +988,7 @@
 
       let currentScope = 'phase3'; // 'phase3' or 'all'
       let currentPlatform = 'all';  // 'all', 'android', 'ios'
-      let selectedVersion = 'v1.1.4'; // active selected version for drilldown
+      let selectedVersion = 'v1.1.17'; // active selected version for drilldown
       let drawerPlatformFilter = 'all'; // filter inside changelog drawer
 
       const CAT_COLORS = {
@@ -1049,13 +1049,145 @@
         document.documentElement.setAttribute('data-theme', saved);
       }
 
+      // Semantic Version comparator (e.g. 1.1.4 < 1.1.5 < 1.1.6 < 1.1.7 < 1.1.13 < 1.1.17)
+      function compareSemVer(a, b) {
+        const parse = s => (s || '').replace(/[^0-9.]/g, '').split('.').map(n => parseInt(n, 10) || 0);
+        const pa = parse(a);
+        const pb = parse(b);
+        for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+          const na = pa[i] || 0;
+          const nb = pb[i] || 0;
+          if (na !== nb) return na - nb;
+        }
+        return 0;
+      }
+
+      function parseVersionString(str) {
+        if (!str) return null;
+        const semverMatch = str.match(/(?:v)?(1\.\d+\.\d+)/);
+        if (!semverMatch) return null;
+        const version = 'v' + semverMatch[1];
+        
+        let build = '';
+        const bMatch2 = str.match(/\((\d+)\)/);
+        const bMatch1 = str.match(/(\d+)\s*\(/);
+        if (bMatch2) build = bMatch2[1];
+        else if (bMatch1) build = bMatch1[1];
+
+        return { version, build };
+      }
+
+      // Master release resolution: blends static MODO_RELEASE_REGISTRY with real-time auto-discovered releases from QA Spreadsheet & Deploy Registry
+      function getMasterReleases() {
+        const baseList = (window.MODO_RELEASE_REGISTRY || []).map(r => ({ ...r }));
+        const p3 = window.MODO_QA_PHASE3 || [];
+        const reg = window.MODO_QA_DEPLOY_REGISTRY || {};
+
+        const discovered = {};
+
+        function registerItem(os, verStr, dateStr, item) {
+          const parsed = parseVersionString(verStr);
+          if (!parsed) return;
+          const key = `${os}_${parsed.version}`;
+          if (!discovered[key]) {
+            discovered[key] = {
+              platform: os,
+              version: parsed.version,
+              build: parsed.build,
+              date: (dateStr || '').slice(0, 10) || new Date().toISOString().slice(0, 10),
+              issues: []
+            };
+          }
+          if (parsed.build && (!discovered[key].build || parseInt(parsed.build, 10) > parseInt(discovered[key].build, 10))) {
+            discovered[key].build = parsed.build;
+          }
+          if (dateStr && dateStr.slice(0, 10) > discovered[key].date) {
+            discovered[key].date = dateStr.slice(0, 10);
+          }
+          if (item) {
+            discovered[key].issues.push(item);
+          }
+        }
+
+        // 1. Scan Phase 3 Backlog items
+        p3.forEach(item => {
+          if (item.deployedAos && item.deployedVersionAos) {
+            registerItem('android', item.deployedVersionAos, item.deployedDateAos, item);
+          }
+          if (item.deployedIos && item.deployedVersionIos) {
+            registerItem('ios', item.deployedVersionIos, item.deployedDateIos, item);
+          }
+        });
+
+        // 2. Scan QA Deploy Registry
+        Object.keys(reg).forEach(k => {
+          const rec = reg[k];
+          if (rec.android && rec.android.deployed && rec.android.version) {
+            registerItem('android', rec.android.version, rec.android.deployedAt, null);
+          }
+          if (rec.ios && rec.ios.deployed && rec.ios.version) {
+            registerItem('ios', rec.ios.version, rec.ios.deployedAt, null);
+          }
+        });
+
+        // 3. Merge discovered releases into baseList
+        Object.keys(discovered).forEach(k => {
+          const disc = discovered[k];
+          const exists = baseList.some(r => r.version === disc.version && (r.platform === 'all' || r.platform === disc.platform));
+          if (!exists) {
+            const isAos = disc.platform === 'android';
+            const label = isAos 
+              ? `🤖 Android Google Play Release (Build ${disc.build})` 
+              : `🍎 iOS App Store Release (Build ${disc.build})`;
+            const highlights = disc.issues.slice(0, 3).map(i => i.title || `#${i.id} Issue Resolved`);
+            if (highlights.length === 0) highlights.push(`Verified production release for ${isAos ? 'Android' : 'iOS'}`);
+
+            baseList.push({
+              version: disc.version,
+              build: disc.build,
+              aosBuild: isAos ? disc.build : '',
+              iosBuild: !isAos ? disc.build : '',
+              date: disc.date,
+              aosDate: isAos ? disc.date : '',
+              iosDate: !isAos ? disc.date : '',
+              platform: disc.platform,
+              phase: 'phase3',
+              type: 'patch',
+              isAutoDiscovered: true,
+              label: label,
+              description: `Live production build ${disc.build} synchronized from QA Tracker.`,
+              highlights: highlights
+            });
+          }
+        });
+
+        // 4. Stable sort by semantic version, then date, then build, then platform
+        baseList.sort((a, b) => {
+          const vCmp = compareSemVer(a.version, b.version);
+          if (vCmp !== 0) return vCmp;
+          if (a.date !== b.date) return (a.date || '').localeCompare(b.date || '');
+          const bldA = parseInt(a.build || a.aosBuild || a.iosBuild || '0', 10);
+          const bldB = parseInt(b.build || b.aosBuild || b.iosBuild || '0', 10);
+          if (bldA !== bldB) return bldA - bldB;
+          return (a.platform || '').localeCompare(b.platform || '');
+        });
+
+        return baseList;
+      }
+
+      function getLatestVersion(os = 'all') {
+        const rels = getActiveReleases();
+        if (rels.length === 0) return 'v1.1.17';
+        return rels[rels.length - 1].version;
+      }
+
       // Scope Switcher
       window.setReleaseScope = function (scope) {
         currentScope = scope;
         document.getElementById('chipPhase3').classList.toggle('active', scope === 'phase3');
         document.getElementById('chipAll').classList.toggle('active', scope === 'all');
         
-        selectedVersion = scope === 'phase3' ? 'v1.1.4' : 'v1.1.13';
+        selectedVersion = getLatestVersion(currentPlatform);
         renderAll();
       };
 
@@ -1086,7 +1218,7 @@
 
       // Get Active Releases
       function getActiveReleases() {
-        const list = window.MODO_RELEASE_REGISTRY || [];
+        const list = getMasterReleases();
         let filtered = list;
         if (currentScope === 'phase3') {
           filtered = filtered.filter(r => r.phase === 'phase3');
@@ -1269,12 +1401,12 @@
         if (!stage) return;
 
         const w = stage.clientWidth || 780;
-        const allReleases = (window.MODO_RELEASE_REGISTRY || []).filter(r => currentScope === 'all' || r.phase === currentScope);
+        const allReleases = getMasterReleases().filter(r => currentScope === 'all' || r.phase === currentScope);
 
         // Android Independent Track Dataset
         const aosReleases = allReleases.filter(r => r.platform === 'all' || r.platform === 'android').map(r => {
           const issues = getIssuesForVersion(r.version, 'android');
-          const count = issues.length > 0 ? issues.length : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2))));
+          const count = issues.length > 0 ? issues.length : (r.isAutoDiscovered ? 0 : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2)))));
           return {
             version: r.version,
             build: r.aosBuild || r.build || '87',
@@ -1288,7 +1420,7 @@
         // iOS Independent Track Dataset
         const iosReleases = allReleases.filter(r => r.platform === 'all' || r.platform === 'ios').map(r => {
           const issues = getIssuesForVersion(r.version, 'ios');
-          const count = issues.length > 0 ? issues.length : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2))));
+          const count = issues.length > 0 ? issues.length : (r.isAutoDiscovered ? 0 : (r.version === 'v1.1.0' ? 6 : (r.version === 'v1.1.1' ? 4 : (r.version === 'v1.1.10' ? 3 : (r.version === 'v1.1.12' ? 3 : 2)))));
           return {
             version: r.version,
             build: r.iosBuild || r.build || '87',
@@ -1331,7 +1463,7 @@
                     <span style="font-size:12px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:14px; height:14px;" alt="iOS" />iOS (Apple App Store) 배포 트랙</span>
                     <span style="font-size:10px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:1.5px 6px; border-radius:4px;">${iosReleases.length}개 버전 · ${totalIosIssues}건 반영</span>
                   </div>
-                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '86'})</span>
+                  <span style="font-size:10.5px; color:var(--text-muted); font-family:var(--font-mono);">최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.6'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
                 </div>
                 ${svgIos}
               </div>
@@ -1366,7 +1498,7 @@
                   <span style="font-size:13px; font-weight:800; color:var(--ios-apple-blue); display:flex; align-items:center; gap:4px;"><img src="assets/icons/logo_app_store.svg" style="width:15px; height:15px;" alt="iOS" />iOS (Apple App Store) 단독 배포 트랙</span>
                   <span style="font-size:11px; font-weight:700; color:var(--ios-apple-blue); background:rgba(0,122,255,0.1); padding:2px 8px; border-radius:5px;">총 ${iosReleases.length}개 버전 · ${totalIosIssues}건 해결</span>
                 </div>
-                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">App Store Connect 최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.16'} (b${iosReleases[iosReleases.length - 1]?.build || '86'})</span>
+                <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">App Store Connect 최신: ${iosReleases[iosReleases.length - 1]?.version || 'v1.1.6'} (b${iosReleases[iosReleases.length - 1]?.build || '85'})</span>
               </div>
               ${svgIos}
             </div>
@@ -1385,56 +1517,94 @@
         const releases = getActiveReleases();
         const w = stage.clientWidth || 540;
         const h = 290;
-        const padL = 50, padR = 24, padT = 28, padB = 40;
+        const padL = 54, padR = 24, padT = 24, padB = 38;
         const plotW = w - padL - padR;
         const plotH = h - padT - padB;
 
-        const totalSteps = releases.length;
-        if (totalSteps < 2) return;
-
         const isDual = currentPlatform === 'all';
 
-        // Calculate Y positions for versions
-        const coords = releases.map((r, idx) => {
-          const y = padT + plotH - (plotH / (totalSteps - 1)) * idx;
-          const xAos = padL + (plotW / (totalSteps - 1)) * idx;
-          // iOS slight shift if review gap occurred
-          const reviewGap = (r.aosDate !== r.iosDate) ? 8 : 0;
-          const xIos = xAos + reviewGap;
-
-          return { ...r, idx, y, xAos, xIos };
+        // 1) Unique, SemVer-sorted version list for Y-axis (ascending from bottom to top)
+        const verSet = new Set();
+        releases.forEach(r => {
+          if (r.version) verSet.add(r.version);
         });
+        const sortedVersions = Array.from(verSet).sort(compareSemVer);
+        const totalYSteps = sortedVersions.length;
+        if (totalYSteps < 2) return;
+
+        const getY = (ver) => {
+          const idx = sortedVersions.indexOf(ver);
+          if (idx === -1) return padT + plotH;
+          return padT + plotH - (plotH / (totalYSteps - 1)) * idx;
+        };
+
+        // 3) Unique, chronologically sorted dates for X-axis
+        const dateSet = new Set();
+        releases.forEach(r => {
+          if (r.date) dateSet.add(r.date);
+          if (r.aosDate) dateSet.add(r.aosDate);
+          if (r.iosDate) dateSet.add(r.iosDate);
+        });
+        const sortedDates = Array.from(dateSet).sort();
+        const totalXSteps = sortedDates.length;
+        if (totalXSteps < 2) return;
+
+        const getX = (dt) => {
+          const idx = sortedDates.indexOf(dt);
+          if (idx === -1) return padL;
+          return padL + (plotW / (totalXSteps - 1)) * idx;
+        };
 
         let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
 
-        // Horizontal Grid lines & version labels
-        coords.forEach(c => {
-          svg += `<line x1="${padL}" y1="${c.y.toFixed(1)}" x2="${w - padR}" y2="${c.y.toFixed(1)}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
-          svg += `<text x="${padL - 6}" y="${(c.y + 3).toFixed(1)}" font-size="9.5" font-weight="700" fill="var(--text-muted)" text-anchor="end">${c.version}</text>`;
+        // Horizontal Grid lines & version labels (in ascending numerical SemVer order)
+        sortedVersions.forEach(ver => {
+          const y = getY(ver);
+          svg += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${w - padR}" y2="${y.toFixed(1)}" stroke="var(--border-subtle)" stroke-dasharray="2,2"/>`;
+          svg += `<text x="${padL - 6}" y="${(y + 3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="var(--text-muted)" text-anchor="end">${ver}</text>`;
         });
 
-        // Helper to build stepped SVG path
-        function makeStepPath(pts, xKey) {
-          let p = `M ${pts[0][xKey].toFixed(1)} ${pts[0].y.toFixed(1)}`;
+        // Helper to build stepped SVG path from ordered points
+        function makeStepPath(pts) {
+          if (pts.length === 0) return '';
+          let p = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
           for (let i = 1; i < pts.length; i++) {
             const prev = pts[i - 1];
             const cur = pts[i];
-            p += ` L ${cur[xKey].toFixed(1)} ${prev.y.toFixed(1)} L ${cur[xKey].toFixed(1)} ${cur.y.toFixed(1)}`;
+            if (Math.abs(cur.x - prev.x) > 0.1) {
+              p += ` L ${cur.x.toFixed(1)} ${prev.y.toFixed(1)} L ${cur.x.toFixed(1)} ${cur.y.toFixed(1)}`;
+            } else {
+              p += ` L ${cur.x.toFixed(1)} ${cur.y.toFixed(1)}`;
+            }
           }
           return p;
         }
 
+        // 4) Android Stepped Line (Green)
         if (isDual || currentPlatform === 'android') {
-          // Android Stepped Line (Green)
-          const aosPts = coords.filter(c => c.platform === 'all' || c.platform === 'android');
+          const aosReleases = releases.filter(r => r.platform === 'all' || r.platform === 'android');
+          const aosPts = aosReleases.map(r => {
+            const dt = r.aosDate || r.date;
+            return {
+              ...r,
+              x: getX(dt),
+              y: getY(r.version)
+            };
+          });
+
+          aosPts.sort((a, b) => {
+            if (a.x !== b.x) return a.x - b.x;
+            return compareSemVer(a.version, b.version);
+          });
+
           if (aosPts.length >= 2) {
-            const aosPath = makeStepPath(aosPts, 'xAos');
+            const aosPath = makeStepPath(aosPts);
             svg += `<path d="${aosPath}" fill="none" stroke="var(--aos-green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
 
             aosPts.forEach(c => {
               const isSelected = c.version === selectedVersion;
               svg += `
-                <circle cx="${c.xAos.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
+                <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
                   fill="${isSelected ? 'var(--aos-green)' : 'var(--bg-surface)'}"
                   stroke="var(--aos-green)" stroke-width="2" style="cursor:pointer;"
                   onmouseover="showTooltip(event, '<img src=\\'assets/icons/logo_google_play.svg\\' style=\\'width:12px; height:12px; vertical-align:-1px; margin-right:3px;\\'/>Android ${c.version} | 빌드 ${c.aosBuild || c.build} (${c.aosDate || c.date})')"
@@ -1446,20 +1616,37 @@
           }
         }
 
+        // 5) iOS Stepped Line (Blue)
         if (isDual || currentPlatform === 'ios') {
-          // iOS Stepped Line (Blue)
-          const iosPts = coords.filter(c => c.platform === 'all' || c.platform === 'ios');
+          const iosReleases = releases.filter(r => r.platform === 'all' || r.platform === 'ios');
+          const iosPts = iosReleases.map(r => {
+            const dt = r.date;
+            const baseX = getX(dt);
+            const isShared = isDual && (r.platform === 'all');
+            const x = isShared ? baseX + 4 : baseX;
+            return {
+              ...r,
+              x: x,
+              y: getY(r.version)
+            };
+          });
+
+          iosPts.sort((a, b) => {
+            if (a.x !== b.x) return a.x - b.x;
+            return compareSemVer(a.version, b.version);
+          });
+
           if (iosPts.length >= 2) {
-            const iosPath = makeStepPath(iosPts, 'xIos');
+            const iosPath = makeStepPath(iosPts);
             svg += `<path d="${iosPath}" fill="none" stroke="var(--ios-apple-blue)" stroke-width="2.6" stroke-dasharray="${isDual ? '4,2' : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>`;
 
             iosPts.forEach(c => {
               const isSelected = c.version === selectedVersion;
               svg += `
-                <circle cx="${c.xIos.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
+                <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${isSelected ? 6 : 4}"
                   fill="${isSelected ? 'var(--ios-apple-blue)' : 'var(--bg-surface)'}"
                   stroke="var(--ios-apple-blue)" stroke-width="2" style="cursor:pointer;"
-                  onmouseover="showTooltip(event, '<img src=\\'assets/icons/logo_app_store.svg\\' style=\\'width:12px; height:12px; vertical-align:-1px; margin-right:3px;\\'/>iOS ${c.version} | 빌드 ${c.iosBuild || c.build} (${c.iosDate || c.date}) ${c.aosDate !== c.iosDate ? '⚠️ 심사 시차 발생' : ''}')"
+                  onmouseover="showTooltip(event, '<img src=\\'assets/icons/logo_app_store.svg\\' style=\\'width:12px; height:12px; vertical-align:-1px; margin-right:3px;\\'/>iOS ${c.version} | 빌드 ${c.iosBuild || c.build} (${c.iosDate || c.date}) ${c.aosDate && c.iosDate && c.aosDate !== c.iosDate ? '⚠️ 심사 시차 발생' : ''}')"
                   onmouseout="hideTooltip()"
                   onclick="window.focusChangelog('${c.version}')"
                 />
@@ -1468,10 +1655,11 @@
           }
         }
 
-        // X Axis Date labels
-        coords.forEach((c, idx) => {
-          if (idx % 2 === 0 || idx === coords.length - 1) {
-            svg += `<text x="${c.xAos.toFixed(1)}" y="${h - 10}" font-size="9" font-weight="600" fill="var(--text-secondary)" text-anchor="middle">${c.date.slice(5)}</text>`;
+        // 6) X Axis Date labels
+        sortedDates.forEach((d, idx) => {
+          if (totalXSteps <= 10 || idx % 2 === 0 || idx === totalXSteps - 1) {
+            const x = getX(d);
+            svg += `<text x="${x.toFixed(1)}" y="${h - 10}" font-size="9" font-weight="600" fill="var(--text-secondary)" text-anchor="middle">${d.slice(5)}</text>`;
           }
         });
 
@@ -1500,7 +1688,7 @@
         const stage = document.getElementById('monthlyCadenceStage');
         if (!stage) return;
 
-        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const releases = getMasterReleases();
         const monthMap = {};
         releases.forEach(r => {
           const m = r.date.slice(0, 7);
@@ -1585,7 +1773,7 @@
         const stage = document.getElementById('releaseHeatmapStage');
         if (!stage) return;
 
-        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const releases = getMasterReleases();
         const dateMap = {};
         releases.forEach(r => {
           const d = r.date;
@@ -1606,7 +1794,7 @@
           { label: '9월 2주 (07~13)', days: ['2026-09-07', '2026-09-08', '2026-09-09', '2026-09-10', '2026-09-11', '2026-09-12', '2026-09-13'] },
           { label: '9월 3주 (14~20)', days: ['2026-09-14', '2026-09-15', '2026-09-16', '2026-09-17', '2026-09-18', '2026-09-19', '2026-09-20'] },
           { label: '9월 4주 (21~27)', days: ['2026-09-21', '2026-09-22', '2026-09-23', '2026-09-24', '2026-09-25', '2026-09-26', '2026-09-27'] },
-          { label: '9월 5주+10월', days: ['2026-09-28', '2026-09-29', '2026-09-30', '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04'] }
+          { label: '9월 5주+10월', days: ['2026-09-28', '2026-09-29', '2026-09-30', '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05'] }
         ];
 
         let html = '<div class="heatmap-grid">';
@@ -1724,7 +1912,7 @@
         const drawerIosCount = document.getElementById('drawerIosCount');
         const drawerIssuesList = document.getElementById('drawerIssuesList');
 
-        const releases = window.MODO_RELEASE_REGISTRY || [];
+        const releases = getMasterReleases();
         const currentRel = releases.find(r => r.version === selectedVersion) || releases[releases.length - 1];
 
         const allIssuesInVersion = getIssuesForVersion(currentRel.version, 'all');
@@ -1838,11 +2026,11 @@
           metadata: {
             title: "Modo Production Release & Version Cadence Intelligence",
             exportedAt: new Date().toISOString(),
-            currentLiveVersion: "v1.1.13",
+            currentLiveVersion: getLatestVersion(currentPlatform),
             targetScope: currentScope,
             currentPlatform: currentPlatform
           },
-          releases: window.MODO_RELEASE_REGISTRY || [],
+          releases: getMasterReleases(),
           phase3IssuesCount: (window.MODO_QA_PHASE3 || []).length
         };
         const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
