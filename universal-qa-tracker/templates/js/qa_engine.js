@@ -608,6 +608,7 @@
     if (track.id === 'phase1') return t('trackPhase1');
     if (track.id === 'phase2') return t('trackPhase2');
     if (track.id === 'phase3') return t('trackPhase3');
+    if (track.id === 'phase4') return t('trackPhase4') || 'Phase 4 장기 로드맵';
     if (track.id === 'feedback') return t('trackFeedback');
     return track.label;
   }
@@ -644,6 +645,8 @@
         iconHtml = '<span style="font-size:12px; margin-right:4px;">🚀</span>';
       } else if (track.id === 'phase3') {
         iconHtml = '<span style="font-size:12px; margin-right:4px;">💎</span>';
+      } else if (track.id === 'phase4') {
+        iconHtml = '<span style="font-size:12px; margin-right:4px;">🔭</span>';
       } else if (track.id === 'feedback') {
         iconHtml = '<span style="font-size:12px; margin-right:4px;">💬</span>';
       }
@@ -1316,7 +1319,7 @@
     }
 
     const phaseTagHtml = (currentTrackId === 'all' && item.phase)
-      ? ` <span class="phase-mini-tag" style="font-size:9.5px; opacity:0.8; font-weight:800; text-transform:uppercase; background:var(--bg-subtle); border:1px solid var(--border); padding:1px 4px; border-radius:3px; margin-left:3px;" title="${item.phase}">${item.phase === 'phase1' ? 'P1' : (item.phase === 'phase2' ? 'P2' : (item.phase === 'phase3' ? 'P3' : item.phase))}</span>`
+      ? ` <span class="phase-mini-tag" style="font-size:9.5px; opacity:0.8; font-weight:800; text-transform:uppercase; background:var(--bg-subtle); border:1px solid var(--border); padding:1px 4px; border-radius:3px; margin-left:3px;" title="${item.phase}">${item.phase === 'phase1' ? 'P1' : (item.phase === 'phase2' ? 'P2' : (item.phase === 'phase3' ? 'P3' : (item.phase === 'phase4' ? 'P4' : item.phase)))}</span>`
       : '';
 
     return `

@@ -18,10 +18,11 @@ docs/02_Guides/internal_qa_issue_tracker/
 ├── QA_OPERATION_GUIDE.md                # 📘 [본 문서] 팀 표준 운영 매뉴얼 & 라이프사이클 지침
 ├── QA_REPORT.md                         # 📄 [Automated Report] 전체 395건 이슈 분석 및 완료 보고서
 ├── data/                                # 🗄️ [Data Registry] 트랙별 독립 데이터셋
-│   ├── qa_manifest.js                   # 트랙 레지스트리 (Phase 1~3, VOC)
+│   ├── qa_manifest.js                   # 트랙 레지스트리 (Phase 1~4, VOC)
 │   ├── phase1_closed_testing.js         # Phase 1 비공개 테스트 결함 데이터셋 (395건)
 │   ├── phase2_open_beta.js              # Phase 2 오픈베타 데이터셋
-│   ├── phase3_v1_1_backlog.js           # Phase 3 정식 출시/백로그 데이터셋
+│   ├── phase3_v1_1_backlog.js           # Phase 3 정식 출시/안정화 백로그 데이터셋 (103건)
+│   ├── phase4_future_roadmap.js         # Phase 4 장기 로드맵 & Future R&D 데이터셋
 │   └── feedback_manifest.js             # 유저 VOC 피드백 로컬 데이터셋
 ├── js/                                  # ⚙️ [Core Engines] 공통 엔진
 │   ├── qa_engine.js                     # 고성능 렌더링, 필터링, 정렬, 북마크 엔진
@@ -45,14 +46,18 @@ docs/02_Guides/internal_qa_issue_tracker/
 | 개발 마일스톤 | 트랙 ID | 관리 범위 | 현 상태 |
 | :--- | :---: | :--- | :---: |
 | **Phase 1: Android 비공개** | `phase1` | 구글 플레이 14일 비공개 테스트 기간 중 발견된 결함 및 테스터 피드백 개선 (#01 ~ #444) | **100% 완료** |
-| **Phase 2: iOS 테스트 (TestFlight)** | `phase2` | 애플 TestFlight 및 iOS 실기기 환경 특화 결함 및 위젯/권한 관리 | **실시간 운영 중** |
-| **Phase 3: 정식 운영 & 로드맵** | `phase3` | 프로덕션 정식 출시(v1.0+) 및 v1.1 이후 백로그 기능/개선 관리 | **실시간 운영 중** |
+| **Phase 2: iOS 테스트 (TestFlight)** | `phase2` | 애플 TestFlight 및 iOS 실기기 환경 특화 결함 및 위젯/권한 관리 | **100% 완료** |
+| **Phase 3: 정식 운영 & v1.1 안정화** | `phase3` | 프로덕션 정식 출시(v1.0+) 및 v1.1 즉시 배포 결함 해결/안정화 백로그 (#01 ~ #103) | **100% 완료** |
+| **Phase 4: 장기 로드맵 & Future R&D** | `phase4` | S-Pen/Apple Pencil 필기 드로잉, 다이어리 스티커팩, 차세대 위젯 레이아웃 등 미래 과제 인큐베이팅 | **실시간 운영 중** |
 | **유저 VOC (In-App)** | `feedback` | 인앱 피드백 모달을 통해 구글 시트로 실시간 수집되는 고객 정성적 의견 | **실시간 운영 중** |
 
+> 💡 **장기 R&D 분리 원칙 (P3 ➔ P4 분리)**:
+> 즉시 배포(v1.1) 목표인 Phase 3에 장기 R&D 이슈(예: S펜 필기, 스티커팩 등)가 잔류하면 릴리즈 완료율 100% 달성을 가로막는 병목이 됩니다. 장기 기술 검토 및 미래 과제는 `Phase 4 장기 로드맵`으로 선별 이관하여, Phase 3는 무결점 릴리즈 완료 상태를 유지하고 Phase 4는 안정적으로 차기 버전을 인큐베이팅합니다.
+
 ### 🚀 신규 Phase 트랙 추가 방법 (CLI)
-새로운 마일스톤(예: `phase4`)이 필요할 때는 스크립트 한 줄로 전체 포털에 트랙을 자동 확장합니다:
+새로운 마일스톤(예: `phase5`)이 필요할 때는 스크립트 한 줄로 전체 포털에 트랙을 자동 확장합니다:
 ```bash
-python docs/02_Guides/internal_qa_issue_tracker/scripts/add_phase.py --id phase4 --label "Phase 4 고도화"
+python docs/02_Guides/internal_qa_issue_tracker/scripts/add_phase.py --id phase5 --label "Phase 5 차세대 AI"
 ```
 
 ---

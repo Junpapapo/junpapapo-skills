@@ -5254,7 +5254,8 @@
         const allQaItems = [
           ...(window.MODO_QA_PHASE1 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase1) || []),
           ...(window.MODO_QA_PHASE2 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase2) || []),
-          ...(window.MODO_QA_PHASE3 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase3) || [])
+          ...(window.MODO_QA_PHASE3 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase3) || []),
+          ...(window.MODO_QA_PHASE4 || (window.UNIVERSAL_QA && window.UNIVERSAL_QA.DATA && window.UNIVERSAL_QA.DATA.phase4) || [])
         ];
         const numIds = allQaItems
           .map(x => typeof x.id === 'number' ? x.id : parseInt(String(x.id).replace(/\D/g, ''), 10))

@@ -219,7 +219,7 @@ The QA system features an interactive Visual Analytics Studio (`qa_analytics_das
    - **Smart N/A Disabling**: OS-exclusive issues (`platform === 'ios'` or `platform === 'android'`) automatically render non-clickable `- (N/A)` badges on the other platform's deployment column, preventing accidental cross-deployment mistakes.
    - **Top Navigation Dual KPI Badges**: Real-time independent progress counters (`🤖 AOS: X/Y`, `🍎 iOS: A/B`) and dedicated 5-state deploy filters (`[All] [🤖 AOS 배포] [🍎 iOS 배포] [🚀 양대 배포] [⏳ Pending]`).
    - **Tailored Dual-OS Release Notes Generator**: Dedicated 1-click generators for Google Play Store (`[📢 AOS 최신 복사]`, `[📜 AOS 전체]`) and Apple App Store (`[🍎 iOS 최신 복사]`, `[📜 iOS 전체]`), grouping deployed issues by target release version or master history across 8 ISO quality domains.
-   - **Persistent Track & Milestone Restoration**: Selecting a phase tab (e.g., Phase 1, Phase 2, Phase 3, VOC) automatically synchronizes with both `localStorage` (`modo_qa_active_track`) and browser URL query parameters (`?track=...`) via `history.replaceState`. Reloading or refreshing the page faithfully restores the exact selected phase track.
+   - **Persistent Track & Milestone Restoration**: Selecting a phase tab (e.g., Phase 1, Phase 2, Phase 3, Phase 4, VOC) automatically synchronizes with both `localStorage` (`modo_qa_active_track`) and browser URL query parameters (`?track=...`) via `history.replaceState`. Reloading or refreshing the page faithfully restores the exact selected phase track.
    - **Composite Key Identification (`getItemKey`)**: Issues are identified internally via `${phase}_${id}` composite keys, guaranteeing zero ID collision in the **All Tracks** master view even when multiple phases increment independently starting from `#1`.
 9. **Target Files Floating Popover & 1-Click Clipboard**:
    - The spreadsheet `Files` column features high-density compact badges (`📁 N files`) to eliminate cell overflow. Hovering or clicking reveals an Apple-style frosted floating popover (`qa-files-popover`).
@@ -233,12 +233,14 @@ The QA system features an interactive Visual Analytics Studio (`qa_analytics_das
     - **State Persistence**: Drawer open/closed state is automatically saved to `localStorage` (`modo_qa_detail_filter_open`) across page reloads.
 12. **Sticky Spreadsheet Header (`th`)**:
     - Table header columns stay seamlessly pinned directly beneath the 48px global navigation bar (`position: sticky; top: 48px; z-index: 90;`) during deep vertical scrolling, providing continuous context across large issue backlogs.
-13. **Mobile Release Lifecycle 1:1 Matching Model**:
+13. **Mobile Release Lifecycle 1:1 Matching Model & Strategic R&D Isolation**:
     - Milestone track architecture follows the enterprise mobile release standard:
       - `Phase 1`: `🔒 Android Closed Testing` (Google Play closed beta verification)
       - `Phase 2`: `🍎 iOS TestFlight Testing` (Apple ecosystem, TestFlight & iOS native permissions)
-      - `Phase 3`: `💎 Production Operations` (v1.0+ public launch & unified backlog)
+      - `Phase 3`: `💎 Production Operations & v1.1 Stabilization` (v1.0+ public launch & high-velocity immediate release fixes)
+      - `Phase 4`: `🔭 Future Roadmap & Long-term R&D` (S-Pen/Apple Pencil stylus, sticker packs, dual-pane, future layout incubator)
       - `Feedback`: `💬 User VOC` (In-App customer voice telemetry)
+    - **Strategic R&D Isolation Principle**: Keep Phase 3 focused strictly on immediate release blockers and bug fixes so Phase 3 can achieve 100% resolved release-readiness. Long-term exploratory, architectural, and design research tasks are isolated into Phase 4, ensuring continuous momentum without blocking production delivery.
 
 ---
 

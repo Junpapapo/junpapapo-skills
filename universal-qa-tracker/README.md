@@ -64,7 +64,8 @@ universal-qa-tracker/
         ├── qa_manifest.js              # Track registry & milestone configurations
         ├── phase1_closed_testing.js    # Phase 1 baseline dataset
         ├── phase2_open_beta.js         # Phase 2 dataset
-        ├── phase3_v1_1_backlog.js      # Phase 3 backlog dataset
+        ├── phase3_v1_1_backlog.js      # Phase 3 immediate release backlog dataset
+        ├── phase4_future_roadmap.js    # Phase 4 long-term roadmap & future R&D dataset
         └── feedback_manifest.js        # In-app user feedback dataset
 ```
 

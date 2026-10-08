@@ -13,6 +13,7 @@ window.MODO_QA_MANIFEST = {
           ...(window.MODO_QA_PHASE1 || []),
           ...(window.MODO_QA_PHASE2 || []),
           ...(window.MODO_QA_PHASE3 || []),
+          ...(window.MODO_QA_PHASE4 || []),
         ];
       }
     },
@@ -43,6 +44,15 @@ window.MODO_QA_MANIFEST = {
       color: '#E67700',
       getData: function() {
         return window.MODO_QA_PHASE3 || [];
+      }
+    },
+    {
+      id: 'phase4',
+      label: 'Phase 4 장기 로드맵',
+      badge: 'v1.2+ Future R&D (1건)',
+      color: '#845EF7',
+      getData: function() {
+        return window.MODO_QA_PHASE4 || [];
       }
     },
     {

@@ -1822,6 +1822,7 @@
           if (track.id === 'phase1') return window.QA_I18N.t('trackPhase1');
           if (track.id === 'phase2') return window.QA_I18N.t('trackPhase2');
           if (track.id === 'phase3') return window.QA_I18N.t('trackPhase3');
+          if (track.id === 'phase4') return window.QA_I18N.t('trackPhase4') || 'Phase 4 장기 로드맵';
           if (track.id === 'feedback') return window.QA_I18N.t('trackFeedback');
         }
         return track.label;
@@ -1848,6 +1849,8 @@
             iconHtml = '<span style="font-size:12px; margin-right:4px;">🚀</span>';
           } else if (t.id === 'phase3') {
             iconHtml = '<span style="font-size:12px; margin-right:4px;">💎</span>';
+          } else if (t.id === 'phase4') {
+            iconHtml = '<span style="font-size:12px; margin-right:4px;">🔭</span>';
           } else if (t.id === 'feedback') {
             iconHtml = '<span style="font-size:12px; margin-right:4px;">💬</span>';
           }
