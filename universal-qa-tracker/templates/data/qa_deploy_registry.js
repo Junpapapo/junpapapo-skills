@@ -1,6 +1,6 @@
-﻿/**
- * Universal QA Deploy Registry
- * Stores historical release deployment timestamps and build numbers
+/**
+ * Universal QA Deploy & Store Release Registry
+ * Clean Starter Dataset (Empty)
  */
-window.MODO_QA_DEPLOY_REGISTRY = [];
 
+window.MODO_QA_DEPLOY_REGISTRY = [];

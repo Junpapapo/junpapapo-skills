@@ -1723,17 +1723,17 @@
   </style>
 
   <!-- Load Data and Modules -->
-  <script src="data/qa_config.js?v=2.6"></script>
-  <script src="data/phase1_closed_testing.js?v=2.4"></script>
-  <script src="data/phase2_open_beta.js?v=2.4"></script>
-  <script src="data/phase3_v1_1_backlog.js?v=2.6"></script>
-  <script src="data/phase4_future_roadmap.js"></script>
-  <script src="data/feedback_manifest.js?v=2.6"></script>
-  <script src="data/qa_deploy_registry.js?v=1.0"></script>
-  <script src="data/qa_manifest.js?v=2.6"></script>
-  <script src="js/qa_i18n.js?v=2.4"></script>
-  <script src="js/qa_dialog.js?v=1.0"></script>
-  <script src="js/qa_engine.js?v=2.7"></script>
+  <script src="data/qa_config.js?v=2.7"></script>
+  <script src="data/phase1_closed_testing.js?v=2.5"></script>
+  <script src="data/phase2_open_beta.js?v=2.5"></script>
+  <script src="data/phase3_v1_1_backlog.js?v=2.9"></script>
+  <script src="data/phase4_future_roadmap.js?v=1.0"></script>
+  <script src="data/feedback_manifest.js?v=2.7"></script>
+  <script src="data/qa_deploy_registry.js?v=1.1"></script>
+  <script src="data/qa_manifest.js?v=2.9"></script>
+  <script src="js/qa_i18n.js?v=2.5"></script>
+  <script src="js/qa_dialog.js?v=1.1"></script>
+  <script src="js/qa_engine.js?v=2.8"></script>
   <script src="js/qa_memo.js?v=1.2"></script>
 </head>
 <body>
@@ -1951,7 +1951,7 @@
           <!-- iOS Release Subgroup -->
           <div class="release-subgroup" id="releaseSubgroupIos">
             <span class="filter-label" style="color: #228BE6;"><img src="assets/icons/logo_app_store.svg" style="width:12px; height:12px; vertical-align:-2px; margin-right:3px;" alt="iOS" /> <span data-i18n="targetReleaseIosLabel">iOS 릴리즈:</span></span>
-            <input type="text" id="targetReleaseIosInput" class="select-dropdown" style="width: 86px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #228BE6;" value="85 (1.1.16)" data-i18n-placeholder="targetReleaseIosPlaceholder" title="iOS 배포 ON 시 자동 스탬프될 기본 릴리즈 버전" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease('ios', this.value) : null" />
+            <input type="text" id="targetReleaseIosInput" class="select-dropdown" style="width: 86px; padding: 2px 6px; font-size: 11px; font-weight: 700; height: 22px; border-radius: 4px; text-align: center; color: #228BE6;" value="87 (1.1.16)" data-i18n-placeholder="targetReleaseIosPlaceholder" title="iOS 배포 ON 시 자동 스탬프될 기본 릴리즈 버전" onchange="window.MODO_QA && window.MODO_QA.setTargetRelease ? window.MODO_QA.setTargetRelease('ios', this.value) : null" />
             <button type="button" class="btn-release-ios" id="btnReleaseNotesIosLatest" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('ios', 'latest') : null" title="현재 지정된 iOS 릴리즈 버전 항목만 App Store용 릴리즈 노트로 클립보드 복사"><img src="assets/icons/logo_app_store.svg" style="width:11px; height:11px; vertical-align:-1px; margin-right:3px;" alt="iOS" /> <span data-i18n="btnCopyReleaseNotesIosLatest">iOS 최신 복사</span></button>
             <button type="button" class="btn-release-subtle" id="btnReleaseNotesIosAll" onclick="window.MODO_QA && window.MODO_QA.copyReleaseNotes ? window.MODO_QA.copyReleaseNotes('ios', 'all') : null" title="모든 버전별 iOS 릴리즈 히스토리를 버전별 섹션으로 나누어 클립보드 복사"><span data-i18n="btnCopyReleaseNotesIosAll">iOS 전체</span></button>
           </div>

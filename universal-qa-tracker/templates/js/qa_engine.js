@@ -1169,8 +1169,8 @@
           </td>
           <td style="text-align: center;"><span style="font-size: 11px; font-weight: 700; background: var(--bg-subtle); border: 1px solid var(--border); padding: 2px 7px; border-radius: 999px;">+${votes}</span></td>
           <td style="text-align: center;">
-            <span class="status-tag status-${item.status === 'to_qa' ? 'pending' : (item.status === 'shipped' ? 'resolved' : 'pending')}">
-              ${item.status === 'to_qa' ? '🛠️ QA승격' : (item.status === 'planned' ? '🚀 반영예정' : (item.status === 'shipped' ? '✅ 완료' : '📥 접수'))}
+            <span class="status-tag status-${item.status === 'to_qa' ? 'pending' : (item.status === 'shipped' || item.status === 'resolved' ? 'resolved' : 'pending')}">
+              ${item.status === 'to_qa' ? '🛠️ QA승격' : (item.status === 'planned' ? '🚀 반영예정' : (item.status === 'shipped' || item.status === 'resolved' ? '✅ 완료' : '📥 접수'))}
             </span>
           </td>
         </tr>
@@ -1888,7 +1888,7 @@
       const storeName = isIos ? '애플 앱스토어(App Store)' : '구글 플레이 스토어(Google Play)';
       const appCfg = window.QA_APP_CONFIG || {};
       const storeUrl = isIos 
-        ? (appCfg.stores?.appStore || 'https://apps.apple.com/app/id6742358910')
+        ? (appCfg.stores?.appStore || 'https://apps.apple.com/app/id6809727545')
         : (appCfg.stores?.playStore || 'https://play.google.com/store/apps/details?id=com.junpapapo.modo');
       return `안녕하세요, 모도(Modo) 개발팀입니다! 😊\n\n모도를 아껴주시고 별점 5점의 따뜻한 응원을 남겨주셔서 진심으로 감사드립니다.\n혹시 괜찮으시다면 ${storeName}에도 별점 5점과 함께 소중한 응원 리뷰를 남겨주실 수 있을까요? ⭐️\n👉 스토어 리뷰 남기기: ${storeUrl}\n\n항상 발전하는 모도가 되겠습니다. 감사합니다!`;
     },
