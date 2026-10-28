@@ -50,6 +50,25 @@
   white-space: nowrap;
 }
 
+.qa-memo-title-text {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 1px 4px;
+  transition: background 0.15s ease;
+}
+.qa-memo-title-text:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.qa-memo-title-edit-btn {
+  font-size: 11px !important;
+  opacity: 0.65;
+  cursor: pointer;
+}
+.qa-memo-title-edit-btn:hover {
+  opacity: 1;
+}
+
 .qa-memo-header-actions {
   display: flex;
   align-items: center;
